@@ -954,11 +954,15 @@ function openDraw(idx,type){
             <option value="8">Thick</option>
           </select>
           <button class="btn btn-s btn-sm" onclick="clearCanvas('canvas-${idx}')">Clear</button>
-          <button class="btn btn-p btn-sm" style="width:auto" onclick="markDrawing('canvas-${idx}','${esc(q.question)}','${esc(q.answer)}','${idx}','${type}')">🤖 AI Mark</button>
         </div>
       </div>
       <canvas id="canvas-${idx}" width="700" height="220" style="background:white;display:block;width:100%;cursor:crosshair;touch-action:none"></canvas>
-      <div id="ai-feedback-${idx}" style="padding:0"></div>
+      <div style="padding:10px;border-top:1px solid var(--bdr);background:var(--surf3)">
+        <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Type your answer for AI marking</div>
+        <textarea id="typed-ans-${idx}" rows="3" placeholder="Type your answer here, then click AI Mark..." style="width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--surf);color:var(--txt);outline:none;resize:vertical;font-family:var(--font)"></textarea>
+        <button class="btn btn-p btn-sm" style="width:auto;margin-top:8px" onclick="markDrawing('canvas-${idx}','${esc(q.question)}','${esc(q.answer)}','${idx}','${type}')">🤖 AI Mark</button>
+      </div>
+      <div id="ai-feedback-${idx}"></div>
     </div>`;
 
   setTimeout(()=>initCanvas(`canvas-${idx}`,`pen-color-${idx}`,`pen-size-${idx}`),50);
@@ -1007,41 +1011,43 @@ function clearCanvas(canvasId){
 }
 
 async function markDrawing(canvasId,question,modelAnswer,idx,type){
-  const canvas=document.getElementById(canvasId);
-  if(!canvas)return;
+  // Get typed answer
+  const typedEl=document.getElementById('typed-ans-'+idx);
+  const typedAnswer=typedEl?typedEl.value.trim():'';
+  if(!typedAnswer){
+    const fbEl=document.getElementById('ai-feedback-'+idx);
+    if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);color:var(--dan);font-size:13px">Please type your answer in the box before submitting for marking.</div>`;
+    return;
+  }
   const fbEl=document.getElementById('ai-feedback-'+idx);
-  if(fbEl)fbEl.innerHTML=`<div style="padding:12px;text-align:center;color:var(--mut);font-size:13px"><div class="spin" style="width:20px;height:20px;border:2px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>AI is marking your answer...</div>`;
+  if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);text-align:center;color:var(--mut);font-size:13px"><div style="width:20px;height:20px;border:2px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>AI is marking your answer...</div>`;
 
-  const imageData=canvas.toDataURL('image/png').split(',')[1];
+  const prompt=`You are a strict but encouraging HSC exam marker. Mark this student response.
+
+Question: ${question}
+Model answer / marking criteria: ${modelAnswer}
+Student's answer: ${typedAnswer}
+
+Respond EXACTLY in this format (no extra text):
+MARK: [number]/[total]
+FEEDBACK: [2-3 sentences on what they got right and wrong]
+TIP: [one specific improvement tip]`;
 
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:800,
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:'image/png',data:imageData}},
-          {type:'text',text:`You are an HSC exam marker. The student has drawn/written their answer to this question on the canvas above.
-
-Question: ${question}
-Model answer: ${modelAnswer}
-
-Please:
-1. Read and interpret what the student has written/drawn
-2. Give a mark out of the question's allocated marks
-3. Provide specific, encouraging feedback on what they got right
-4. Point out any errors or missing points
-5. Give a clear improvement tip
-
-Format your response as:
-MARK: X/Y
-FEEDBACK: [your detailed feedback]
-TIP: [one specific improvement tip]`}
-        ]}]
+        max_tokens:400,
+        messages:[{role:'user',content:prompt}]
       })
     });
+    if(!resp.ok){const err=await resp.json();throw new Error(err.error?.message||resp.statusText);}
     const data=await resp.json();
     const text=data.content?.map(c=>c.text||'').join('').trim();
     if(fbEl){
@@ -1049,15 +1055,15 @@ TIP: [one specific improvement tip]`}
       const markLine=lines.find(l=>l.startsWith('MARK:'))||'';
       const fbLine=lines.find(l=>l.startsWith('FEEDBACK:'))||'';
       const tipLine=lines.find(l=>l.startsWith('TIP:'))||'';
-      fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr)">
-        ${markLine?`<div style="font-size:16px;font-weight:700;color:var(--acc);margin-bottom:8px">${esc(markLine)}</div>`:''}
-        ${fbLine?`<div style="font-size:13px;margin-bottom:8px;color:var(--txt)">${esc(fbLine.replace('FEEDBACK:','').trim())}</div>`:''}
-        ${tipLine?`<div style="font-size:13px;background:var(--acc-l);color:var(--acc-t);padding:8px 12px;border-radius:var(--rs);"><strong>Tip:</strong> ${esc(tipLine.replace('TIP:','').trim())}</div>`:''}
-        ${!markLine?`<div style="font-size:13px;color:var(--txt)">${esc(text)}</div>`:''}
+      fbEl.innerHTML=`<div style="padding:14px;border-top:1px solid var(--bdr)">
+        ${markLine?`<div style="font-size:22px;font-weight:700;color:var(--acc);margin-bottom:10px">${esc(markLine)}</div>`:''}
+        ${fbLine?`<div style="font-size:13px;line-height:1.7;margin-bottom:10px;color:var(--txt)">${esc(fbLine.replace('FEEDBACK:','').trim())}</div>`:''}
+        ${tipLine?`<div style="font-size:13px;background:var(--acc-l);color:var(--acc-t);padding:10px 12px;border-radius:var(--rs)"><strong>💡 Tip:</strong> ${esc(tipLine.replace('TIP:','').trim())}</div>`:''}
+        ${!markLine&&!fbLine?`<div style="font-size:13px;color:var(--txt);line-height:1.7">${esc(text)}</div>`:''}
       </div>`;
     }
-  }catch{
-    if(fbEl)fbEl.innerHTML=`<div style="padding:12px;color:var(--dan);font-size:13px">Could not connect to AI marker. Please try again.</div>`;
+  }catch(e){
+    if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);color:var(--dan);font-size:13px">Could not reach AI marker: ${esc(e.message)}. Check your internet connection and try again.</div>`;
   }
 }
 
