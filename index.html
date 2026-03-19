@@ -605,10 +605,7 @@ function showPaperHub(){
 
 // ── DATE NAV ─────────────────────────────────────────────────────
 function dateNav(cur,_prev,_next,onPick,onToday){
-  const d=new Date((cur||todayKey())+'T00:00:00');
-  const label=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   return`<div class="wn">
-    <span class="wl">${label}</span>
     <input type="date" class="dpick" value="${cur||todayKey()}" onchange="${onPick}" title="Jump to date"/>
     <button class="today-btn" onclick="${onToday}">Today</button>
   </div>`;
