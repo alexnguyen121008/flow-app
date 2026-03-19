@@ -9,13 +9,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F0EEF8;--surf:#ffffff;--surf2:#E8E4F5;--surf3:#F5F3FB;
+  --bg:#F0EEF8;--surf:#fff;--surf2:#E8E4F5;--surf3:#F5F3FB;
   --bdr:#DDD8EE;--bdr2:#C8C2E0;
   --txt:#1A1730;--mut:#706C8A;
   --acc:#5B4BD4;--acc-l:#ECEAFA;--acc2:#7B68E8;
   --dan:#C0385A;--dan-l:#FCEEF2;
   --amb:#A06820;--amb-l:#FBF3E3;
   --blu:#2E6BA8;--blu-l:#E3EDF8;
+  --grn:#1A7A50;--grn-l:#E3F6EE;
   --r:12px;--rs:8px;
   --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(91,75,212,.08);
   --shm:0 8px 32px rgba(91,75,212,.15);
@@ -32,12 +33,12 @@ input,select,textarea,button{font-family:var(--font)}
 h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0.4px}
 .auth-sub{font-size:14px;color:var(--mut);margin-bottom:1.75rem}
 .field{margin-bottom:1.1rem}
-.field label{display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
 .field input,.field select,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:15px;background:var(--surf3);color:var(--txt);outline:none;transition:all .15s}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acc);background:var(--surf);box-shadow:0 0 0 4px rgba(91,75,212,.1)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;background:none;color:var(--txt)}
 .btn-p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;width:100%;padding:12px;font-size:15px;border:none;box-shadow:0 4px 12px rgba(91,75,212,.3)}
-.btn-p:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 16px rgba(91,75,212,.4)}
+.btn-p:hover{opacity:.9;transform:translateY(-1px)}
 .btn-s{background:var(--surf);color:var(--txt);border-color:var(--bdr2)}
 .btn-s:hover{background:var(--surf2);border-color:var(--acc)}
 .btn-d{background:var(--dan-l);color:var(--dan);border-color:transparent}
@@ -47,36 +48,57 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .toggle a{color:var(--acc);cursor:pointer;font-weight:600}
 .err{background:var(--dan-l);color:var(--dan);border:1.5px solid #f0b8cc;border-radius:var(--rs);padding:10px 14px;font-size:13px;margin-bottom:1rem;display:none}
 #app{display:none;min-height:100vh}
-.hdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.hdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .hdr-r{display:flex;align-items:center;gap:.75rem}
 .ubadge{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mut)}
 .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.rtag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.3px}
+.rtag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.3px;text-transform:uppercase}
 .rtag.cl{background:var(--blu-l);color:var(--blu)}
-.main{padding:2rem;max-width:960px;margin:0 auto}
-.tabs{display:flex;gap:4px;background:var(--surf2);padding:4px;border-radius:var(--r);width:fit-content;margin-bottom:2rem;border:1px solid var(--bdr)}
-.tab{padding:8px 20px;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;color:var(--mut);border:none;background:none;transition:all .15s}
-.tab.on{background:var(--surf);color:var(--acc);box-shadow:var(--sh)}
+.app-body{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rs);font-size:14px;font-weight:500;color:var(--mut);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--surf2);color:var(--txt)}
+.nav-item.on{background:var(--acc-l);color:var(--acc);font-weight:600}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-sep{height:1px;background:var(--bdr);margin:8px 0}
+.nav-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;padding:4px 12px;margin-top:4px}
+.content{flex:1;padding:2rem;overflow-y:auto;min-width:0}
+.pomo-widget{background:var(--surf3);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem;margin-bottom:.75rem;text-align:center}
+.pomo-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:.6rem}
+.pomo-modes{display:flex;gap:3px;justify-content:center;margin-bottom:.6rem}
+.pomo-mode{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--bdr2);background:none;color:var(--mut);transition:all .15s}
+.pomo-mode.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
+.pomo-time{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--txt);font-family:var(--mono);line-height:1.1}
+.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overflow:hidden}
+.pomo-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .5s linear}
+.pomo-btns{display:flex;gap:5px;justify-content:center}
+.pomo-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.pomo-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
+.pomo-btn.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;border-color:transparent}
 .card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);margin-bottom:1rem}
 .ci{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)}
 .ci:last-child{border-bottom:none}
 .ci-info{display:flex;align-items:center;gap:10px}
 .ti{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--bdr)}
 .ti:last-child{border-bottom:none}
-.chk{width:19px;height:19px;border:2px solid var(--bdr2);border-radius:5px;cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:var(--surf3)}
-.chk.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;box-shadow:0 2px 8px rgba(91,75,212,.3)}
+.chk{width:20px;height:20px;border:2px solid var(--bdr2);border-radius:5px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;background:var(--surf3)}
+.chk.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;box-shadow:0 2px 8px rgba(91,75,212,.35)}
 .ttl{font-weight:600;font-size:14px}
 .ttl.dn{text-decoration:line-through;color:var(--mut);font-weight:400}
 .tdsc{font-size:13px;color:var(--mut);margin-top:3px}
 .tmeta{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px}
-.tp{background:var(--acc-l);color:var(--acc)}
+.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
 .tb{background:var(--blu-l);color:var(--blu)}
 .ta{background:var(--amb-l);color:var(--amb)}
-.wn{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
-.wl{font-size:13px;font-weight:600;color:var(--mut);font-family:var(--mono);min-width:165px;text-align:center;background:var(--surf2);padding:6px 12px;border-radius:var(--rs);border:1px solid var(--bdr)}
+.tg{background:var(--grn-l);color:var(--grn)}
+.wn{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.wl{font-size:13px;font-weight:600;color:var(--mut);font-family:var(--mono);background:var(--surf2);padding:6px 14px;border-radius:var(--rs);border:1px solid var(--bdr);min-width:150px;text-align:center}
 .wb{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--bdr2);background:var(--surf);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--txt);transition:all .15s}
 .wb:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
+.dpick{padding:7px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);cursor:pointer;outline:none;transition:border-color .15s}
+.dpick:focus{border-color:var(--acc)}
+.today-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.today-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
 .pbar{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
 .pfill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
 .overlay{position:fixed;inset:0;background:rgba(10,8,25,.5);z-index:200;align-items:center;justify-content:center;padding:1rem;display:none}
@@ -89,7 +111,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
 .sc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;box-shadow:var(--sh)}
 .sn{font-size:30px;font-weight:700;letter-spacing:-0.5px;color:var(--acc)}
-.sl{font-size:12px;font-weight:600;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+.sl{font-size:11px;font-weight:700;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
 .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
 .pill{padding:6px 16px;border-radius:20px;border:1.5px solid var(--bdr2);font-size:13px;font-weight:600;cursor:pointer;background:var(--surf);color:var(--mut);transition:all .15s}
 .pill.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
@@ -106,7 +128,8 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .uz p strong{color:var(--acc)}
 .sh{font-size:20px;font-weight:700;margin-bottom:1rem;letter-spacing:-0.3px}
 .loading{text-align:center;padding:4rem;color:var(--mut);font-size:14px}
-@media(max-width:600px){.main{padding:1rem}.hdr{padding:0 1rem}.stats{grid-template-columns:1fr 1fr}}
+.row-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+@media(max-width:768px){.sidebar{display:none}.content{padding:1rem}.stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -115,8 +138,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   <div id="setup-view" class="screen" style="display:none">
     <div class="auth-card">
       <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
-      <h2 class="auth-title">Set up Flow</h2>
-      <p class="auth-sub">Create your admin account to get started</p>
+      <h2 class="auth-title">Set up Flow</h2><p class="auth-sub">Create your admin account to get started</p>
       <div id="setup-err" class="err"></div>
       <div class="field"><label>Your name</label><input id="s-name" placeholder="e.g. Sarah"/></div>
       <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="admin@yoursite.com"/></div>
@@ -124,12 +146,10 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <button class="btn btn-p" onclick="doSetup()">Create admin account</button>
     </div>
   </div>
-
   <div id="login-view" class="screen" style="display:none">
     <div class="auth-card">
       <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
-      <h2 class="auth-title">Welcome back</h2>
-      <p class="auth-sub">Sign in to your account</p>
+      <h2 class="auth-title">Welcome back</h2><p class="auth-sub">Sign in to your account</p>
       <div id="login-err" class="err"></div>
       <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
       <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
@@ -137,12 +157,10 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div class="toggle">New client? <a onclick="showReg()">Create account</a></div>
     </div>
   </div>
-
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
       <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
-      <h2 class="auth-title">Create account</h2>
-      <p class="auth-sub">Register as a client</p>
+      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a client</p>
       <div id="reg-err" class="err"></div>
       <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
       <div class="field"><label>Email</label><input id="r-email" type="email" placeholder="you@example.com"/></div>
@@ -161,16 +179,33 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <button class="btn btn-s btn-sm" onclick="logout()">Sign out</button>
     </div>
   </div>
-  <div class="main">
-    <div id="admin-view" style="display:none">
-      <div class="tabs">
-        <button class="tab on" onclick="aTab(this,'tasks')">Tasks</button>
-        <button class="tab" onclick="aTab(this,'clients')">Clients</button>
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="pomo-widget">
+        <div class="pomo-label">Pomodoro Timer</div>
+        <div class="pomo-modes">
+          <button class="pomo-mode on" onclick="setPomoMode(25,this)">Focus</button>
+          <button class="pomo-mode" onclick="setPomoMode(5,this)">Short</button>
+          <button class="pomo-mode" onclick="setPomoMode(15,this)">Long</button>
+        </div>
+        <div class="pomo-time" id="pomo-time">25:00</div>
+        <div class="pomo-bar"><div class="pomo-fill" id="pomo-fill" style="width:100%"></div></div>
+        <div class="pomo-btns">
+          <button class="pomo-btn active" id="pomo-start" onclick="togglePomo()">Start</button>
+          <button class="pomo-btn" onclick="resetPomo()">Reset</button>
+        </div>
       </div>
-      <div id="at-tasks"></div>
-      <div id="at-clients" style="display:none"></div>
+      <div class="nav-sep"></div>
+      <div class="nav-label">Navigation</div>
+      <div id="nav-items"></div>
     </div>
-    <div id="client-view" style="display:none"></div>
+    <div class="content">
+      <div id="admin-view" style="display:none">
+        <div id="at-tasks"></div>
+        <div id="at-clients" style="display:none"></div>
+      </div>
+      <div id="client-view" style="display:none"></div>
+    </div>
   </div>
 </div>
 
@@ -183,82 +218,94 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 </div>
 
 <script>
-const SURL = 'https://eihvonzcjtxsniyzuskt.supabase.co';
-const SKEY = 'sb_publishable_Xt6taqN9vkSHx09WM-hTdA_ckF8rVxi';
-const sb = supabase.createClient(SURL, SKEY);
-
-let CU = null, awo = 0, cwo = 0, selC = null;
+const SURL='https://eihvonzcjtxsniyzuskt.supabase.co';
+const SKEY='sb_publishable_Xt6taqN9vkSHx09WM-hTdA_ckF8rVxi';
+const sb=supabase.createClient(SURL,SKEY);
+let CU=null,selC=null,adminDate=null,clientDate=null;
 
 function gid(){return '_'+Math.random().toString(36).slice(2)+Date.now();}
 function ini(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function wks(o=0){const d=new Date(),dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1)+o*7);d.setHours(0,0,0,0);return d;}
-function wkey(o=0){return wks(o).toISOString().split('T')[0];}
-function wlbl(o=0){const s=wks(o),e=new Date(s);e.setDate(e.getDate()+6);const f=d=>d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});return`${f(s)} – ${f(e)}`;}
 function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
 function hideErr(id){document.getElementById(id).style.display='none';}
 function readF(file){return new Promise((r,j)=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.onerror=j;fr.readAsDataURL(file);});}
 
-// ── DB helpers ──────────────────────────────────────────────────
+// DATE
+function todayKey(){return new Date().toISOString().split('T')[0];}
+function getMonday(ds){const d=ds?new Date(ds+'T00:00:00'):new Date();const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d;}
+function weekKey(ds){return getMonday(ds).toISOString().split('T')[0];}
+function weekLabel(ds){const s=getMonday(ds),e=new Date(s);e.setDate(e.getDate()+6);const f=d=>d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});return`${f(s)} – ${f(e)}`;}
+function shiftWeek(ds,dir){const d=getMonday(ds||todayKey());d.setDate(d.getDate()+dir*7);return d.toISOString().split('T')[0];}
+
+// POMODORO
+let pomoTotal=25*60,pomoLeft=25*60,pomoRunning=false,pomoInterval=null;
+function setPomoMode(mins,btn){
+  clearInterval(pomoInterval);pomoRunning=false;pomoTotal=mins*60;pomoLeft=mins*60;
+  document.getElementById('pomo-start').textContent='Start';
+  document.getElementById('pomo-start').classList.add('active');
+  document.querySelectorAll('.pomo-mode').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');renderPomo();
+}
+function togglePomo(){
+  if(pomoRunning){
+    clearInterval(pomoInterval);pomoRunning=false;
+    document.getElementById('pomo-start').textContent='Resume';
+    document.getElementById('pomo-start').classList.remove('active');
+  } else {
+    pomoRunning=true;
+    document.getElementById('pomo-start').textContent='Pause';
+    document.getElementById('pomo-start').classList.add('active');
+    pomoInterval=setInterval(()=>{
+      if(pomoLeft<=0){clearInterval(pomoInterval);pomoRunning=false;alert("Time's up! Take a break 🎉");document.getElementById('pomo-start').textContent='Start';document.getElementById('pomo-start').classList.add('active');return;}
+      pomoLeft--;renderPomo();
+    },1000);
+  }
+}
+function resetPomo(){clearInterval(pomoInterval);pomoRunning=false;pomoLeft=pomoTotal;document.getElementById('pomo-start').textContent='Start';document.getElementById('pomo-start').classList.add('active');renderPomo();}
+function renderPomo(){const m=Math.floor(pomoLeft/60),s=pomoLeft%60;document.getElementById('pomo-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;document.getElementById('pomo-fill').style.width=(pomoLeft/pomoTotal*100)+'%';}
+
+// DB
 async function dbUsers(){const{data}=await sb.from('users').select('*');return data||[];}
 async function dbTasks(){const{data}=await sb.from('tasks').select('*');return data||[];}
 async function dbCompletions(){const{data}=await sb.from('completions').select('*');return data||[];}
 async function dbFiles(){const{data}=await sb.from('files').select('*');return data||[];}
-
 async function isAdminSetup(){const u=await dbUsers();return u.some(x=>x.role==='admin');}
 
-// ── Auth ────────────────────────────────────────────────────────
+// AUTH
 async function doSetup(){
   hideErr('setup-err');
-  const name=document.getElementById('s-name').value.trim();
-  const email=document.getElementById('s-email').value.trim();
-  const pass=document.getElementById('s-pass').value;
+  const name=document.getElementById('s-name').value.trim(),email=document.getElementById('s-email').value.trim(),pass=document.getElementById('s-pass').value;
   if(!name||!email||!pass)return showErr('setup-err','Please fill in all fields.');
   if(pass.length<4)return showErr('setup-err','Password must be at least 4 characters.');
   const{error}=await sb.from('users').insert({id:gid(),name,email,password:pass,role:'admin'});
   if(error)return showErr('setup-err','Error: '+error.message);
-  const admin={id:'admin',name,email,role:'admin'};
-  enterApp(admin);
+  enterApp({id:gid(),name,email,role:'admin'});
 }
-
 async function doLogin(){
   hideErr('login-err');
-  const email=document.getElementById('l-email').value.trim();
-  const pass=document.getElementById('l-pass').value;
+  const email=document.getElementById('l-email').value.trim(),pass=document.getElementById('l-pass').value;
   const{data}=await sb.from('users').select('*').eq('email',email).eq('password',pass).single();
   if(!data)return showErr('login-err','Invalid email or password.');
   enterApp(data);
 }
-
 async function doReg(){
   hideErr('reg-err');
-  const name=document.getElementById('r-name').value.trim();
-  const email=document.getElementById('r-email').value.trim();
-  const pass=document.getElementById('r-pass').value;
+  const name=document.getElementById('r-name').value.trim(),email=document.getElementById('r-email').value.trim(),pass=document.getElementById('r-pass').value;
   if(!name||!email||!pass)return showErr('reg-err','Please fill in all fields.');
   if(pass.length<4)return showErr('reg-err','Password must be at least 4 characters.');
-  const{data:existing}=await sb.from('users').select('id').eq('email',email).single();
-  if(existing)return showErr('reg-err','Email already registered.');
+  const{data:ex}=await sb.from('users').select('id').eq('email',email).single();
+  if(ex)return showErr('reg-err','Email already registered.');
   const nu={id:gid(),name,email,password:pass,role:'client'};
   const{error}=await sb.from('users').insert(nu);
   if(error)return showErr('reg-err','Error: '+error.message);
   enterApp(nu);
 }
-
-function showLogin(){
-  document.getElementById('setup-view').style.display='none';
-  document.getElementById('reg-view').style.display='none';
-  document.getElementById('login-view').style.display='';
-}
-function showReg(){
-  document.getElementById('setup-view').style.display='none';
-  document.getElementById('login-view').style.display='none';
-  document.getElementById('reg-view').style.display='';
-}
+function showLogin(){['setup-view','reg-view'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('login-view').style.display='';}
+function showReg(){['setup-view','login-view'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('reg-view').style.display='';}
 
 function enterApp(u){
   CU=u;
-  localStorage.setItem('flow_session', JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
+  localStorage.setItem('flow_session',JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('hdr-av').textContent=ini(u.name);
@@ -266,13 +313,13 @@ function enterApp(u){
   const rt=document.getElementById('hdr-role');
   rt.textContent=u.role==='admin'?'Admin':'Client';
   rt.className='rtag'+(u.role==='client'?' cl':'');
-  if(u.role==='admin'){document.getElementById('admin-view').style.display='';renderATasks();}
+  adminDate=todayKey();clientDate=todayKey();
+  buildNav(u.role);
+  if(u.role==='admin'){document.getElementById('admin-view').style.display='';showATab('tasks');}
   else{document.getElementById('client-view').style.display='';renderClient();}
 }
-
 function logout(){
-  CU=null;
-  localStorage.removeItem('flow_session');
+  CU=null;localStorage.removeItem('flow_session');
   document.getElementById('app').style.display='none';
   document.getElementById('admin-view').style.display='none';
   document.getElementById('client-view').style.display='none';
@@ -280,102 +327,116 @@ function logout(){
   showLogin();
 }
 
-// ── Admin ───────────────────────────────────────────────────────
-function aTab(btn,tab){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  btn.classList.add('on');
+// NAV
+function buildNav(role){
+  const el=document.getElementById('nav-items');
+  if(role==='admin'){
+    el.innerHTML=`
+      <button class="nav-item on" id="nav-tasks" onclick="showATab('tasks')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        Tasks
+      </button>
+      <button class="nav-item" id="nav-clients" onclick="showATab('clients')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Clients
+      </button>`;
+  } else {
+    el.innerHTML=`
+      <button class="nav-item on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        My Tasks
+      </button>`;
+  }
+}
+
+function showATab(tab){
+  ['tasks','clients'].forEach(t=>{const n=document.getElementById('nav-'+t);if(n)n.classList.toggle('on',t===tab);});
   document.getElementById('at-tasks').style.display=tab==='tasks'?'':'none';
   document.getElementById('at-clients').style.display=tab==='clients'?'':'none';
+  if(tab==='tasks')renderATasks();
   if(tab==='clients')renderClients();
 }
 
+function dateNav(cur,onPrev,onNext,onPick,onToday){
+  return`<div class="wn">
+    <button class="wb" onclick="${onPrev}">&#8592;</button>
+    <span class="wl">${weekLabel(cur)}</span>
+    <button class="wb" onclick="${onNext}">&#8594;</button>
+    <input type="date" class="dpick" value="${cur||todayKey()}" onchange="${onPick}" title="Jump to week"/>
+    <button class="today-btn" onclick="${onToday}">Today</button>
+  </div>`;
+}
+
+// ADMIN TASKS
 async function renderATasks(){
   const el=document.getElementById('at-tasks');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,files,completions]=await Promise.all([dbUsers(),dbTasks(),dbFiles(),dbCompletions()]);
   const clients=users.filter(u=>u.role==='client');
   if(!selC&&clients.length)selC=clients[0].id;
-  const wk=wkey(awo);
+  const wk=weekKey(adminDate);
   const myTasks=tasks.filter(t=>t.client_id===selC&&t.week_key===wk);
-
-  let h=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem"><span class="sh" style="margin:0">Weekly Tasks</span><button class="btn btn-p btn-sm" style="width:auto" onclick="openAddTask()">+ Add task</button></div>`;
-  h+=`<div class="wn"><button class="wb" onclick="awo--;renderATasks()">&#8592;</button><span class="wl">${wlbl(awo)}</span><button class="wb" onclick="awo++;renderATasks()">&#8594;</button></div>`;
-
+  let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Tasks</span><button class="btn btn-p btn-sm" style="width:auto" onclick="openAddTask()">+ Add task</button></div>`;
+  h+=dateNav(adminDate,'adminDate=shiftWeek(adminDate,-1);renderATasks()','adminDate=shiftWeek(adminDate,1);renderATasks()','adminDate=this.value;renderATasks()','adminDate=todayKey();renderATasks()');
   if(clients.length){
-    h+=`<div style="margin-bottom:1.25rem"><p style="font-size:13px;color:var(--mut);margin-bottom:8px;font-weight:500">Viewing tasks for:</p><div class="pills">`;
+    h+=`<div style="margin-bottom:1.25rem"><p style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Client</p><div class="pills">`;
     clients.forEach(c=>{h+=`<button class="pill${c.id===selC?' on':''}" onclick="selC='${c.id}';renderATasks()">${esc(c.name)}</button>`;});
     h+=`</div></div>`;
   }
-
-  if(!clients.length){
-    h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div><p>Share this link — clients can register from the sign-in page</p></div>`;
-  } else if(!myTasks.length){
-    h+=`<div class="empty"><div class="empty-i">&#x1F4CB;</div><div class="empty-t">No tasks this week</div><p>Click "+ Add task" to assign tasks</p></div>`;
-  } else {
+  if(!clients.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div><p>Share your link so clients can register</p></div>`;}
+  else if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F4CB;</div><div class="empty-t">No tasks this week</div><p>Click "+ Add task" to assign tasks</p></div>`;}
+  else{
     h+=`<div class="card">`;
     myTasks.forEach(t=>{
       const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
       const cf=files.filter(f=>f.task_id===t.id&&f.role==='client');
-      h+=`<div class="ti"><div style="flex:1;min-width:0">`;
-      h+=`<div class="ttl">${esc(t.title)}</div>`;
-      if(t.description)h+=`<div class="tdsc">${esc(t.description)}</div>`;
-      h+=`<div class="tmeta">`;
-      if(t.priority==='high')h+=`<span class="tag ta">High priority</span>`;
-      if(t.category)h+=`<span class="tag tb">${esc(t.category)}</span>`;
-      h+=`</div>`;
-      if(af.length){h+=`<div class="frow">`;af.forEach(f=>{h+=`<button class="fchip" onclick="dlFile('${f.id}','${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128206; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',true)"> &#xd7;</span></button>`;});h+=`</div>`;}
-      if(cf.length){h+=`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Submitted:</span>`;cf.forEach(f=>{h+=`<button class="fchip sub" onclick="dlFile('${f.id}','${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span></button>`;});h+=`</div>`;}
-      h+=`</div><div style="display:flex;gap:6px;align-items:flex-start;flex-shrink:0">`;
-      h+=`<label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>`;
-      h+=`<button class="btn btn-s btn-sm" onclick="openEditTask('${t.id}','${esc(t.title)}','${esc(t.description||'')}','${t.priority}','${esc(t.category||'')}')">Edit</button>`;
-      h+=`<button class="btn btn-d btn-sm" onclick="delTask('${t.id}')">Delete</button>`;
-      h+=`</div></div>`;
+      h+=`<div class="ti">
+        <div style="flex:1;min-width:0">
+          <div class="ttl">${esc(t.title)}</div>
+          ${t.description?`<div class="tdsc">${esc(t.description)}</div>`:''}
+          <div class="tmeta">
+            ${t.priority==='high'?'<span class="tag ta">High priority</span>':''}
+            ${t.category?`<span class="tag tb">${esc(t.category)}</span>`:''}
+          </div>
+          ${af.length?`<div class="frow">${af.map(f=>`<button class="fchip" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128206; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',true)"> &#xd7;</span></button>`).join('')}</div>`:''}
+          ${cf.length?`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Submitted:</span>${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span></button>`).join('')}</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px;align-items:flex-start;flex-shrink:0">
+          <label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>
+          <button class="btn btn-s btn-sm" onclick="openEditTask('${t.id}','${esc(t.title)}','${esc(t.description||'')}','${t.priority}','${esc(t.category||'')}')">Edit</button>
+          <button class="btn btn-d btn-sm" onclick="delTask('${t.id}')">Delete</button>
+        </div>
+      </div>`;
     });
     h+=`</div>`;
   }
   el.innerHTML=h;
 }
 
+// ADMIN CLIENTS
 async function renderClients(){
   const el=document.getElementById('at-clients');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,completions]=await Promise.all([dbUsers(),dbTasks(),dbCompletions()]);
   const clients=users.filter(u=>u.role==='client');
-  const wk=wkey(0);
+  const wk=weekKey(todayKey());
   const wt=tasks.filter(t=>t.week_key===wk);
   const done=completions.filter(c=>c.week_key===wk&&c.done).length;
-
   let h=`<span class="sh">Clients</span>`;
   h+=`<div class="stats"><div class="sc"><div class="sn">${clients.length}</div><div class="sl">Total clients</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
   h+=`<div class="card">`;
-  if(!clients.length){
-    h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div><p>Share this link so clients can register</p></div>`;
-  } else {
-    clients.forEach(c=>{
-      const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
-      const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
-      h+=`<div class="ci"><div class="ci-info"><div class="av">${ini(c.name)}</div><div><div style="font-weight:500;font-size:14px">${esc(c.name)}</div><div style="font-size:13px;color:var(--mut)">${esc(c.email)} · ${cd}/${ct.length} tasks this week</div></div></div><button class="btn btn-d btn-sm" onclick="delClient('${c.id}')">Remove</button></div>`;
-    });
-  }
+  if(!clients.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div></div>`;}
+  else clients.forEach(c=>{
+    const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
+    const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
+    h+=`<div class="ci"><div class="ci-info"><div class="av">${ini(c.name)}</div><div><div style="font-weight:600;font-size:14px">${esc(c.name)}</div><div style="font-size:13px;color:var(--mut)">${esc(c.email)} · ${cd}/${ct.length} tasks this week</div></div></div><button class="btn btn-d btn-sm" onclick="delClient('${c.id}')">Remove</button></div>`;
+  });
   h+=`</div>`;
   el.innerHTML=h;
 }
 
-async function delClient(id){
-  if(!confirm('Remove this client?'))return;
-  await sb.from('users').delete().eq('id',id);
-  await sb.from('tasks').delete().eq('client_id',id);
-  await sb.from('completions').delete().eq('client_id',id);
-  renderClients();
-}
-
-async function delTask(id){
-  if(!confirm('Delete this task?'))return;
-  await sb.from('tasks').delete().eq('id',id);
-  await sb.from('completions').delete().eq('task_id',id);
-  await sb.from('files').delete().eq('task_id',id);
-  renderATasks();
-}
+async function delClient(id){if(!confirm('Remove this client?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('client_id',id);await sb.from('completions').delete().eq('client_id',id);renderClients();}
+async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from('tasks').delete().eq('id',id);await sb.from('completions').delete().eq('task_id',id);await sb.from('files').delete().eq('task_id',id);renderATasks();}
 
 function openAddTask(){
   document.getElementById('m-title').textContent='Add task';
@@ -383,15 +444,12 @@ function openAddTask(){
     <div class="field"><label>Title</label><input id="m-ttl" placeholder="e.g. Complete intake form"/></div>
     <div class="field"><label>Description (optional)</label><textarea id="m-dsc" rows="2" style="resize:vertical" placeholder="Details..."></textarea></div>
     <div class="field"><label>Client</label><select id="m-cli"></select></div>
-    <div class="field"><label>Week</label><select id="m-wk">${[-1,0,1,2].map(i=>`<option value="${wkey(i)}"${i===awo?' selected':''}>${wlbl(i)}</option>`).join('')}</select></div>
+    <div class="field"><label>Week (pick any date in that week)</label><input type="date" id="m-wk" class="dpick" style="width:100%" value="${adminDate||todayKey()}"/></div>
     <div class="field"><label>Priority</label><select id="m-pri"><option value="normal">Normal</option><option value="high">High</option></select></div>
     <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
   document.getElementById('modal-overlay').style.display='flex';
-  dbUsers().then(users=>{
-    const clients=users.filter(u=>u.role==='client');
-    document.getElementById('m-cli').innerHTML=clients.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');
-  });
+  dbUsers().then(users=>{const clients=users.filter(u=>u.role==='client');document.getElementById('m-cli').innerHTML=clients.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
 }
 
 function openEditTask(id,title,desc,priority,category){
@@ -408,123 +466,94 @@ function openEditTask(id,title,desc,priority,category){
 async function saveTask(){
   const title=document.getElementById('m-ttl').value.trim();
   if(!title)return alert('Please enter a title.');
-  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),client_id:document.getElementById('m-cli').value,week_key:document.getElementById('m-wk').value,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
+  const wk=weekKey(document.getElementById('m-wk').value);
+  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),client_id:document.getElementById('m-cli').value,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
   closeModal();renderATasks();
 }
-
 async function updateTask(id){
   const title=document.getElementById('m-ttl').value.trim();
   if(!title)return alert('Please enter a title.');
   await sb.from('tasks').update({title,description:document.getElementById('m-dsc').value.trim(),priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim()}).eq('id',id);
   closeModal();renderATasks();
 }
-
 async function handleAdminUp(e,tid){
-  for(const file of Array.from(e.target.files)){
-    if(file.size>3*1024*1024){alert(`"${file.name}" too large (max 3MB).`);continue;}
-    try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});}catch{}
-  }
+  for(const file of Array.from(e.target.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large (max 3MB).`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});}catch{}}
   e.target.value='';renderATasks();
 }
 
-// ── Client ──────────────────────────────────────────────────────
+// CLIENT
 async function renderClient(){
   const el=document.getElementById('client-view');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [tasks,completions,files]=await Promise.all([dbTasks(),dbCompletions(),dbFiles()]);
-  const wk=wkey(cwo);
+  const wk=weekKey(clientDate);
   const myTasks=tasks.filter(t=>t.client_id===CU.id&&t.week_key===wk);
   const done=myTasks.filter(t=>completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
   const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
-
   let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
-  h+=`<div class="wn"><button class="wb" onclick="cwo--;renderClient()">&#8592;</button><span class="wl">${wlbl(cwo)}</span><button class="wb" onclick="cwo++;renderClient()">&#8594;</button></div>`;
+  h+=dateNav(clientDate,'clientDate=shiftWeek(clientDate,-1);renderClient()','clientDate=shiftWeek(clientDate,1);renderClient()','clientDate=this.value;renderClient()','clientDate=todayKey();renderClient()');
   h+=`<div class="card">`;
-  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:600">My tasks</span>${myTasks.length?`<span style="font-size:13px;color:var(--mut);font-family:monospace">${done} / ${myTasks.length} done</span>`:''}</div>`;
+  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:700">My tasks</span>${myTasks.length?`<span style="font-size:13px;color:var(--mut);font-family:var(--mono)">${done} / ${myTasks.length} done</span>`:''}</div>`;
   if(myTasks.length)h+=`<div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>`;
-
-  if(!myTasks.length){
-    h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your coach will assign tasks here soon</p></div>`;
-  } else {
-    myTasks.forEach(t=>{
-      const isDone=completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
-      const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
-      const cf=files.filter(f=>f.task_id===t.id&&f.role==='client');
-      h+=`<div class="ti" style="align-items:flex-start">`;
-      h+=`<div class="chk${isDone?' on':''}" style="margin-top:3px" onclick="toggleTask('${t.id}','${wk}',${isDone})">${isDone?'<svg width="10" height="7" viewBox="0 0 10 7"><path d="M1 3l3 3 5-5" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>':''}</div>`;
-      h+=`<div style="flex:1;min-width:0"><div class="ttl${isDone?' dn':''}">${esc(t.title)}</div>`;
-      if(t.description)h+=`<div class="tdsc">${esc(t.description)}</div>`;
-      h+=`<div class="tmeta">`;
-      if(t.priority==='high')h+=`<span class="tag ta">High priority</span>`;
-      if(t.category)h+=`<span class="tag tb">${esc(t.category)}</span>`;
-      h+=`</div>`;
-      if(af.length){h+=`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Resources:</span>`;af.forEach(f=>{h+=`<button class="fchip" onclick="dlFile('${f.id}','${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128206; ${esc(f.name)}</span></button>`;});h+=`</div>`;}
-      h+=`<div style="margin-top:10px"><div style="font-size:12px;color:var(--mut);font-weight:500;margin-bottom:4px">Your submission</div>`;
-      if(cf.length){h+=`<div class="frow">`;cf.forEach(f=>{h+=`<button class="fchip sub" onclick="dlFile('${f.id}','${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',false)"> &#xd7;</span></button>`;});h+=`</div>`;}
-      h+=`<label class="uz" ondragover="event.preventDefault();this.classList.add('dg')" ondragleave="this.classList.remove('dg')" ondrop="handleClientDrop(event,'${t.id}');this.classList.remove('dg')"><input type="file" multiple style="display:none" onchange="handleClientUp(event,'${t.id}')"><p>Drop files or <strong>browse</strong></p></label>`;
-      h+=`</div></div></div>`;
-    });
-  }
+  if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your coach will assign tasks here soon</p></div>`;}
+  else myTasks.forEach(t=>{
+    const isDone=completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
+    const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
+    const cf=files.filter(f=>f.task_id===t.id&&f.role==='client');
+    h+=`<div class="ti" style="align-items:flex-start">
+      <div class="chk${isDone?' on':''}" style="margin-top:2px" onclick="toggleTask('${t.id}','${wk}',${isDone})">
+        ${isDone?'<svg width="11" height="8" viewBox="0 0 11 8"><path d="M1 4l3 3 6-6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="ttl${isDone?' dn':''}">${esc(t.title)}</div>
+        ${t.description?`<div class="tdsc">${esc(t.description)}</div>`:''}
+        <div class="tmeta">
+          ${t.priority==='high'?'<span class="tag ta">High priority</span>':''}
+          ${t.category?`<span class="tag tb">${esc(t.category)}</span>`:''}
+          ${isDone?'<span class="tag tg">&#10003; Done</span>':''}
+        </div>
+        ${af.length?`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Resources:</span>${af.map(f=>`<button class="fchip" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128206; ${esc(f.name)}</span></button>`).join('')}</div>`:''}
+        <div style="margin-top:10px">
+          <div style="font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Your submission</div>
+          ${cf.length?`<div class="frow">${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',false)"> &#xd7;</span></button>`).join('')}</div>`:''}
+          <label class="uz" ondragover="event.preventDefault();this.classList.add('dg')" ondragleave="this.classList.remove('dg')" ondrop="handleClientDrop(event,'${t.id}');this.classList.remove('dg')">
+            <input type="file" multiple style="display:none" onchange="handleClientUp(event,'${t.id}')">
+            <p>Drop files or <strong>browse</strong></p>
+          </label>
+        </div>
+      </div>
+    </div>`;
+  });
   h+=`</div>`;
   el.innerHTML=h;
 }
 
 async function toggleTask(tid,wk,isDone){
-  if(isDone){
-    await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);
-  } else {
-    await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});
-  }
+  if(isDone){await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
+  else{await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});}
   renderClient();
 }
-
 async function handleClientUp(e,tid){
-  for(const file of Array.from(e.target.files)){
-    if(file.size>3*1024*1024){alert(`"${file.name}" too large (max 3MB).`);continue;}
-    try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}
-  }
+  for(const file of Array.from(e.target.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}}
   e.target.value='';renderClient();
 }
-
 async function handleClientDrop(e,tid){
   e.preventDefault();
-  for(const file of Array.from(e.dataTransfer.files)){
-    if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}
-    try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}
-  }
+  for(const file of Array.from(e.dataTransfer.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}}
   renderClient();
 }
-
-async function delFile(id,isAdmin){
-  await sb.from('files').delete().eq('id',id);
-  if(isAdmin)renderATasks(); else renderClient();
-}
-
-function dlFile(id,name,data){
-  const a=document.createElement('a');a.href=data;a.download=name;a.click();
-}
-
+async function delFile(id,isAdmin){await sb.from('files').delete().eq('id',id);if(isAdmin)renderATasks();else renderClient();}
+function dlFile(name,data){const a=document.createElement('a');a.href=data;a.download=name;a.click();}
 function closeModal(){document.getElementById('modal-overlay').style.display='none';}
 
-// ── Init ────────────────────────────────────────────────────────
 async function init(){
-  const saved = localStorage.getItem('flow_session');
-  if(saved){
-    try{
-      const u = JSON.parse(saved);
-      enterApp(u);
-      return;
-    }catch{}
-  }
+  const saved=localStorage.getItem('flow_session');
+  if(saved){try{enterApp(JSON.parse(saved));return;}catch{}}
   document.getElementById('auth-screen').style.display='';
   const hasAdmin=await isAdminSetup();
-  if(!hasAdmin){
-    document.getElementById('setup-view').style.display='';
-  } else {
-    document.getElementById('login-view').style.display='';
-  }
+  if(!hasAdmin){document.getElementById('setup-view').style.display='';}
+  else{document.getElementById('login-view').style.display='';}
 }
-
 init();
 </script>
 </body>
