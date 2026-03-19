@@ -259,6 +259,7 @@ function showReg(){
 
 function enterApp(u){
   CU=u;
+  localStorage.setItem('flow_session', JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('hdr-av').textContent=ini(u.name);
@@ -272,6 +273,7 @@ function enterApp(u){
 
 function logout(){
   CU=null;
+  localStorage.removeItem('flow_session');
   document.getElementById('app').style.display='none';
   document.getElementById('admin-view').style.display='none';
   document.getElementById('client-view').style.display='none';
@@ -507,6 +509,14 @@ function closeModal(){document.getElementById('modal-overlay').style.display='no
 
 // ── Init ────────────────────────────────────────────────────────
 async function init(){
+  const saved = localStorage.getItem('flow_session');
+  if(saved){
+    try{
+      const u = JSON.parse(saved);
+      enterApp(u);
+      return;
+    }catch{}
+  }
   document.getElementById('auth-screen').style.display='';
   const hasAdmin=await isAdminSetup();
   if(!hasAdmin){
