@@ -291,13 +291,13 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
       <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
       <button class="btn btn-p" onclick="doLogin()">Sign in</button>
-      <div class="toggle">New client? <a onclick="showReg()">Create account</a></div>
+      <div class="toggle">New student? <a onclick="showReg()">Create account</a></div>
     </div>
   </div>
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
       <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
-      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a client</p>
+      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a student</p>
       <div id="reg-err" class="err"></div>
       <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
       <div class="field"><label>Email</label><input id="r-email" type="email" placeholder="you@example.com"/></div>
@@ -484,7 +484,7 @@ async function doReg(){
   if(pass.length<4)return showErr('reg-err','Password must be at least 4 characters.');
   const{data:ex}=await sb.from('users').select('id').eq('email',email).single();
   if(ex)return showErr('reg-err','Email already registered.');
-  const nu={id:gid(),name,email,password:pass,role:'client'};
+  const nu={id:gid(),name,email,password:pass,role:'student'};
   const{error}=await sb.from('users').insert(nu);
   if(error)return showErr('reg-err','Error: '+error.message);
   enterApp(nu);
@@ -500,8 +500,8 @@ function enterApp(u){
   document.getElementById('hdr-av').textContent=ini(u.name);
   document.getElementById('hdr-name').textContent=u.name;
   const rt=document.getElementById('hdr-role');
-  rt.textContent=u.role==='admin'?'Admin':'Client';
-  rt.className='rtag'+(u.role==='client'?' cl':'');
+  rt.textContent=u.role==='admin'?'Admin':'Student';
+  rt.className='rtag'+(u.role==='student'?' cl':'');
   adminDate=todayKey();clientDate=todayKey();
   // Load this user's schedule
   const savedSched=localStorage.getItem('flow_sched_'+u.id)||localStorage.getItem('flow_sched')||'{}';
@@ -541,7 +541,7 @@ function buildNav(role){
       </button>
       <button class="nav-item" id="nav-clients" onclick="showATab('clients')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Clients
+        Students
       </button>
       ${paperBtn}
       ${schedBtn}
@@ -616,24 +616,24 @@ async function renderATasks(){
   const el=document.getElementById('at-tasks');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,files,completions]=await Promise.all([dbUsers(),dbTasks(),dbFiles(),dbCompletions()]);
-  const clients=users.filter(u=>u.role==='client');
-  if(!selC&&clients.length)selC=clients[0].id;
+  const students=users.filter(u=>u.role==='student');
+  if(!selC&&students.length)selC=clients[0].id;
   const wk=weekKey(adminDate);
-  const myTasks=tasks.filter(t=>t.client_id===selC&&t.week_key===wk);
+  const myTasks=tasks.filter(t=>t.student_id===selC&&t.week_key===wk);
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Tasks</span><button class="btn btn-p btn-sm" style="width:auto" onclick="openAddTask()">+ Add task</button></div>`;
   h+=dateNav(adminDate,'adminDate=shiftWeek(adminDate,-1);renderATasks()','adminDate=shiftWeek(adminDate,1);renderATasks()','adminDate=this.value;renderATasks()','adminDate=todayKey();renderATasks()');
-  if(clients.length){
-    h+=`<div style="margin-bottom:1.25rem"><p style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Client</p><div class="pills">`;
+  if(students.length){
+    h+=`<div style="margin-bottom:1.25rem"><p style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Student</p><div class="pills">`;
     clients.forEach(c=>{h+=`<button class="pill${c.id===selC?' on':''}" onclick="selC='${c.id}';renderATasks()">${esc(c.name)}</button>`;});
     h+=`</div></div>`;
   }
-  if(!clients.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div><p>Share your link so clients can register</p></div>`;}
+  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No students yet</div><p>Share your link so students can register</p></div>`;}
   else if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F4CB;</div><div class="empty-t">No tasks this week</div><p>Click "+ Add task" to assign tasks</p></div>`;}
   else{
     h+=`<div class="card">`;
     myTasks.forEach(t=>{
       const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
-      const cf=files.filter(f=>f.task_id===t.id&&f.role==='client');
+      const cf=files.filter(f=>f.task_id===t.id&&f.role==='student');
       h+=`<div class="ti">
         <div style="flex:1;min-width:0">
           <div class="ttl">${esc(t.title)}</div>
@@ -643,7 +643,7 @@ async function renderATasks(){
           ${cf.length?`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Submitted:</span>${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span></button>`).join('')}</div>`:''}
         </div>
         <div style="display:flex;gap:6px;align-items:flex-start;flex-shrink:0">
-          <label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>
+          <label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,image/*,application/pdf" style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>
           <button class="btn btn-s btn-sm" onclick="openEditTask('${t.id}','${esc(t.title)}','${esc(t.description||'')}','${t.priority}','${esc(t.category||'')}')">Edit</button>
           <button class="btn btn-d btn-sm" onclick="delTask('${t.id}')">Delete</button>
         </div>
@@ -654,22 +654,22 @@ async function renderATasks(){
   el.innerHTML=h;
 }
 
-// ── ADMIN CLIENTS ────────────────────────────────────────────────
+// ── ADMIN STUDENTS ────────────────────────────────────────────────
 async function renderClients(){
   const el=document.getElementById('at-clients');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,completions]=await Promise.all([dbUsers(),dbTasks(),dbCompletions()]);
-  const clients=users.filter(u=>u.role==='client');
+  const students=users.filter(u=>u.role==='student');
   const wk=weekKey(todayKey());
   const wt=tasks.filter(t=>t.week_key===wk);
   const done=completions.filter(c=>c.week_key===wk&&c.done).length;
-  let h=`<span class="sh">Clients</span>`;
-  h+=`<div class="stats"><div class="sc"><div class="sn">${clients.length}</div><div class="sl">Total clients</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
+  let h=`<span class="sh">Students</span>`;
+  h+=`<div class="stats"><div class="sc"><div class="sn">${students.length}</div><div class="sl">Total students</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
   h+=`<div class="card">`;
-  if(!clients.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div></div>`;}
-  else clients.forEach(c=>{
-    const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
-    const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
+  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No students yet</div></div>`;}
+  else students.forEach(c=>{
+    const ct=tasks.filter(t=>t.student_id===c.id&&t.week_key===wk);
+    const cd=completions.filter(x=>x.student_id===c.id&&x.week_key===wk&&x.done).length;
     const privKey='sched_private_'+c.id;
     const isPrivate=localStorage.getItem(privKey)==='1';
     h+=`<div class="ci">
@@ -691,7 +691,7 @@ async function renderClients(){
 }
 
 function viewClientSched(clientId, clientName){
-  // Read their schedule from localStorage (keyed by client id)
+  // Read their schedule from localStorage (keyed by student id)
   const raw=localStorage.getItem('flow_sched_'+clientId)||localStorage.getItem('flow_sched')||'{}';
   const events=JSON.parse(raw);
   const keys=Object.keys(events);
@@ -725,7 +725,7 @@ function viewClientSched(clientId, clientName){
   document.getElementById('modal-overlay').style.display='flex';
 }
 
-async function delClient(id){if(!confirm('Remove this client?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('client_id',id);await sb.from('completions').delete().eq('client_id',id);renderClients();}
+async function delClient(id){if(!confirm('Remove this client?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('student_id',id);await sb.from('completions').delete().eq('student_id',id);renderClients();}
 async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from('tasks').delete().eq('id',id);await sb.from('completions').delete().eq('task_id',id);await sb.from('files').delete().eq('task_id',id);renderATasks();}
 
 function openAddTask(){
@@ -733,13 +733,13 @@ function openAddTask(){
   document.getElementById('m-body').innerHTML=`
     <div class="field"><label>Title</label><input id="m-ttl" placeholder="e.g. Complete intake form"/></div>
     <div class="field"><label>Description (optional)</label><textarea id="m-dsc" rows="2" style="resize:vertical" placeholder="Details..."></textarea></div>
-    <div class="field"><label>Client</label><select id="m-cli"></select></div>
+    <div class="field"><label>Student</label><select id="m-cli"></select></div>
     <div class="field"><label>Week (pick any date in that week)</label><input type="date" id="m-wk" class="dpick" style="width:100%" value="${adminDate||todayKey()}"/></div>
     <div class="field"><label>Priority</label><select id="m-pri"><option value="normal">Normal</option><option value="high">High</option></select></div>
     <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
   document.getElementById('modal-overlay').style.display='flex';
-  dbUsers().then(users=>{const clients=users.filter(u=>u.role==='client');document.getElementById('m-cli').innerHTML=clients.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
+  dbUsers().then(users=>{const students=users.filter(u=>u.role==='student');document.getElementById('m-cli').innerHTML=clients.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
 }
 function openEditTask(id,title,desc,priority,category){
   document.getElementById('m-title').textContent='Edit task';
@@ -754,7 +754,7 @@ function openEditTask(id,title,desc,priority,category){
 async function saveTask(){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
   const wk=weekKey(document.getElementById('m-wk').value);
-  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),client_id:document.getElementById('m-cli').value,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
+  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),student_id:document.getElementById('m-cli').value,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
   closeModal();renderATasks();
 }
 async function updateTask(id){
@@ -763,29 +763,29 @@ async function updateTask(id){
   closeModal();renderATasks();
 }
 async function handleAdminUp(e,tid){
-  for(const file of Array.from(e.target.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.target.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});}catch{}}
   e.target.value='';renderATasks();
 }
 
-// ── CLIENT TASKS ─────────────────────────────────────────────────
+// ── STUDENT TASKS ─────────────────────────────────────────────────
 async function renderClient(){
   const el=document.getElementById('client-view');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [tasks,completions,files]=await Promise.all([dbTasks(),dbCompletions(),dbFiles()]);
   const wk=weekKey(clientDate);
-  const myTasks=tasks.filter(t=>t.client_id===CU.id&&t.week_key===wk);
-  const done=myTasks.filter(t=>completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
+  const myTasks=tasks.filter(t=>t.student_id===CU.id&&t.week_key===wk);
+  const done=myTasks.filter(t=>completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
   const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
   let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
   h+=dateNav(clientDate,'clientDate=shiftWeek(clientDate,-1);renderClient()','clientDate=shiftWeek(clientDate,1);renderClient()','clientDate=this.value;renderClient()','clientDate=todayKey();renderClient()');
   h+=`<div class="card">`;
   h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:700">My tasks</span>${myTasks.length?`<span data-counter style="font-size:13px;color:var(--mut);font-family:var(--mono)">${done} / ${myTasks.length} done</span>`:''}</div>`;
   if(myTasks.length)h+=`<div class="pbar"><div class="pfill" id="client-pfill" style="width:${pct}%"></div></div>`;
-  if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your coach will assign tasks here soon</p></div>`;}
+  if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your admin will assign tasks here soon</p></div>`;}
   else myTasks.forEach(t=>{
-    const isDone=completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
+    const isDone=completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
     const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
-    const cf=files.filter(f=>f.task_id===t.id&&f.role==='client');
+    const cf=files.filter(f=>f.task_id===t.id&&f.role==='student');
     h+=`<div class="ti" style="align-items:flex-start">
       <div class="chk${isDone?' on':''}" id="chk-${t.id}" style="margin-top:2px" onclick="toggleTask('${t.id}','${wk}',${isDone},this)">
         ${isDone?'<svg width="11" height="8" viewBox="0 0 11 8"><path d="M1 4l3 3 6-6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}
@@ -803,8 +803,8 @@ async function renderClient(){
           <div style="font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Your submission</div>
           ${cf.length?`<div class="frow">${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',false)"> &#xd7;</span></button>`).join('')}</div>`:''}
           <label class="uz" ondragover="event.preventDefault();this.classList.add('dg')" ondragleave="this.classList.remove('dg')" ondrop="handleClientDrop(event,'${t.id}');this.classList.remove('dg')">
-            <input type="file" multiple style="display:none" onchange="handleClientUp(event,'${t.id}')">
-            <p>Drop files or <strong>browse</strong></p>
+            <input type="file" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,image/*,application/pdf" style="display:none" onchange="handleClientUp(event,'${t.id}')">
+            <p>Drop files or <strong>browse</strong> — PDF, images, docs</p>
           </label>
         </div>
       </div>
@@ -850,17 +850,17 @@ async function toggleTask(tid,wk,isDone,chkEl){
     if(counter){counter.textContent=`${doneCount} / ${total} done`;}
   }
   // Persist to DB
-  if(nowDone){await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});}
-  else{await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
+  if(nowDone){await sb.from('completions').upsert({student_id:CU.id,week_key:wk,task_id:tid,done:true});}
+  else{await sb.from('completions').delete().eq('student_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
 }
 
 async function handleClientUp(e,tid){
-  for(const file of Array.from(e.target.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.target.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});}catch{}}
   e.target.value='';renderClient();
 }
 async function handleClientDrop(e,tid){
   e.preventDefault();
-  for(const file of Array.from(e.dataTransfer.files)){if(file.size>3*1024*1024){alert(`"${file.name}" too large.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'client',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.dataTransfer.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});}catch{}}
   renderClient();
 }
 async function delFile(id,isAdmin){await sb.from('files').delete().eq('id',id);if(isAdmin)renderATasks();else renderClient();}
@@ -1417,20 +1417,20 @@ function renderSched(){
   }
   const privKey=CU?'sched_private_'+CU.id:'sched_private';
   const isPrivate=localStorage.getItem(privKey)==='1';
-  const isClient=CU&&CU.role==='client';
+  const isClient=CU&&CU.role==='student';
 
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Schedule</span>
     <div style="display:flex;gap:8px;align-items:center">`;
   if(isClient){
     h+=`<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut);cursor:pointer">
       <input type="checkbox" id="sched-priv-toggle" ${isPrivate?'checked':''} onchange="toggleSchedPrivacy(this.checked)" style="accent-color:var(--acc)">
-      Hide from coach
+      Hide from admin
     </label>`;
   }
   h+=`<button class="btn btn-p btn-sm" style="width:auto" onclick="openAddEvent()">+ Add event</button>
     </div>
   </div>
-  <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.${isPrivate?' <strong style="color:var(--amb)">🔒 Your schedule is hidden from your coach.</strong>':''}</p>
+  <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.${isPrivate?' <strong style="color:var(--amb)">🔒 Your schedule is hidden from your admin.</strong>':''}</p>
   <div class="sched-wrap"><table class="sched-table sched-today"><thead><tr><th class="time-col">Time</th>`;
   DAYS.forEach((d,i)=>{h+=`<th class="day-col${i===todayIdx?' today-col':''}">${d}</th>`;});
   h+=`</tr></thead><tbody>`;
