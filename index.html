@@ -261,9 +261,9 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .paper-summary .big{font-size:36px;font-weight:700;color:var(--acc);letter-spacing:-1px}
 .paper-summary .lbl{font-size:13px;color:var(--mut);margin-top:2px}
 
-/* CONFETTI */
-.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 1.2s ease-in forwards}
-@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+/* TASK COMPLETE RIPPLE */
+.ripple-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;border:2px solid var(--acc);animation:rippleOut .5s ease-out forwards}
+@keyframes rippleOut{0%{width:0;height:0;opacity:.7;transform:translate(-50%,-50%)}100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%)}}
 
 @media(max-width:768px){.sidebar{display:none}.content{padding:1rem}.stats{grid-template-columns:1fr 1fr}.subj-grid{grid-template-columns:1fr 1fr}}
 </style>
@@ -379,44 +379,53 @@ function weekKey(ds){return getMonday(ds).toISOString().split('T')[0];}
 function weekLabel(ds){const s=getMonday(ds),e=new Date(s);e.setDate(e.getDate()+6);const f=d=>d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});return`${f(s)} – ${f(e)}`;}
 function shiftWeek(ds,dir){const d=getMonday(ds||todayKey());d.setDate(d.getDate()+dir*7);return d.toISOString().split('T')[0];}
 
-// ── CONFETTI ─────────────────────────────────────────────────────
-function launchConfetti(x,y){
-  const colors=['#5B4BD4','#7B68E8','#FFB547','#FF4D8D','#00E5A0','#4D9FFF','#FF6B6B','#FFF'];
-  for(let i=0;i<28;i++){
-    const el=document.createElement('div');
-    el.className='confetti-piece';
-    el.style.cssText=`left:${x+Math.random()*80-40}px;top:${y}px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-duration:${.8+Math.random()*.8}s;animation-delay:${Math.random()*.2}s`;
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),2000);
-  }
-}
-
-// ── SOUND ────────────────────────────────────────────────────────
-function playDone(){
+// ── SOUND & FEEDBACK ─────────────────────────────────────────────
+function playTick(){
+  // Soft click tone for nav transitions
   try{
     const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const notes=[523,659,784,1047];
-    notes.forEach((freq,i)=>{
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type='sine';osc.frequency.value=600;
+    gain.gain.setValueAtTime(0,ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(.06,ctx.currentTime+.01);
+    gain.gain.linearRampToValueAtTime(0,ctx.currentTime+.08);
+    osc.start(ctx.currentTime);osc.stop(ctx.currentTime+.09);
+  }catch{}
+}
+
+function playDone(){
+  // Clean two-note chime for task completion
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[523,.0,.12],[784,.1,.12]].forEach(([freq,delay,dur])=>{
       const osc=ctx.createOscillator();
       const gain=ctx.createGain();
       osc.connect(gain);gain.connect(ctx.destination);
-      osc.frequency.value=freq;
-      osc.type='sine';
-      gain.gain.setValueAtTime(0,ctx.currentTime+i*.1);
-      gain.gain.linearRampToValueAtTime(.15,ctx.currentTime+i*.1+.02);
-      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+i*.1+.18);
-      osc.start(ctx.currentTime+i*.1);
-      osc.stop(ctx.currentTime+i*.1+.2);
+      osc.type='sine';osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0,ctx.currentTime+delay);
+      gain.gain.linearRampToValueAtTime(.1,ctx.currentTime+delay+.01);
+      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+delay+dur);
+      osc.start(ctx.currentTime+delay);osc.stop(ctx.currentTime+delay+dur+.01);
     });
   }catch{}
 }
 
-function celebrateTask(el){
-  const rect=el.getBoundingClientRect();
-  launchConfetti(rect.left+rect.width/2,rect.top);
+function launchRipple(x,y){
+  const el=document.createElement('div');
+  el.className='ripple-ring';
+  el.style.left=x+'px';el.style.top=y+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),520);
+}
+
+function celebrateTask(chkEl){
+  const rect=chkEl.getBoundingClientRect();
+  launchRipple(rect.left+rect.width/2,rect.top+rect.height/2);
   playDone();
-  el.classList.add('pop');
-  setTimeout(()=>el.classList.remove('pop'),400);
+  chkEl.classList.add('pop');
+  setTimeout(()=>chkEl.classList.remove('pop'),400);
 }
 
 // ── POMODORO ─────────────────────────────────────────────────────
@@ -496,6 +505,9 @@ function enterApp(u){
   rt.textContent=u.role==='admin'?'Admin':'Client';
   rt.className='rtag'+(u.role==='client'?' cl':'');
   adminDate=todayKey();clientDate=todayKey();
+  // Load this user's schedule
+  const savedSched=localStorage.getItem('flow_sched_'+u.id)||localStorage.getItem('flow_sched')||'{}';
+  try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
   buildNav(u.role);
   if(u.role==='admin'){document.getElementById('admin-view').style.display='';showATab('tasks');}
   else{document.getElementById('client-view').style.display='';renderClient();}
@@ -551,6 +563,7 @@ function buildNav(role){
 function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));const el=document.getElementById(id);if(el)el.classList.add('on');}
 
 function showATab(tab){
+  playTick();
   setActiveNav('nav-'+tab);
   ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('admin-view').style.display='';
@@ -561,6 +574,7 @@ function showATab(tab){
 }
 
 function showClientTasks(){
+  playTick();
   setActiveNav('nav-mytasks');
   ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('client-view').style.display='';
@@ -568,6 +582,7 @@ function showClientTasks(){
 }
 
 function showQHub(){
+  playTick();
   setActiveNav('nav-qhub');
   ['admin-view','client-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('qhub-view').style.display='';
@@ -575,6 +590,7 @@ function showQHub(){
 }
 
 function showSched(){
+  playTick();
   setActiveNav('nav-sched');
   ['admin-view','client-view','qhub-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('sched-view').style.display='';
@@ -582,6 +598,7 @@ function showSched(){
 }
 
 function showPaperHub(){
+  playTick();
   setActiveNav('nav-paper');
   ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('paper-view').style.display='';
@@ -589,12 +606,10 @@ function showPaperHub(){
 }
 
 // ── DATE NAV ─────────────────────────────────────────────────────
-function dateNav(cur,onPrev,onNext,onPick,onToday){
+function dateNav(cur,_prev,_next,onPick,onToday){
   return`<div class="wn">
-    <button class="wb" onclick="${onPrev}">&#8592;</button>
     <span class="wl">${weekLabel(cur)}</span>
-    <button class="wb" onclick="${onNext}">&#8594;</button>
-    <input type="date" class="dpick" value="${cur||todayKey()}" onchange="${onPick}" title="Jump to week"/>
+    <input type="date" class="dpick" value="${cur||todayKey()}" onchange="${onPick}" title="Jump to date"/>
     <button class="today-btn" onclick="${onToday}">Today</button>
   </div>`;
 }
@@ -658,10 +673,59 @@ async function renderClients(){
   else clients.forEach(c=>{
     const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
     const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
-    h+=`<div class="ci"><div class="ci-info"><div class="av">${ini(c.name)}</div><div><div style="font-weight:600;font-size:14px">${esc(c.name)}</div><div style="font-size:13px;color:var(--mut)">${esc(c.email)} · ${cd}/${ct.length} tasks this week</div></div></div><button class="btn btn-d btn-sm" onclick="delClient('${c.id}')">Remove</button></div>`;
+    const privKey='sched_private_'+c.id;
+    const isPrivate=localStorage.getItem(privKey)==='1';
+    h+=`<div class="ci">
+      <div class="ci-info"><div class="av">${ini(c.name)}</div><div>
+        <div style="font-weight:600;font-size:14px">${esc(c.name)}</div>
+        <div style="font-size:13px;color:var(--mut)">${esc(c.email)} · ${cd}/${ct.length} tasks this week</div>
+      </div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        ${isPrivate
+          ? `<span style="font-size:11px;color:var(--mut);background:var(--surf2);padding:3px 8px;border-radius:20px;border:1px solid var(--bdr)">🔒 Schedule hidden</span>`
+          : `<button class="btn btn-s btn-sm" onclick="viewClientSched('${c.id}','${esc(c.name)}')">📅 View schedule</button>`
+        }
+        <button class="btn btn-d btn-sm" onclick="delClient('${c.id}')">Remove</button>
+      </div>
+    </div>`;
   });
   h+=`</div>`;
   el.innerHTML=h;
+}
+
+function viewClientSched(clientId, clientName){
+  // Read their schedule from localStorage (keyed by client id)
+  const raw=localStorage.getItem('flow_sched_'+clientId)||localStorage.getItem('flow_sched')||'{}';
+  const events=JSON.parse(raw);
+  const keys=Object.keys(events);
+  document.getElementById('m-title').textContent=`${clientName}'s Schedule`;
+  if(!keys.length){
+    document.getElementById('m-body').innerHTML=`<p style="color:var(--mut);font-size:14px">No schedule events saved yet.</p>`;
+  } else {
+    const dayOrder=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const COLORS_BG=['var(--acc-l)','var(--blu-l)','var(--grn-l)','var(--amb-l)','var(--dan-l)'];
+    const COLORS_TXT=['var(--acc)','var(--blu)','var(--grn)','var(--amb)','var(--dan)'];
+    const sorted=keys.sort((a,b)=>{
+      const [da,ha]=a.split('_');const [db,hb]=b.split('_');
+      return (dayOrder.indexOf(da)-dayOrder.indexOf(db))||parseInt(ha)-parseInt(hb);
+    });
+    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto">`;
+    sorted.forEach(k=>{
+      const ev=events[k];
+      const [day,hourStr]=k.split('_');
+      const hour=parseInt(hourStr);
+      const label=hour<12?`${hour}:00 AM`:hour===12?`12:00 PM`:`${hour-12}:00 PM`;
+      const bg=COLORS_BG[ev.color||0];const tc=COLORS_TXT[ev.color||0];
+      h+=`<div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:var(--rs);background:${bg}">
+        <div style="font-size:11px;font-weight:700;color:${tc};min-width:90px">${day} ${label}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${tc}">${esc(ev.title)}</div>${ev.note?`<div style="font-size:12px;opacity:.75">${esc(ev.note)}</div>`:''}</div>
+      </div>`;
+    });
+    h+=`</div>`;
+    document.getElementById('m-body').innerHTML=h;
+  }
+  document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Close</button>`;
+  document.getElementById('modal-overlay').style.display='flex';
 }
 
 async function delClient(id){if(!confirm('Remove this client?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('client_id',id);await sb.from('completions').delete().eq('client_id',id);renderClients();}
@@ -718,7 +782,7 @@ async function renderClient(){
   let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
   h+=dateNav(clientDate,'clientDate=shiftWeek(clientDate,-1);renderClient()','clientDate=shiftWeek(clientDate,1);renderClient()','clientDate=this.value;renderClient()','clientDate=todayKey();renderClient()');
   h+=`<div class="card">`;
-  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:700">My tasks</span>${myTasks.length?`<span style="font-size:13px;color:var(--mut);font-family:var(--mono)">${done} / ${myTasks.length} done</span>`:''}</div>`;
+  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:700">My tasks</span>${myTasks.length?`<span data-counter style="font-size:13px;color:var(--mut);font-family:var(--mono)">${done} / ${myTasks.length} done</span>`:''}</div>`;
   if(myTasks.length)h+=`<div class="pbar"><div class="pfill" id="client-pfill" style="width:${pct}%"></div></div>`;
   if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your coach will assign tasks here soon</p></div>`;}
   else myTasks.forEach(t=>{
@@ -754,10 +818,43 @@ async function renderClient(){
 }
 
 async function toggleTask(tid,wk,isDone,chkEl){
-  if(!isDone){celebrateTask(chkEl);}
-  if(isDone){await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
-  else{await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});}
-  setTimeout(()=>renderClient(),300);
+  // Optimistic DOM update — no full re-render
+  const nowDone=!isDone;
+  if(nowDone){
+    celebrateTask(chkEl);
+    chkEl.classList.add('on');
+    chkEl.innerHTML='<svg width="11" height="8" viewBox="0 0 11 8"><path d="M1 4l3 3 6-6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  } else {
+    chkEl.classList.remove('on');
+    chkEl.innerHTML='';
+  }
+  // Update title strikethrough
+  const row=chkEl.closest('.ti');
+  if(row){
+    const ttl=row.querySelector('.ttl');
+    if(ttl){ttl.classList.toggle('dn',nowDone);}
+    // Update done tag
+    const meta=row.querySelector('.tmeta');
+    if(meta){
+      const existing=meta.querySelector('.tg');
+      if(nowDone&&!existing){const t=document.createElement('span');t.className='tag tg';t.textContent='✓ Done';meta.appendChild(t);}
+      else if(!nowDone&&existing){existing.remove();}
+    }
+  }
+  // Update progress bar & counter
+  const card=chkEl.closest('.card');
+  if(card){
+    const allChks=card.querySelectorAll('.chk');
+    const doneCount=card.querySelectorAll('.chk.on').length;
+    const total=allChks.length;
+    const pfill=document.getElementById('client-pfill');
+    if(pfill){pfill.style.width=(total?Math.round(doneCount/total*100):0)+'%';}
+    const counter=card.querySelector('[data-counter]');
+    if(counter){counter.textContent=`${doneCount} / ${total} done`;}
+  }
+  // Persist to DB
+  if(nowDone){await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});}
+  else{await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
 }
 
 async function handleClientUp(e,tid){
@@ -1303,17 +1400,40 @@ const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
 let schedEvents=JSON.parse(localStorage.getItem('flow_sched')||'{}');
 let schedPickColor=0;
 
-function saveSched(){localStorage.setItem('flow_sched',JSON.stringify(schedEvents));}
+function saveSched(){
+  const key=CU?'flow_sched_'+CU.id:'flow_sched';
+  localStorage.setItem(key,JSON.stringify(schedEvents));
+}
 function schedKey(day,hour){return `${day}_${hour}`;}
 
 function renderSched(){
   const el=document.getElementById('sched-view');
   const today=new Date().getDay();
   const todayIdx=today===0?6:today-1;
+  // Store schedule under user-specific key so admin can read it
+  const schedKey2=CU?'flow_sched_'+CU.id:'flow_sched';
+  if(CU&&!schedEvents._migrated){
+    // One-time migrate generic key to user key if exists
+    const generic=localStorage.getItem('flow_sched');
+    if(generic&&!localStorage.getItem(schedKey2)){localStorage.setItem(schedKey2,generic);}
+    schedEvents._migrated=true;
+  }
+  const privKey=CU?'sched_private_'+CU.id:'sched_private';
+  const isPrivate=localStorage.getItem(privKey)==='1';
+  const isClient=CU&&CU.role==='client';
+
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Schedule</span>
-    <button class="btn btn-p btn-sm" style="width:auto" onclick="openAddEvent()">+ Add event</button>
+    <div style="display:flex;gap:8px;align-items:center">`;
+  if(isClient){
+    h+=`<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut);cursor:pointer">
+      <input type="checkbox" id="sched-priv-toggle" ${isPrivate?'checked':''} onchange="toggleSchedPrivacy(this.checked)" style="accent-color:var(--acc)">
+      Hide from coach
+    </label>`;
+  }
+  h+=`<button class="btn btn-p btn-sm" style="width:auto" onclick="openAddEvent()">+ Add event</button>
+    </div>
   </div>
-  <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.</p>
+  <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.${isPrivate?' <strong style="color:var(--amb)">🔒 Your schedule is hidden from your coach.</strong>':''}</p>
   <div class="sched-wrap"><table class="sched-table sched-today"><thead><tr><th class="time-col">Time</th>`;
   DAYS.forEach((d,i)=>{h+=`<th class="day-col${i===todayIdx?' today-col':''}">${d}</th>`;});
   h+=`</tr></thead><tbody>`;
@@ -1339,6 +1459,13 @@ function renderSched(){
   });
   h+=`</tbody></table></div>`;
   el.innerHTML=h;
+}
+
+function toggleSchedPrivacy(hide){
+  const privKey=CU?'sched_private_'+CU.id:'sched_private';
+  if(hide){localStorage.setItem(privKey,'1');}
+  else{localStorage.removeItem(privKey);}
+  renderSched();
 }
 
 function openAddEvent(){
