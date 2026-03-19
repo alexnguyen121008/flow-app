@@ -261,6 +261,45 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .paper-summary .big{font-size:36px;font-weight:700;color:var(--acc);letter-spacing:-1px}
 .paper-summary .lbl{font-size:13px;color:var(--mut);margin-top:2px}
 
+/* GAMES */
+.games-tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.game-tab{padding:7px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.game-tab.on{background:var(--acc);color:white;border-color:var(--acc)}
+.wordle-grid{display:flex;flex-direction:column;gap:6px;align-items:center;margin:1.25rem 0}
+.wordle-row{display:flex;gap:6px}
+.wordle-tile{width:52px;height:52px;border:2px solid var(--bdr2);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;text-transform:uppercase;transition:all .2s;font-family:var(--mono)}
+.wordle-tile.filled{border-color:var(--bdr2);background:var(--surf2)}
+.wordle-tile.correct{background:#538d4e;border-color:#538d4e;color:white}
+.wordle-tile.present{background:#b59f3b;border-color:#b59f3b;color:white}
+.wordle-tile.absent{background:var(--mut);border-color:var(--mut);color:white}
+.wordle-tile.flip{animation:flip .4s ease}
+@keyframes flip{0%{transform:scaleY(1)}50%{transform:scaleY(0)}100%{transform:scaleY(1)}}
+.wordle-tile.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.wordle-kbd{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:1rem}
+.wordle-kbd-row{display:flex;gap:5px}
+.kbd-key{min-width:36px;height:40px;padding:0 8px;border-radius:6px;background:var(--surf2);border:1px solid var(--bdr);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;color:var(--txt)}
+.kbd-key:hover{background:var(--bdr2)}
+.kbd-key.correct{background:#538d4e;color:white;border-color:#538d4e}
+.kbd-key.present{background:#b59f3b;color:white;border-color:#b59f3b}
+.kbd-key.absent{background:var(--mut);color:white;border-color:var(--mut)}
+.conn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1.25rem 0}
+.conn-card{padding:14px 8px;border-radius:var(--rs);border:2px solid var(--bdr2);text-align:center;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;background:var(--surf);user-select:none}
+.conn-card:hover{border-color:var(--acc)}
+.conn-card.sel{border-color:var(--acc);background:var(--acc-l)}
+.conn-card.solved-0{background:#538d4e;border-color:#538d4e;color:white;cursor:default}
+.conn-card.solved-1{background:#b59f3b;border-color:#b59f3b;color:white;cursor:default}
+.conn-card.solved-2{background:#4a90d9;border-color:#4a90d9;color:white;cursor:default}
+.conn-card.solved-3{background:#9b59b6;border-color:#9b59b6;color:white;cursor:default}
+.conn-card.wrong{animation:shake .4s ease}
+.conn-solved-row{padding:14px;border-radius:var(--rs);text-align:center;margin-bottom:8px}
+.conn-solved-row p{font-size:13px;font-weight:700;color:white;margin:0}
+.conn-solved-row span{font-size:12px;opacity:.85;color:white}
+.game-msg{text-align:center;font-size:14px;font-weight:600;padding:10px;border-radius:var(--rs);margin-top:.75rem}
+.game-msg.win{background:var(--grn-l);color:var(--grn)}
+.game-msg.lose{background:var(--dan-l);color:var(--dan)}
+.game-msg.info{background:var(--acc-l);color:var(--acc)}
+
 /* TASK COMPLETE RIPPLE */
 .ripple-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;border:2px solid var(--acc);animation:rippleOut .5s ease-out forwards}
 @keyframes rippleOut{0%{width:0;height:0;opacity:.7;transform:translate(-50%,-50%)}100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%)}}
@@ -291,13 +330,13 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
       <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
       <button class="btn btn-p" onclick="doLogin()">Sign in</button>
-      <div class="toggle">New student? <a onclick="showReg()">Create account</a></div>
+      <div class="toggle">New user? <a onclick="showReg()">Create account</a></div>
     </div>
   </div>
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
       <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
-      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a student</p>
+      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a user</p>
       <div id="reg-err" class="err"></div>
       <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
       <div class="field"><label>Email</label><input id="r-email" type="email" placeholder="you@example.com"/></div>
@@ -334,6 +373,12 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
         </div>
       </div>
       <div class="nav-sep"></div>
+      <div id="quote-widget" style="padding:10px 12px 6px;margin-bottom:4px">
+        <div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Daily thought</div>
+        <div id="quote-text" style="font-size:12px;color:var(--txt);line-height:1.55;font-style:italic"></div>
+        <div id="quote-author" style="font-size:11px;color:var(--mut);margin-top:5px;font-weight:600"></div>
+      </div>
+      <div class="nav-sep"></div>
       <div class="nav-label">Navigation</div>
       <div id="nav-items"></div>
     </div>
@@ -346,6 +391,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div id="qhub-view" style="display:none"></div>
       <div id="sched-view" style="display:none"></div>
       <div id="paper-view" style="display:none"></div>
+      <div id="games-view" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -453,11 +499,22 @@ function togglePomo(){
 function resetPomo(){clearInterval(pomoInterval);pomoRunning=false;pomoLeft=pomoTotal;document.getElementById('pomo-start').textContent='Start';document.getElementById('pomo-start').classList.add('active');renderPomo();}
 function renderPomo(){const m=Math.floor(pomoLeft/60),s=pomoLeft%60;document.getElementById('pomo-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;document.getElementById('pomo-fill').style.width=(pomoLeft/pomoTotal*100)+'%';}
 
-// ── DB ───────────────────────────────────────────────────────────
-async function dbUsers(){const{data}=await sb.from('users').select('*');return data||[];}
-async function dbTasks(){const{data}=await sb.from('tasks').select('*');return data||[];}
-async function dbCompletions(){const{data}=await sb.from('completions').select('*');return data||[];}
-async function dbFiles(){const{data}=await sb.from('files').select('*');return data||[];}
+// ── DB (with cache) ───────────────────────────────────────────────
+const _cache={};
+const CACHE_TTL=15000; // 15 seconds
+async function _db(table){
+  const now=Date.now();
+  if(_cache[table]&&(now-_cache[table].ts)<CACHE_TTL)return _cache[table].data;
+  const{data}=await sb.from(table).select('*');
+  _cache[table]={data:data||[],ts:now};
+  return _cache[table].data;
+}
+function _bust(table){delete _cache[table];}
+function _bustAll(){Object.keys(_cache).forEach(k=>delete _cache[k]);}
+async function dbUsers(){return _db('users');}
+async function dbTasks(){return _db('tasks');}
+async function dbCompletions(){return _db('completions');}
+async function dbFiles(){return _db('files');}
 async function isAdminSetup(){const u=await dbUsers();return u.some(x=>x.role==='admin');}
 
 // ── AUTH ─────────────────────────────────────────────────────────
@@ -468,6 +525,7 @@ async function doSetup(){
   if(pass.length<4)return showErr('setup-err','Password must be at least 4 characters.');
   const{error}=await sb.from('users').insert({id:gid(),name,email,password:pass,role:'admin'});
   if(error)return showErr('setup-err','Error: '+error.message);
+  _bust('users');
   enterApp({id:gid(),name,email,role:'admin'});
 }
 async function doLogin(){
@@ -484,9 +542,10 @@ async function doReg(){
   if(pass.length<4)return showErr('reg-err','Password must be at least 4 characters.');
   const{data:ex}=await sb.from('users').select('id').eq('email',email).single();
   if(ex)return showErr('reg-err','Email already registered.');
-  const nu={id:gid(),name,email,password:pass,role:'student'};
+  const nu={id:gid(),name,email,password:pass,role:'user'};
   const{error}=await sb.from('users').insert(nu);
   if(error)return showErr('reg-err','Error: '+error.message);
+  _bust('users');
   enterApp(nu);
 }
 function showLogin(){['setup-view','reg-view'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('login-view').style.display='';}
@@ -501,12 +560,13 @@ function enterApp(u){
   document.getElementById('hdr-name').textContent=u.name;
   const rt=document.getElementById('hdr-role');
   rt.textContent=u.role==='admin'?'Admin':'Student';
-  rt.className='rtag'+(u.role==='student'||u.role==='client'?' cl':'');
+  rt.className='rtag'+(u.role==='user'||u.role==='client'?' cl':'');
   adminDate=todayKey();clientDate=todayKey();
   // Load this user's schedule
   const savedSched=localStorage.getItem('confluo_sched_'+u.id)||localStorage.getItem('confluo_sched')||'{}';
   try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
   buildNav(u.role);
+  loadQuote();
   if(u.role==='admin'){document.getElementById('admin-view').style.display='';showATab('tasks');}
   else{document.getElementById('client-view').style.display='';renderClient();}
 }
@@ -521,6 +581,10 @@ function logout(){
 // ── NAV ──────────────────────────────────────────────────────────
 function buildNav(role){
   const el=document.getElementById('nav-items');
+  const gamesBtn=`<button class="nav-item" id="nav-games" onclick="showGames()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M9 12h2m2 0h2M12 10v2m0 2v2"/></svg>
+    Games
+  </button>`;
   const paperBtn=`<button class="nav-item" id="nav-paper" onclick="showPaperHub()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     Paper Hub
@@ -545,7 +609,8 @@ function buildNav(role){
       </button>
       ${paperBtn}
       ${schedBtn}
-      ${qhubBtn}`;
+      ${qhubBtn}
+      ${gamesBtn}`;
   } else {
     el.innerHTML=`
       <button class="nav-item on" id="nav-mytasks" onclick="showClientTasks()">
@@ -554,16 +619,19 @@ function buildNav(role){
       </button>
       ${paperBtn}
       ${schedBtn}
-      ${qhubBtn}`;
+      ${qhubBtn}
+      ${gamesBtn}`;
   }
 }
 
 function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));const el=document.getElementById(id);if(el)el.classList.add('on');}
 
+function _hideAll(){['admin-view','client-view','qhub-view','sched-view','paper-view','games-view'].forEach(v=>document.getElementById(v).style.display='none');}
+
 function showATab(tab){
   playTick();
   setActiveNav('nav-'+tab);
-  ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
+  _hideAll();
   document.getElementById('admin-view').style.display='';
   document.getElementById('at-tasks').style.display=tab==='tasks'?'':'none';
   document.getElementById('at-clients').style.display=tab==='clients'?'':'none';
@@ -572,35 +640,25 @@ function showATab(tab){
 }
 
 function showClientTasks(){
-  playTick();
-  setActiveNav('nav-mytasks');
-  ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
-  document.getElementById('client-view').style.display='';
-  renderClient();
+  playTick();setActiveNav('nav-mytasks');_hideAll();
+  document.getElementById('client-view').style.display='';renderClient();
 }
 
 function showQHub(){
-  playTick();
-  setActiveNav('nav-qhub');
-  ['admin-view','client-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
-  document.getElementById('qhub-view').style.display='';
-  renderQHub();
+  playTick();setActiveNav('nav-qhub');_hideAll();
+  document.getElementById('qhub-view').style.display='';renderQHub();
 }
-
 function showSched(){
-  playTick();
-  setActiveNav('nav-sched');
-  ['admin-view','client-view','qhub-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
-  document.getElementById('sched-view').style.display='';
-  renderSched();
+  playTick();setActiveNav('nav-sched');_hideAll();
+  document.getElementById('sched-view').style.display='';renderSched();
 }
-
 function showPaperHub(){
-  playTick();
-  setActiveNav('nav-paper');
-  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
-  document.getElementById('paper-view').style.display='';
-  renderPaperHub();
+  playTick();setActiveNav('nav-paper');_hideAll();
+  document.getElementById('paper-view').style.display='';renderPaperHub();
+}
+function showGames(){
+  playTick();setActiveNav('nav-games');_hideAll();
+  document.getElementById('games-view').style.display='';renderGames();
 }
 
 // ── DATE NAV ─────────────────────────────────────────────────────
@@ -616,7 +674,7 @@ async function renderATasks(){
   const el=document.getElementById('at-tasks');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,files,completions]=await Promise.all([dbUsers(),dbTasks(),dbFiles(),dbCompletions()]);
-  const students=users.filter(u=>u.role==='student'||u.role==='client');
+  const students=users.filter(u=>u.role==='user'||u.role==='client');
   if(!selC&&students.length)selC=clients[0].id;
   const wk=weekKey(adminDate);
   const myTasks=tasks.filter(t=>t.student_id===selC&&t.week_key===wk);
@@ -627,13 +685,13 @@ async function renderATasks(){
     clients.forEach(c=>{h+=`<button class="pill${c.id===selC?' on':''}" onclick="selC='${c.id}';renderATasks()">${esc(c.name)}</button>`;});
     h+=`</div></div>`;
   }
-  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No students yet</div><p>Share your link so students can register</p></div>`;}
+  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No users yet</div><p>Share your link so students can register</p></div>`;}
   else if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F4CB;</div><div class="empty-t">No tasks this week</div><p>Click "+ Add task" to assign tasks</p></div>`;}
   else{
     h+=`<div class="card">`;
     myTasks.forEach(t=>{
       const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
-      const cf=files.filter(f=>f.task_id===t.id&&f.role==='student');
+      const cf=files.filter(f=>f.task_id===t.id&&f.role==='user');
       h+=`<div class="ti">
         <div style="flex:1;min-width:0">
           <div class="ttl">${esc(t.title)}</div>
@@ -659,14 +717,14 @@ async function renderClients(){
   const el=document.getElementById('at-clients');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,completions]=await Promise.all([dbUsers(),dbTasks(),dbCompletions()]);
-  const students=users.filter(u=>u.role==='student'||u.role==='client');
+  const students=users.filter(u=>u.role==='user'||u.role==='client');
   const wk=weekKey(todayKey());
   const wt=tasks.filter(t=>t.week_key===wk);
   const done=completions.filter(c=>c.week_key===wk&&c.done).length;
-  let h=`<span class="sh">Students</span>`;
-  h+=`<div class="stats"><div class="sc"><div class="sn">${students.length}</div><div class="sl">Total students</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
+  let h=`<span class="sh">Users</span>`;
+  h+=`<div class="stats"><div class="sc"><div class="sn">${students.length}</div><div class="sl">Total users</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
   h+=`<div class="card">`;
-  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No students yet</div></div>`;}
+  if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No users yet</div></div>`;}
   else students.forEach(c=>{
     const ct=tasks.filter(t=>t.student_id===c.id&&t.week_key===wk);
     const cd=completions.filter(x=>x.student_id===c.id&&x.week_key===wk&&x.done).length;
@@ -725,8 +783,8 @@ function viewClientSched(clientId, clientName){
   document.getElementById('modal-overlay').style.display='flex';
 }
 
-async function delClient(id){if(!confirm('Remove this client?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('student_id',id);await sb.from('completions').delete().eq('student_id',id);renderClients();}
-async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from('tasks').delete().eq('id',id);await sb.from('completions').delete().eq('task_id',id);await sb.from('files').delete().eq('task_id',id);renderATasks();}
+async function delClient(id){if(!confirm('Remove this user?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('student_id',id);await sb.from('completions').delete().eq('student_id',id);_bustAll();renderClients();}
+async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from('tasks').delete().eq('id',id);await sb.from('completions').delete().eq('task_id',id);await sb.from('files').delete().eq('task_id',id);_bustAll();renderATasks();}
 
 function openAddTask(){
   document.getElementById('m-title').textContent='Add task';
@@ -739,7 +797,7 @@ function openAddTask(){
     <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
   document.getElementById('modal-overlay').style.display='flex';
-  dbUsers().then(users=>{const students=users.filter(u=>u.role==='student'||u.role==='client');document.getElementById('m-cli').innerHTML=students.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
+  dbUsers().then(users=>{const students=users.filter(u=>u.role==='user'||u.role==='client');document.getElementById('m-cli').innerHTML=students.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
 }
 function openEditTask(id,title,desc,priority,category){
   document.getElementById('m-title').textContent='Edit task';
@@ -755,12 +813,12 @@ async function saveTask(){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
   const wk=weekKey(document.getElementById('m-wk').value);
   await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),student_id:document.getElementById('m-cli').value,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
-  closeModal();renderATasks();
+  _bust('tasks');closeModal();renderATasks();
 }
 async function updateTask(id){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
   await sb.from('tasks').update({title,description:document.getElementById('m-dsc').value.trim(),priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim()}).eq('id',id);
-  closeModal();renderATasks();
+  _bust('tasks');closeModal();renderATasks();
 }
 async function handleAdminUp(e,tid){
   for(const file of Array.from(e.target.files)){
@@ -770,7 +828,7 @@ async function handleAdminUp(e,tid){
       await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});
     }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
   }
-  e.target.value='';renderATasks();
+  _bust('files');e.target.value='';renderATasks();
 }
 
 // ── STUDENT TASKS ─────────────────────────────────────────────────
@@ -791,7 +849,7 @@ async function renderClient(){
   else myTasks.forEach(t=>{
     const isDone=completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
     const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
-    const cf=files.filter(f=>f.task_id===t.id&&f.role==='student');
+    const cf=files.filter(f=>f.task_id===t.id&&f.role==='user');
     h+=`<div class="ti" style="align-items:flex-start">
       <div class="chk${isDone?' on':''}" id="chk-${t.id}" style="margin-top:2px" onclick="toggleTask('${t.id}','${wk}',${isDone},this)">
         ${isDone?'<svg width="11" height="8" viewBox="0 0 11 8"><path d="M1 4l3 3 6-6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}
@@ -858,6 +916,7 @@ async function toggleTask(tid,wk,isDone,chkEl){
   // Persist to DB
   if(nowDone){await sb.from('completions').upsert({student_id:CU.id,week_key:wk,task_id:tid,done:true});}
   else{await sb.from('completions').delete().eq('student_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
+  _bust('completions');
 }
 
 async function handleClientUp(e,tid){
@@ -865,10 +924,10 @@ async function handleClientUp(e,tid){
     if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}
     try{
       const data=await readF(file);
-      await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});
+      await sb.from('files').insert({id:gid(),task_id:tid,role:'user',name:file.name,type:file.type,data});
     }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
   }
-  e.target.value='';renderClient();
+  _bust('files');e.target.value='';renderClient();
 }
 async function handleClientDrop(e,tid){
   e.preventDefault();
@@ -876,12 +935,12 @@ async function handleClientDrop(e,tid){
     if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}
     try{
       const data=await readF(file);
-      await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});
+      await sb.from('files').insert({id:gid(),task_id:tid,role:'user',name:file.name,type:file.type,data});
     }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
   }
-  renderClient();
+  _bust('files');renderClient();
 }
-async function delFile(id,isAdmin){await sb.from('files').delete().eq('id',id);if(isAdmin)renderATasks();else renderClient();}
+async function delFile(id,isAdmin){await sb.from('files').delete().eq('id',id);_bust('files');if(isAdmin)renderATasks();else renderClient();}
 function dlFile(name,data){const a=document.createElement('a');a.href=data;a.download=name;a.click();}
 function closeModal(){document.getElementById('modal-overlay').style.display='none';}
 
@@ -1435,7 +1494,7 @@ function renderSched(){
   }
   const privKey=CU?'sched_private_'+CU.id:'sched_private';
   const isPrivate=localStorage.getItem(privKey)==='1';
-  const isClient=CU&&CU.role==='student'||CU.role==='client';
+  const isClient=CU&&CU.role==='user'||CU.role==='client';
 
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Schedule</span>
     <div style="display:flex;gap:8px;align-items:center">`;
@@ -1527,6 +1586,228 @@ function saveSchedEvent(editKey){
   saveSched();closeModal();renderSched();
 }
 function deleteEvent(key){delete schedEvents[key];saveSched();renderSched();}
+
+// ── QUOTES ───────────────────────────────────────────────────────
+const QUOTES=[
+  {q:"The only true wisdom is in knowing you know nothing.",a:"Socrates"},
+  {q:"Man is condemned to be free.",a:"Jean-Paul Sartre"},
+  {q:"The unexamined life is not worth living.",a:"Socrates"},
+  {q:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.",a:"Aristotle"},
+  {q:"The measure of intelligence is the ability to change.",a:"Albert Einstein"},
+  {q:"In the middle of difficulty lies opportunity.",a:"Albert Einstein"},
+  {q:"To live is to suffer, to survive is to find some meaning in the suffering.",a:"Friedrich Nietzsche"},
+  {q:"Without music, life would be a mistake.",a:"Friedrich Nietzsche"},
+  {q:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+  {q:"It does not matter how slowly you go as long as you do not stop.",a:"Confucius"},
+  {q:"Everything has beauty, but not everyone sees it.",a:"Confucius"},
+  {q:"Reality is merely an illusion, albeit a very persistent one.",a:"Albert Einstein"},
+  {q:"He who has a why to live can bear almost any how.",a:"Friedrich Nietzsche"},
+  {q:"Knowing yourself is the beginning of all wisdom.",a:"Aristotle"},
+  {q:"The brave man is not he who does not feel afraid, but he who conquers that fear.",a:"Nelson Mandela"},
+  {q:"Do not go where the path may lead, go instead where there is no path and leave a trail.",a:"Ralph Waldo Emerson"},
+  {q:"You have power over your mind, not outside events.",a:"Marcus Aurelius"},
+  {q:"Waste no more time arguing what a good man should be. Be one.",a:"Marcus Aurelius"},
+  {q:"The impediment to action advances action. What stands in the way becomes the way.",a:"Marcus Aurelius"},
+  {q:"Luck is what happens when preparation meets opportunity.",a:"Seneca"},
+  {q:"Begin at once to live, and count each separate day as a separate life.",a:"Seneca"},
+  {q:"We suffer more in imagination than in reality.",a:"Seneca"},
+  {q:"Do what you can, with what you have, where you are.",a:"Theodore Roosevelt"},
+  {q:"The only way to do great work is to love what you do.",a:"Steve Jobs"},
+  {q:"Life is what happens when you're busy making other plans.",a:"John Lennon"},
+  {q:"An unexamined life is not worth living.",a:"Plato"},
+  {q:"Education is the kindling of a flame, not the filling of a vessel.",a:"Socrates"},
+  {q:"The mind is not a vessel to be filled, but a fire to be kindled.",a:"Plutarch"},
+  {q:"First, have a definite, clear practical ideal — a goal, an objective.",a:"Aristotle"},
+  {q:"Difficulty is what wakes up the genius.",a:"Nassim Taleb"},
+];
+function loadQuote(){
+  const day=new Date().getDate();
+  const q=QUOTES[day%QUOTES.length];
+  const el=document.getElementById('quote-text');
+  const au=document.getElementById('quote-author');
+  if(el)el.textContent=`"${q.q}"`;
+  if(au)au.textContent=`— ${q.a}`;
+}
+
+// ── GAMES ────────────────────────────────────────────────────────
+let activeGame='wordle';
+
+// ── WORDLE ──
+const WORDLE_WORDS=['STUDY','BRAIN','FOCUS','LEARN','GRADE','THINK','LOGIC','POWER','SKILL','SMART','WRITE','NOTES','SOLVE','MATHS','WORDS','BOOKS','ESSAY','PAPER','SCORE','ROUND','PLANT','HEART','LIGHT','MUSIC','DANCE','SLEEP','DREAM','FLAME','STORM','CLOUD','CHAIR','TABLE','CLOCK','PHONE','VOICE','LAUGH','HAPPY','BRAVE','CLEAR','QUIET','SWIFT','SHARP','STONE','PRIDE','TRUST','PEACE','FAITH','GRACE','BLOOM','SPARK'];
+let wState={word:'',guesses:[],current:'',done:false,msg:''};
+
+function wNewGame(){
+  const day=new Date().toDateString();
+  const idx=Math.abs(day.split('').reduce((a,c)=>a+c.charCodeAt(0),0))%WORDLE_WORDS.length;
+  wState={word:WORDLE_WORDS[idx],guesses:[],current:'',done:false,msg:''};
+  renderWordle();
+}
+
+function wKey(k){
+  if(wState.done)return;
+  if(k==='ENTER'){
+    if(wState.current.length<5){wState.msg='Not enough letters';renderWordle();return;}
+    const g=wState.current;
+    wState.guesses.push(g);
+    wState.current='';
+    if(g===wState.word){wState.done=true;wState.msg='Brilliant! 🎉';}
+    else if(wState.guesses.length>=6){wState.done=true;wState.msg=`The word was ${wState.word}`;}
+    else{wState.msg='';}
+  } else if(k==='⌫'){
+    wState.current=wState.current.slice(0,-1);wState.msg='';
+  } else if(wState.current.length<5&&/^[A-Z]$/.test(k)){
+    wState.current+=k;wState.msg='';
+  }
+  renderWordle();
+}
+
+function wTileClass(guess,pos,letter){
+  const w=wState.word;
+  if(w[pos]===letter)return'correct';
+  if(w.includes(letter))return'present';
+  return'absent';
+}
+
+function wKeyStatus(){
+  const st={};
+  wState.guesses.forEach(g=>{
+    g.split('').forEach((l,i)=>{
+      const c=wTileClass(g,i,l);
+      if(!st[l]||c==='correct'||(c==='present'&&st[l]==='absent'))st[l]=c;
+    });
+  });
+  return st;
+}
+
+function renderWordle(){
+  const el=document.getElementById('wordle-game');if(!el)return;
+  const rows=[];
+  for(let r=0;r<6;r++){
+    const guess=wState.guesses[r]||'';
+    const isCurrent=r===wState.guesses.length&&!wState.done;
+    const display=isCurrent?wState.current.padEnd(5,' '):guess.padEnd(5,' ');
+    rows.push(`<div class="wordle-row">${display.split('').map((l,i)=>{
+      let cls='wordle-tile';
+      if(l.trim()){
+        if(!isCurrent){cls+=' '+wTileClass(guess,i,l)+' flip';}
+        else cls+=' filled';
+      }
+      return`<div class="${cls}">${l.trim()}</div>`;
+    }).join('')}</div>`);
+  }
+  const st=wKeyStatus();
+  const kbRows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','⌫']];
+  const kbd=kbRows.map(row=>`<div class="wordle-kbd-row">${row.map(k=>`<div class="kbd-key${st[k]?' '+st[k]:''}" onclick="wKey('${k}')">${k}</div>`).join('')}</div>`).join('');
+  const msgCls=wState.msg.includes('Brilliant')?'win':wState.msg.includes('word was')?'lose':'info';
+  el.innerHTML=`
+    <div class="wordle-grid">${rows.join('')}</div>
+    ${wState.msg?`<div class="game-msg ${msgCls}">${esc(wState.msg)}</div>`:''}
+    <div class="wordle-kbd">${kbd}</div>
+    ${wState.done?`<div style="text-align:center;margin-top:1rem"><button class="btn btn-s btn-sm" onclick="wNewGame()">New game</button></div>`:''}`;
+}
+
+// ── CONNECTIONS ──
+const CONN_PUZZLES=[
+  {groups:[
+    {label:'Planets',color:0,words:['MARS','VENUS','EARTH','SATURN']},
+    {label:'Greek letters',color:1,words:['ALPHA','BETA','GAMMA','DELTA']},
+    {label:'Types of energy',color:2,words:['SOLAR','KINETIC','THERMAL','NUCLEAR']},
+    {label:'Famous scientists',color:3,words:['NEWTON','DARWIN','CURIE','TESLA']},
+  ]},
+  {groups:[
+    {label:'Parts of a cell',color:0,words:['NUCLEUS','MEMBRANE','RIBOSOME','CYTOPLASM']},
+    {label:'Literary devices',color:1,words:['SIMILE','METAPHOR','IRONY','ALLUSION']},
+    {label:'Types of angles',color:2,words:['ACUTE','OBTUSE','REFLEX','RIGHT']},
+    {label:'Australian states',color:3,words:['VICTORIA','QUEENSLAND','TASMANIA','NSW']},
+  ]},
+  {groups:[
+    {label:'Maths operations',color:0,words:['ADD','DIVIDE','MULTIPLY','SUBTRACT']},
+    {label:'Types of graphs',color:1,words:['BAR','LINE','PIE','SCATTER']},
+    {label:'Periodic table groups',color:2,words:['HALOGEN','NOBLE','ALKALI','METAL']},
+    {label:'Writing styles',color:3,words:['NARRATIVE','PERSUASIVE','EXPOSITORY','DESCRIPTIVE']},
+  ]},
+];
+let cState={puzzle:null,selected:[],solved:[],mistakes:0,done:false,msg:''};
+
+function cNewGame(){
+  const day=new Date().toDateString();
+  const idx=Math.abs(day.split('').reduce((a,c)=>a+c.charCodeAt(0),0))%CONN_PUZZLES.length;
+  const p=CONN_PUZZLES[idx];
+  const all=p.groups.flatMap(g=>g.words.map(w=>({word:w,group:g.label,color:g.color})));
+  // shuffle
+  for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+  cState={puzzle:p,cards:all,selected:[],solved:[],mistakes:0,done:false,msg:''};
+  renderConn();
+}
+
+function cToggle(word){
+  if(cState.done)return;
+  if(cState.solved.some(g=>g.words.includes(word)))return;
+  const i=cState.selected.indexOf(word);
+  if(i>=0){cState.selected.splice(i,1);}
+  else if(cState.selected.length<4){cState.selected.push(word);}
+  renderConn();
+}
+
+function cSubmit(){
+  if(cState.selected.length!==4){cState.msg='Select exactly 4 words';renderConn();return;}
+  const match=cState.puzzle.groups.find(g=>g.words.every(w=>cState.selected.includes(w))&&cState.selected.every(w=>g.words.includes(w)));
+  if(match){
+    cState.solved.push(match);
+    cState.selected=[];
+    cState.msg=`✓ ${match.label}!`;
+    if(cState.solved.length===4){cState.done=true;cState.msg='Solved! 🎉';}
+  } else {
+    cState.mistakes++;
+    cState.msg=cState.mistakes>=4?`Game over! Try again tomorrow`:`Not quite — ${4-cState.mistakes} mistake${4-cState.mistakes===1?'':'s'} left`;
+    if(cState.mistakes>=4){cState.done=true;}
+    cState.selected=[];
+  }
+  renderConn();
+}
+
+function renderConn(){
+  const el=document.getElementById('conn-game');if(!el)return;
+  const solvedLabels=cState.solved.map((g,i)=>`<div class="conn-solved-row" style="background:${['#538d4e','#b59f3b','#4a90d9','#9b59b6'][g.color]}"><p>${esc(g.label)}</p><span>${g.words.join(', ')}</span></div>`).join('');
+  const unsolved=cState.cards.filter(c=>!cState.solved.some(g=>g.words.includes(c.word)));
+  const cards=unsolved.map(c=>{
+    const isSel=cState.selected.includes(c.word);
+    return`<div class="conn-card${isSel?' sel':''}" onclick="cToggle('${c.word}')">${esc(c.word)}</div>`;
+  }).join('');
+  const msgCls=cState.msg.includes('🎉')?'win':cState.msg.includes('over')?'lose':'info';
+  el.innerHTML=`
+    ${solvedLabels}
+    <div class="conn-grid">${cards}</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:.5rem">
+      <button class="btn btn-s btn-sm" onclick="cState.selected=[];renderConn()">Deselect all</button>
+      ${!cState.done?`<button class="btn btn-p btn-sm" style="width:auto" onclick="cSubmit()">Submit</button>`:''}
+    </div>
+    ${cState.msg?`<div class="game-msg ${msgCls}">${esc(cState.msg)}</div>`:''}
+    ${cState.done?`<div style="text-align:center;margin-top:1rem"><button class="btn btn-s btn-sm" onclick="cNewGame()">New game</button></div>`:''}`;
+}
+
+function renderGames(){
+  const el=document.getElementById('games-view');
+  const tabs=`<div class="games-tabs">
+    <button class="game-tab${activeGame==='wordle'?' on':''}" onclick="activeGame='wordle';renderGames()">Wordle</button>
+    <button class="game-tab${activeGame==='conn'?' on':''}" onclick="activeGame='conn';renderGames()">Connections</button>
+  </div>`;
+  let body='';
+  if(activeGame==='wordle'){
+    if(!wState.word)wNewGame();
+    body=`<div class="sh" style="margin-bottom:.25rem">Wordle</div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:1rem">Guess the 5-letter word. New word each day.</p>
+    <div id="wordle-game"></div>`;
+  } else {
+    if(!cState.puzzle)cNewGame();
+    body=`<div class="sh" style="margin-bottom:.25rem">Connections</div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:1rem">Group 4 words that share something in common. New puzzle each day.</p>
+    <div id="conn-game"></div>`;
+  }
+  el.innerHTML=`<div class="row-top"><span class="sh" style="margin:0">Games</span></div>${tabs}${body}`;
+  if(activeGame==='wordle')renderWordle();
+  else renderConn();
+}
 
 // ── INIT ─────────────────────────────────────────────────────────
 async function init(){
