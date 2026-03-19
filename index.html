@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flow</title>
+<title>Confluo</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -55,14 +55,14 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .rtag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.3px;text-transform:uppercase}
 .rtag.cl{background:var(--blu-l);color:var(--blu)}
 .app-body{display:flex;min-height:calc(100vh - 64px)}
-.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overconfluo-y:auto}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rs);font-size:14px;font-weight:500;color:var(--mut);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
 .nav-item:hover{background:var(--surf2);color:var(--txt)}
 .nav-item.on{background:var(--acc-l);color:var(--acc);font-weight:600}
 .nav-item svg{width:16px;height:16px;flex-shrink:0}
 .nav-sep{height:1px;background:var(--bdr);margin:8px 0}
 .nav-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;padding:4px 12px;margin-top:4px}
-.content{flex:1;padding:2rem;overflow-y:auto;min-width:0}
+.content{flex:1;padding:2rem;overconfluo-y:auto;min-width:0}
 
 /* POMODORO */
 .pomo-widget{background:var(--surf3);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem;margin-bottom:.75rem;text-align:center}
@@ -71,7 +71,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pomo-mode{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--bdr2);background:none;color:var(--mut);transition:all .15s}
 .pomo-mode.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
 .pomo-time{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--txt);font-family:var(--mono);line-height:1.1}
-.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overflow:hidden}
+.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overconfluo:hidden}
 .pomo-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .5s linear}
 .pomo-btns{display:flex;gap:5px;justify-content:center}
 .pomo-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
@@ -107,7 +107,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .dpick:focus{border-color:var(--acc)}
 .today-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
 .today-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
-.pbar{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
+.pbar{height:8px;background:var(--surf2);border-radius:99px;overconfluo:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
 .pfill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
 .pfill.flash{animation:barflash .5s ease}
 @keyframes barflash{0%{filter:brightness(1)}50%{filter:brightness(1.5)}100%{filter:brightness(1)}}
@@ -132,7 +132,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .fchip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--acc-l);color:var(--acc);font-size:12px;font-weight:600;cursor:pointer;margin:2px 2px 0 0;border:none;max-width:200px}
 .fchip:hover{background:#ddd6f8}
 .fchip.sub{background:var(--blu-l);color:var(--blu)}
-.fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px}
+.fn{overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap;max-width:130px}
 .fdl{opacity:.5;font-size:14px;cursor:pointer}
 .fdl:hover{opacity:1}
 .frow{display:flex;flex-wrap:wrap;margin-top:6px;align-items:center}
@@ -169,7 +169,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* SCHEDULE */
-.sched-wrap{overflow-x:auto;border:1px solid var(--bdr);border-radius:var(--r);background:var(--surf);box-shadow:var(--sh)}
+.sched-wrap{overconfluo-x:auto;border:1px solid var(--bdr);border-radius:var(--r);background:var(--surf);box-shadow:var(--sh)}
 .sched-table{border-collapse:collapse;width:100%;min-width:700px;font-size:13px}
 .sched-table th{background:var(--surf2);font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;border:1px solid var(--bdr);text-align:center;white-space:nowrap}
 .sched-table th.time-col{width:70px;min-width:70px}
@@ -181,8 +181,8 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .sched-cell.has-event{background:var(--acc-l);cursor:pointer}
 .sched-cell.has-event:hover{background:#ddd6f8}
 .sched-event{flex:1;min-width:0}
-.sched-event-title{font-size:12px;font-weight:600;color:var(--acc);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sched-event-sub{font-size:11px;color:var(--mut);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sched-event-title{font-size:12px;font-weight:600;color:var(--acc);line-height:1.3;overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap}
+.sched-event-sub{font-size:11px;color:var(--mut);margin-top:1px;overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap}
 .sched-del{font-size:14px;color:var(--mut);opacity:0;transition:opacity .1s;flex-shrink:0;cursor:pointer;line-height:1;padding:1px 2px;border-radius:3px}
 .sched-del:hover{background:var(--dan-l);color:var(--dan);opacity:1!important}
 .sched-cell.has-event:hover .sched-del{opacity:.5}
@@ -218,12 +218,12 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pa-feedback.fail{background:var(--dan-l);border:1px solid #f0b8cc;color:var(--dan)}
 .pa-feedback.neutral{background:var(--acc-l);border:1px solid var(--bdr2);color:var(--txt)}
 .pa-mark{font-size:20px;font-weight:700;margin-bottom:6px}
-.pa-score-bar{height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;margin:1rem 0 .4rem}
+.pa-score-bar{height:6px;background:var(--surf2);border-radius:99px;overconfluo:hidden;margin:1rem 0 .4rem}
 .pa-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s ease}
 .pa-progress{font-size:12px;color:var(--mut);text-align:right;margin-bottom:1.25rem}
 
 /* PAPER ANALYSER */
-.paper-overlay{position:fixed;inset:0;background:rgba(10,8,25,.55);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.paper-overlay{position:fixed;inset:0;background:rgba(10,8,25,.55);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overconfluo-y:auto}
 .paper-overlay.open{display:flex}
 .paper-modal{background:var(--surf);border-radius:18px;width:100%;max-width:680px;box-shadow:var(--shm);border:1px solid var(--bdr2);margin:auto}
 .paper-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.75rem 0}
@@ -255,7 +255,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pq-feedback.mid{background:var(--amb-l);border:1px solid #e8c97a;color:var(--amb)}
 .pq-mark{font-size:18px;font-weight:700;margin-bottom:4px}
 .paper-prog{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
-.paper-prog-bar{flex:1;height:6px;background:var(--surf2);border-radius:99px;overflow:hidden}
+.paper-prog-bar{flex:1;height:6px;background:var(--surf2);border-radius:99px;overconfluo:hidden}
 .paper-prog-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
 .paper-summary{background:var(--surf2);border-radius:var(--r);padding:1.25rem;margin-top:1.25rem;text-align:center}
 .paper-summary .big{font-size:36px;font-weight:700;color:var(--acc);letter-spacing:-1px}
@@ -274,8 +274,8 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <div id="auth-screen">
   <div id="setup-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
-      <h2 class="auth-title">Set up Flow</h2><p class="auth-sub">Create your admin account to get started</p>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
+      <h2 class="auth-title">Set up Confluo</h2><p class="auth-sub">Create your admin account to get started</p>
       <div id="setup-err" class="err"></div>
       <div class="field"><label>Your name</label><input id="s-name" placeholder="e.g. Sarah"/></div>
       <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="admin@yoursite.com"/></div>
@@ -285,7 +285,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   </div>
   <div id="login-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
       <h2 class="auth-title">Welcome back</h2><p class="auth-sub">Sign in to your account</p>
       <div id="login-err" class="err"></div>
       <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
@@ -296,7 +296,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   </div>
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
       <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a student</p>
       <div id="reg-err" class="err"></div>
       <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
@@ -311,7 +311,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <!-- APP -->
 <div id="app">
   <div class="hdr">
-    <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Flow</span></div>
+    <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
     <div class="hdr-r">
       <div class="ubadge"><div class="av" id="hdr-av"></div><span id="hdr-name"></span><span class="rtag" id="hdr-role"></span></div>
       <button class="btn btn-s btn-sm" onclick="logout()">Sign out</button>
@@ -370,7 +370,7 @@ function ini(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
 function hideErr(id){document.getElementById(id).style.display='none';}
-function readF(file){return new Promise((r,j)=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.onerror=j;fr.readAsDataURL(file);});}
+function readF(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Could not read file'));fr.readAsDataURL(file);});}
 
 // ── DATE ─────────────────────────────────────────────────────────
 function todayKey(){return new Date().toISOString().split('T')[0];}
@@ -494,24 +494,24 @@ function showReg(){['setup-view','login-view'].forEach(id=>document.getElementBy
 
 function enterApp(u){
   CU=u;
-  localStorage.setItem('flow_session',JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
+  localStorage.setItem('confluo_session',JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('hdr-av').textContent=ini(u.name);
   document.getElementById('hdr-name').textContent=u.name;
   const rt=document.getElementById('hdr-role');
   rt.textContent=u.role==='admin'?'Admin':'Student';
-  rt.className='rtag'+(u.role==='student'?' cl':'');
+  rt.className='rtag'+(u.role==='student'||u.role==='client'?' cl':'');
   adminDate=todayKey();clientDate=todayKey();
   // Load this user's schedule
-  const savedSched=localStorage.getItem('flow_sched_'+u.id)||localStorage.getItem('flow_sched')||'{}';
+  const savedSched=localStorage.getItem('confluo_sched_'+u.id)||localStorage.getItem('confluo_sched')||'{}';
   try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
   buildNav(u.role);
   if(u.role==='admin'){document.getElementById('admin-view').style.display='';showATab('tasks');}
   else{document.getElementById('client-view').style.display='';renderClient();}
 }
 function logout(){
-  CU=null;localStorage.removeItem('flow_session');
+  CU=null;localStorage.removeItem('confluo_session');
   document.getElementById('app').style.display='none';
   ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('auth-screen').style.display='';
@@ -616,7 +616,7 @@ async function renderATasks(){
   const el=document.getElementById('at-tasks');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,files,completions]=await Promise.all([dbUsers(),dbTasks(),dbFiles(),dbCompletions()]);
-  const students=users.filter(u=>u.role==='student');
+  const students=users.filter(u=>u.role==='student'||u.role==='client');
   if(!selC&&students.length)selC=clients[0].id;
   const wk=weekKey(adminDate);
   const myTasks=tasks.filter(t=>t.student_id===selC&&t.week_key===wk);
@@ -643,7 +643,7 @@ async function renderATasks(){
           ${cf.length?`<div class="frow"><span style="font-size:11px;color:var(--mut);margin-right:4px">Submitted:</span>${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span></button>`).join('')}</div>`:''}
         </div>
         <div style="display:flex;gap:6px;align-items:flex-start;flex-shrink:0">
-          <label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,image/*,application/pdf" style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>
+          <label class="btn btn-s btn-sm" style="cursor:pointer">&#128206;<input type="file" multiple accept="*/*" style="display:none" onchange="handleAdminUp(event,'${t.id}')"></label>
           <button class="btn btn-s btn-sm" onclick="openEditTask('${t.id}','${esc(t.title)}','${esc(t.description||'')}','${t.priority}','${esc(t.category||'')}')">Edit</button>
           <button class="btn btn-d btn-sm" onclick="delTask('${t.id}')">Delete</button>
         </div>
@@ -659,7 +659,7 @@ async function renderClients(){
   const el=document.getElementById('at-clients');
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,completions]=await Promise.all([dbUsers(),dbTasks(),dbCompletions()]);
-  const students=users.filter(u=>u.role==='student');
+  const students=users.filter(u=>u.role==='student'||u.role==='client');
   const wk=weekKey(todayKey());
   const wt=tasks.filter(t=>t.week_key===wk);
   const done=completions.filter(c=>c.week_key===wk&&c.done).length;
@@ -692,7 +692,7 @@ async function renderClients(){
 
 function viewClientSched(clientId, clientName){
   // Read their schedule from localStorage (keyed by student id)
-  const raw=localStorage.getItem('flow_sched_'+clientId)||localStorage.getItem('flow_sched')||'{}';
+  const raw=localStorage.getItem('confluo_sched_'+clientId)||localStorage.getItem('confluo_sched')||'{}';
   const events=JSON.parse(raw);
   const keys=Object.keys(events);
   document.getElementById('m-title').textContent=`${clientName}'s Schedule`;
@@ -706,7 +706,7 @@ function viewClientSched(clientId, clientName){
       const [da,ha]=a.split('_');const [db,hb]=b.split('_');
       return (dayOrder.indexOf(da)-dayOrder.indexOf(db))||parseInt(ha)-parseInt(hb);
     });
-    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto">`;
+    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overconfluo-y:auto">`;
     sorted.forEach(k=>{
       const ev=events[k];
       const [day,hourStr]=k.split('_');
@@ -739,7 +739,7 @@ function openAddTask(){
     <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
   document.getElementById('modal-overlay').style.display='flex';
-  dbUsers().then(users=>{const students=users.filter(u=>u.role==='student');document.getElementById('m-cli').innerHTML=clients.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
+  dbUsers().then(users=>{const students=users.filter(u=>u.role==='student'||u.role==='client');document.getElementById('m-cli').innerHTML=students.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
 }
 function openEditTask(id,title,desc,priority,category){
   document.getElementById('m-title').textContent='Edit task';
@@ -763,7 +763,13 @@ async function updateTask(id){
   closeModal();renderATasks();
 }
 async function handleAdminUp(e,tid){
-  for(const file of Array.from(e.target.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.target.files)){
+    if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}
+    try{
+      const data=await readF(file);
+      await sb.from('files').insert({id:gid(),task_id:tid,role:'admin',name:file.name,type:file.type,data});
+    }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
+  }
   e.target.value='';renderATasks();
 }
 
@@ -803,7 +809,7 @@ async function renderClient(){
           <div style="font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Your submission</div>
           ${cf.length?`<div class="frow">${cf.map(f=>`<button class="fchip sub" onclick="dlFile('${esc(f.name)}','${esc(f.data)}')"><span class="fn">&#128196; ${esc(f.name)}</span><span class="fdl" onclick="event.stopPropagation();delFile('${f.id}',false)"> &#xd7;</span></button>`).join('')}</div>`:''}
           <label class="uz" ondragover="event.preventDefault();this.classList.add('dg')" ondragleave="this.classList.remove('dg')" ondrop="handleClientDrop(event,'${t.id}');this.classList.remove('dg')">
-            <input type="file" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,image/*,application/pdf" style="display:none" onchange="handleClientUp(event,'${t.id}')">
+            <input type="file" multiple accept="*/*" style="display:none" onchange="handleClientUp(event,'${t.id}')">
             <p>Drop files or <strong>browse</strong> — PDF, images, docs</p>
           </label>
         </div>
@@ -855,12 +861,24 @@ async function toggleTask(tid,wk,isDone,chkEl){
 }
 
 async function handleClientUp(e,tid){
-  for(const file of Array.from(e.target.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.target.files)){
+    if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}
+    try{
+      const data=await readF(file);
+      await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});
+    }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
+  }
   e.target.value='';renderClient();
 }
 async function handleClientDrop(e,tid){
   e.preventDefault();
-  for(const file of Array.from(e.dataTransfer.files)){if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}try{const data=await readF(file);await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});}catch{}}
+  for(const file of Array.from(e.dataTransfer.files)){
+    if(file.size>20*1024*1024){alert(`"${file.name}" exceeds 20MB limit.`);continue;}
+    try{
+      const data=await readF(file);
+      await sb.from('files').insert({id:gid(),task_id:tid,role:'student',name:file.name,type:file.type,data});
+    }catch(err){alert(`Could not upload "${file.name}": ${err.message}`);}
+  }
   renderClient();
 }
 async function delFile(id,isAdmin){await sb.from('files').delete().eq('id',id);if(isAdmin)renderATasks();else renderClient();}
@@ -1149,8 +1167,8 @@ function saveCustomQ(){
 // ── PAPER ANALYSER ───────────────────────────────────────────────
 // ── PAPER HUB ────────────────────────────────────────────────────
 // Saved papers: array of {id, name, subject, topic, questions:[{question,answer,marks,difficulty}], addedAt}
-let paperHubData = JSON.parse(localStorage.getItem('flow_papers')||'[]');
-function savePaperHubData(){localStorage.setItem('flow_papers',JSON.stringify(paperHubData));}
+let paperHubData = JSON.parse(localStorage.getItem('confluo_papers')||'[]');
+function savePaperHubData(){localStorage.setItem('confluo_papers',JSON.stringify(paperHubData));}
 
 // Subject detection keywords
 const SUBJ_KEYWORDS = {
@@ -1394,11 +1412,11 @@ const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunda
 const HOURS=Array.from({length:16},(_,i)=>i+7);
 const COLORS=['#ECEAFA','#E3EDF8','#E3F6EE','#FBF3E3','#FCEEF2'];
 const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
-let schedEvents=JSON.parse(localStorage.getItem('flow_sched')||'{}');
+let schedEvents=JSON.parse(localStorage.getItem('confluo_sched')||'{}');
 let schedPickColor=0;
 
 function saveSched(){
-  const key=CU?'flow_sched_'+CU.id:'flow_sched';
+  const key=CU?'confluo_sched_'+CU.id:'confluo_sched';
   localStorage.setItem(key,JSON.stringify(schedEvents));
 }
 function schedKey(day,hour){return `${day}_${hour}`;}
@@ -1408,24 +1426,23 @@ function renderSched(){
   const today=new Date().getDay();
   const todayIdx=today===0?6:today-1;
   // Store schedule under user-specific key so admin can read it
-  const schedKey2=CU?'flow_sched_'+CU.id:'flow_sched';
+  const schedKey2=CU?'confluo_sched_'+CU.id:'confluo_sched';
   if(CU&&!schedEvents._migrated){
     // One-time migrate generic key to user key if exists
-    const generic=localStorage.getItem('flow_sched');
+    const generic=localStorage.getItem('confluo_sched');
     if(generic&&!localStorage.getItem(schedKey2)){localStorage.setItem(schedKey2,generic);}
     schedEvents._migrated=true;
   }
   const privKey=CU?'sched_private_'+CU.id:'sched_private';
   const isPrivate=localStorage.getItem(privKey)==='1';
-  const isClient=CU&&CU.role==='student';
+  const isClient=CU&&CU.role==='student'||CU.role==='client';
 
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Schedule</span>
     <div style="display:flex;gap:8px;align-items:center">`;
   if(isClient){
-    h+=`<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut);cursor:pointer">
-      <input type="checkbox" id="sched-priv-toggle" ${isPrivate?'checked':''} onchange="toggleSchedPrivacy(this.checked)" style="accent-color:var(--acc)">
-      Hide from admin
-    </label>`;
+    h+=isPrivate
+      ? `<button class="btn btn-s btn-sm" onclick="toggleSchedPrivacy(false)" style="gap:6px">🔓 Unhide from admin</button>`
+      : `<button class="btn btn-s btn-sm" onclick="toggleSchedPrivacy(true)" style="gap:6px;color:var(--amb)">🔒 Hide from admin</button>`;
   }
   h+=`<button class="btn btn-p btn-sm" style="width:auto" onclick="openAddEvent()">+ Add event</button>
     </div>
@@ -1513,7 +1530,7 @@ function deleteEvent(key){delete schedEvents[key];saveSched();renderSched();}
 
 // ── INIT ─────────────────────────────────────────────────────────
 async function init(){
-  const saved=localStorage.getItem('flow_session');
+  const saved=localStorage.getItem('confluo_session');
   if(saved){try{enterApp(JSON.parse(saved));return;}catch{}}
   document.getElementById('auth-screen').style.display='';
   const hasAdmin=await isAdminSetup();
