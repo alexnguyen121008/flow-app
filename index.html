@@ -100,7 +100,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 
 /* DATE NAV */
 .wn{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
-.wl{font-size:13px;font-weight:600;color:var(--mut);font-family:var(--mono);background:var(--surf2);padding:6px 14px;border-radius:var(--rs);border:1px solid var(--bdr);min-width:150px;text-align:center}
+.wl{font-size:13px;font-weight:600;color:var(--mut);font-family:var(--font);background:var(--surf2);padding:6px 14px;border-radius:var(--rs);border:1px solid var(--bdr);text-align:center}
 .wb{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--bdr2);background:var(--surf);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--txt);transition:all .15s}
 .wb:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
 .dpick{padding:7px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);cursor:pointer;outline:none;transition:border-color .15s}
@@ -374,10 +374,8 @@ function readF(file){return new Promise((r,j)=>{const fr=new FileReader();fr.onl
 
 // ── DATE ─────────────────────────────────────────────────────────
 function todayKey(){return new Date().toISOString().split('T')[0];}
-function getMonday(ds){const d=ds?new Date(ds+'T00:00:00'):new Date();const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1));return d;}
-function weekKey(ds){return getMonday(ds).toISOString().split('T')[0];}
-function weekLabel(ds){const s=getMonday(ds),e=new Date(s);e.setDate(e.getDate()+6);const f=d=>d.toLocaleDateString('en-AU',{day:'numeric',month:'short'});return`${f(s)} – ${f(e)}`;}
-function shiftWeek(ds,dir){const d=getMonday(ds||todayKey());d.setDate(d.getDate()+dir*7);return d.toISOString().split('T')[0];}
+function weekKey(ds){return ds||todayKey();}
+function shiftWeek(ds,dir){const d=new Date((ds||todayKey())+'T00:00:00');d.setDate(d.getDate()+dir*7);return d.toISOString().split('T')[0];}
 
 // ── SOUND & FEEDBACK ─────────────────────────────────────────────
 function playTick(){
@@ -607,8 +605,10 @@ function showPaperHub(){
 
 // ── DATE NAV ─────────────────────────────────────────────────────
 function dateNav(cur,_prev,_next,onPick,onToday){
+  const d=new Date((cur||todayKey())+'T00:00:00');
+  const label=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   return`<div class="wn">
-    <span class="wl">${weekLabel(cur)}</span>
+    <span class="wl">${label}</span>
     <input type="date" class="dpick" value="${cur||todayKey()}" onchange="${onPick}" title="Jump to date"/>
     <button class="today-btn" onclick="${onToday}">Today</button>
   </div>`;
