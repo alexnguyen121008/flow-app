@@ -9,181 +9,195 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F6FB;--surf:#fff;--surf2:#F0EEF8;--surf3:#F9F8FD;
-  --bdr:#E4E1F0;--bdr2:#CBC6E2;
-  --txt:#18162B;--mut:#7C788F;
-  --acc:#5B4BD4;--acc-l:#EDEAFB;--acc2:#7B68E8;
-  --dan:#B83258;--dan-l:#FDF0F4;
-  --amb:#9A6318;--amb-l:#FDF5E6;
-  --blu:#2864A0;--blu-l:#E6EFF8;
-  --grn:#187A4E;--grn-l:#E6F6EE;
-  --r:10px;--rs:7px;
-  --sh:0 1px 3px rgba(0,0,0,.05);
-  --shm:0 4px 24px rgba(91,75,212,.12);
-  --font:'Inter',system-ui,sans-serif;--mono:'SF Mono','Fira Mono',monospace;
+  --bg:#F0EEF8;--surf:#fff;--surf2:#E8E4F5;--surf3:#F5F3FB;
+  --bdr:#DDD8EE;--bdr2:#C8C2E0;
+  --txt:#1A1730;--mut:#706C8A;
+  --acc:#5B4BD4;--acc-l:#ECEAFA;--acc2:#7B68E8;
+  --dan:#C0385A;--dan-l:#FCEEF2;
+  --amb:#A06820;--amb-l:#FBF3E3;
+  --blu:#2E6BA8;--blu-l:#E3EDF8;
+  --grn:#1A7A50;--grn-l:#E3F6EE;
+  --r:12px;--rs:8px;
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(91,75,212,.08);
+  --shm:0 8px 32px rgba(91,75,212,.15);
+  --font:'Inter',system-ui,sans-serif;--mono:monospace;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--txt);font-size:15px;line-height:1.6;min-height:100vh}
 input,select,textarea,button{font-family:var(--font)}
-
-/* ── AUTH ── */
 .screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg)}
-.auth-card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:2.5rem;width:100%;max-width:400px;box-shadow:var(--shm)}
-.brand{display:flex;align-items:center;gap:9px;margin-bottom:2rem}
-.brand-ic{width:34px;height:34px;background:var(--acc);border-radius:9px;display:flex;align-items:center;justify-content:center}
-.brand-ic svg{width:18px;height:18px;fill:white}
-.brand-name{font-size:18px;font-weight:700;letter-spacing:-0.3px;color:var(--txt)}
-h2.auth-title{font-size:22px;font-weight:700;margin-bottom:3px;letter-spacing:-0.3px}
-.auth-sub{font-size:13px;color:var(--mut);margin-bottom:1.75rem}
-.field{margin-bottom:1rem}
-.field label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--mut)}
-.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--surf);color:var(--txt);outline:none;transition:border-color .15s,box-shadow .15s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(91,75,212,.08)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .15s;background:none;color:var(--txt)}
-.btn-p{background:var(--acc);color:white;width:100%;padding:11px;font-size:14px;border:none}
-.btn-p:hover{background:#4e40bf}
-.btn-s{background:var(--surf);color:var(--txt);border-color:var(--bdr)}
-.btn-s:hover{background:var(--surf2);border-color:var(--bdr2)}
-.btn-d{background:transparent;color:var(--dan);border-color:transparent}
-.btn-d:hover{background:var(--dan-l)}
-.btn-sm{padding:5px 13px;font-size:12px}
+.auth-card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:2.75rem;width:100%;max-width:420px;box-shadow:var(--shm)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:2rem}
+.brand-ic{width:38px;height:38px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(91,75,212,.3)}
+.brand-ic svg{width:20px;height:20px;fill:white}
+.brand-name{font-size:20px;font-weight:700;letter-spacing:-0.3px}
+h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0.4px}
+.auth-sub{font-size:14px;color:var(--mut);margin-bottom:1.75rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:15px;background:var(--surf3);color:var(--txt);outline:none;transition:all .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acc);background:var(--surf);box-shadow:0 0 0 4px rgba(91,75,212,.1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;background:none;color:var(--txt)}
+.btn-p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;width:100%;padding:12px;font-size:15px;border:none;box-shadow:0 4px 12px rgba(91,75,212,.3)}
+.btn-p:hover{opacity:.9;transform:translateY(-1px)}
+.btn-s{background:var(--surf);color:var(--txt);border-color:var(--bdr2)}
+.btn-s:hover{background:var(--surf2);border-color:var(--acc)}
+.btn-d{background:var(--dan-l);color:var(--dan);border-color:transparent}
+.btn-d:hover{background:#f9d8e2}
+.btn-sm{padding:6px 14px;font-size:13px}
 .toggle{text-align:center;margin-top:1.25rem;font-size:13px;color:var(--mut)}
 .toggle a{color:var(--acc);cursor:pointer;font-weight:600}
-.err{background:var(--dan-l);color:var(--dan);border:1px solid #f0c0cc;border-radius:var(--rs);padding:9px 13px;font-size:13px;margin-bottom:.9rem;display:none}
-
-/* ── APP SHELL ── */
+.err{background:var(--dan-l);color:var(--dan);border:1.5px solid #f0b8cc;border-radius:var(--rs);padding:10px 14px;font-size:13px;margin-bottom:1rem;display:none}
 #app{display:none;min-height:100vh}
-.hdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 1.5rem;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .hdr-r{display:flex;align-items:center;gap:.75rem}
-.ubadge{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
-.av{width:30px;height:30px;border-radius:50%;background:var(--acc);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.rtag{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.2px}
+.ubadge{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mut)}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.rtag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.3px;text-transform:uppercase}
 .rtag.cl{background:var(--blu-l);color:var(--blu)}
-.app-body{display:flex;min-height:calc(100vh - 58px)}
-
-/* ── SIDEBAR ── */
-.sidebar{width:220px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1rem .75rem;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--rs);font-size:13px;font-weight:500;color:var(--mut);cursor:pointer;transition:background .12s,color .12s;border:none;background:none;width:100%;text-align:left}
+.app-body{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rs);font-size:14px;font-weight:500;color:var(--mut);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
 .nav-item:hover{background:var(--surf2);color:var(--txt)}
 .nav-item.on{background:var(--acc-l);color:var(--acc);font-weight:600}
-.nav-item svg{width:15px;height:15px;flex-shrink:0;opacity:.8}
-.nav-item.on svg{opacity:1}
-.nav-sep{height:1px;background:var(--bdr);margin:6px 0}
-.nav-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;padding:4px 10px;margin-top:4px;opacity:.7}
-.content{flex:1;padding:2rem;overflow-y:auto;min-width:0;max-width:860px}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-sep{height:1px;background:var(--bdr);margin:8px 0}
+.nav-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;padding:4px 12px;margin-top:4px}
+.content{flex:1;padding:2rem;overflow-y:auto;min-width:0}
 
-/* ── POMODORO ── */
-.pomo-widget{padding:.9rem .75rem 1rem;margin-bottom:.5rem;text-align:center}
-.pomo-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin-bottom:.6rem;opacity:.8}
-.pomo-modes{display:flex;gap:3px;justify-content:center;margin-bottom:.75rem;background:var(--surf2);border-radius:20px;padding:3px}
-.pomo-mode{flex:1;padding:3px 0;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--mut);transition:all .15s}
-.pomo-mode.on{background:var(--surf);color:var(--acc);box-shadow:var(--sh)}
-.pomo-time{font-size:32px;font-weight:700;letter-spacing:-1px;color:var(--txt);font-family:var(--mono);line-height:1.1}
-.pomo-bar{height:3px;background:var(--bdr);border-radius:99px;margin:.65rem 0;overflow:hidden}
-.pomo-fill{height:100%;background:var(--acc);border-radius:99px;transition:width .5s linear}
+/* POMODORO */
+.pomo-widget{background:var(--surf3);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem;margin-bottom:.75rem;text-align:center}
+.pomo-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:.6rem}
+.pomo-modes{display:flex;gap:3px;justify-content:center;margin-bottom:.6rem}
+.pomo-mode{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--bdr2);background:none;color:var(--mut);transition:all .15s}
+.pomo-mode.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
+.pomo-time{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--txt);font-family:var(--mono);line-height:1.1}
+.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overflow:hidden}
+.pomo-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .5s linear}
 .pomo-btns{display:flex;gap:5px;justify-content:center}
-.pomo-btn{padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bdr);background:var(--surf);color:var(--mut);transition:all .15s}
-.pomo-btn:hover{border-color:var(--acc);color:var(--acc)}
-.pomo-btn.active{background:var(--acc);color:white;border-color:transparent}
+.pomo-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.pomo-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
+.pomo-btn.active{background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;border-color:transparent}
 
-/* ── CARDS ── */
-.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;box-shadow:var(--sh);margin-bottom:1rem}
-.ci{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bdr)}
+/* CARDS */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);margin-bottom:1rem}
+.ci{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)}
 .ci:last-child{border-bottom:none}
 .ci-info{display:flex;align-items:center;gap:10px}
-
-/* ── TASK LIST ── */
-.ti{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--bdr)}
-.ti:last-child{border-bottom:none;padding-bottom:0}
-.chk{width:18px;height:18px;border:1.5px solid var(--bdr2);border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .18s;background:var(--surf)}
-.chk:hover{border-color:var(--acc)}
-.chk.on{background:var(--acc);border-color:var(--acc)}
-.chk.pop{animation:chkpop .3s ease}
-@keyframes chkpop{0%{transform:scale(1)}40%{transform:scale(1.4)}75%{transform:scale(.92)}100%{transform:scale(1)}}
-.ttl{font-weight:500;font-size:14px;color:var(--txt)}
+.ti{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--bdr)}
+.ti:last-child{border-bottom:none}
+.chk{width:20px;height:20px;border:2px solid var(--bdr2);border-radius:5px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;background:var(--surf3)}
+.chk.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;box-shadow:0 2px 8px rgba(91,75,212,.35)}
+.chk.pop{animation:chkpop .35s ease}
+@keyframes chkpop{0%{transform:scale(1)}40%{transform:scale(1.45)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+.ttl{font-weight:600;font-size:14px}
 .ttl.dn{text-decoration:line-through;color:var(--mut);font-weight:400}
-.tdsc{font-size:13px;color:var(--mut);margin-top:2px;line-height:1.5}
-.tmeta{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px}
+.tdsc{font-size:13px;color:var(--mut);margin-top:3px}
+.tmeta{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
 .tb{background:var(--blu-l);color:var(--blu)}
 .ta{background:var(--amb-l);color:var(--amb)}
 .tg{background:var(--grn-l);color:var(--grn)}
 
-/* ── DATE NAV ── */
-.wn{display:flex;align-items:center;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
-.wl{font-size:13px;font-weight:500;color:var(--txt);font-family:var(--mono);background:var(--surf2);padding:5px 12px;border-radius:var(--rs);border:1px solid var(--bdr);min-width:145px;text-align:center}
-.wb{width:30px;height:30px;border-radius:var(--rs);border:1px solid var(--bdr);background:var(--surf);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mut);transition:all .12s}
-.wb:hover{background:var(--surf2);border-color:var(--bdr2);color:var(--txt)}
-.dpick{padding:5px 9px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf);color:var(--txt);cursor:pointer;outline:none;transition:border-color .12s}
+/* DATE NAV */
+.wn{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.wl{font-size:13px;font-weight:600;color:var(--mut);font-family:var(--mono);background:var(--surf2);padding:6px 14px;border-radius:var(--rs);border:1px solid var(--bdr);min-width:150px;text-align:center}
+.wb{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--bdr2);background:var(--surf);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--txt);transition:all .15s}
+.wb:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
+.dpick{padding:7px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);cursor:pointer;outline:none;transition:border-color .15s}
 .dpick:focus{border-color:var(--acc)}
-.today-btn{padding:5px 12px;border-radius:var(--rs);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:var(--surf);color:var(--mut);transition:all .12s}
-.today-btn:hover{background:var(--surf2);color:var(--txt)}
-.pbar{height:4px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:1.25rem}
-.pfill{height:100%;background:var(--acc);border-radius:99px;transition:width .4s ease}
-.pfill.flash{animation:barflash .4s ease}
-@keyframes barflash{0%,100%{opacity:1}50%{opacity:.6}}
+.today-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.today-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
+.pbar{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
+.pfill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
+.pfill.flash{animation:barflash .5s ease}
+@keyframes barflash{0%{filter:brightness(1)}50%{filter:brightness(1.5)}100%{filter:brightness(1)}}
 
-/* ── MODAL ── */
-.overlay{position:fixed;inset:0;background:rgba(10,8,25,.4);z-index:200;align-items:center;justify-content:center;padding:1rem;display:none;backdrop-filter:blur(2px)}
-.modal{background:var(--surf);border-radius:14px;padding:1.75rem;width:100%;max-width:460px;box-shadow:var(--shm);border:1px solid var(--bdr)}
-.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-.modal-title{font-size:16px;font-weight:700;letter-spacing:-0.2px}
-.modal-close{width:28px;height:28px;border-radius:6px;border:none;background:none;cursor:pointer;color:var(--mut);font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .12s}
-.modal-close:hover{background:var(--surf2)}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--bdr)}
-.modal-section{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin:1rem 0 .6rem}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(10,8,25,.5);z-index:200;align-items:center;justify-content:center;padding:1rem;display:none}
+.modal{background:var(--surf);border-radius:16px;padding:2rem;width:100%;max-width:480px;box-shadow:var(--shm);border:1px solid var(--bdr2)}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:1.5rem;letter-spacing:-0.3px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.5rem}
 
-/* ── STATS ── */
-.empty{text-align:center;padding:3rem 1rem;color:var(--mut)}
-.empty-i{font-size:28px;margin-bottom:.6rem;opacity:.6}
-.empty-t{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.75rem}
-.sc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.1rem 1.25rem}
-.sn{font-size:26px;font-weight:700;letter-spacing:-0.5px;color:var(--acc);line-height:1.1}
-.sl{font-size:11px;font-weight:600;color:var(--mut);margin-top:3px;letter-spacing:.2px}
-.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
-.pill{padding:5px 14px;border-radius:20px;border:1px solid var(--bdr);font-size:13px;font-weight:500;cursor:pointer;background:var(--surf);color:var(--mut);transition:all .12s}
+/* MISC */
+.empty{text-align:center;padding:3.5rem 1rem;color:var(--mut)}
+.empty-i{font-size:36px;margin-bottom:.75rem}
+.empty-t{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem}
+.sc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;box-shadow:var(--sh)}
+.sn{font-size:30px;font-weight:700;letter-spacing:-0.5px;color:var(--acc)}
+.sl{font-size:11px;font-weight:700;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.pill{padding:6px 16px;border-radius:20px;border:1.5px solid var(--bdr2);font-size:13px;font-weight:600;cursor:pointer;background:var(--surf);color:var(--mut);transition:all .15s}
 .pill.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
-.fchip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;background:var(--surf2);color:var(--txt);font-size:12px;font-weight:500;cursor:pointer;margin:2px 2px 0 0;border:1px solid var(--bdr);max-width:200px;transition:background .12s}
-.fchip:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
-.fchip.sub{background:var(--blu-l);color:var(--blu);border-color:transparent}
+.fchip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--acc-l);color:var(--acc);font-size:12px;font-weight:600;cursor:pointer;margin:2px 2px 0 0;border:none;max-width:200px}
+.fchip:hover{background:#ddd6f8}
+.fchip.sub{background:var(--blu-l);color:var(--blu)}
 .fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px}
-.fdl{opacity:.45;font-size:13px;cursor:pointer;margin-left:2px}
+.fdl{opacity:.5;font-size:14px;cursor:pointer}
 .fdl:hover{opacity:1}
 .frow{display:flex;flex-wrap:wrap;margin-top:6px;align-items:center}
-.uz{border:1.5px dashed var(--bdr2);border-radius:var(--rs);padding:.85rem;text-align:center;cursor:pointer;transition:all .15s;background:transparent;display:block;margin-top:8px}
+.uz{border:2px dashed var(--bdr2);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;transition:all .15s;background:var(--surf3);display:block;margin-top:8px}
 .uz:hover,.uz.dg{border-color:var(--acc);background:var(--acc-l)}
 .uz p{font-size:13px;color:var(--mut);pointer-events:none}
 .uz p strong{color:var(--acc)}
-.sh{font-size:18px;font-weight:700;margin-bottom:1rem;letter-spacing:-0.2px}
+.sh{font-size:20px;font-weight:700;margin-bottom:1rem;letter-spacing:-0.3px}
 .loading{text-align:center;padding:4rem;color:var(--mut);font-size:14px}
-.row-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.row-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
 
-/* ── QUESTION HUB ── */
-.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:1.5rem}
-.subj-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.1rem;cursor:pointer;transition:border-color .15s,box-shadow .15s;text-align:center}
-.subj-card:hover{border-color:var(--bdr2);box-shadow:var(--shm)}
+/* QUESTION HUB */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.subj-card{background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r);padding:1.25rem;cursor:pointer;transition:all .2s;text-align:center}
+.subj-card:hover{border-color:var(--acc);box-shadow:var(--shm);transform:translateY(-2px)}
 .subj-card.on{border-color:var(--acc);background:var(--acc-l)}
-.subj-emoji{font-size:24px;margin-bottom:.4rem}
-.subj-name{font-size:13px;font-weight:700;color:var(--txt)}
+.subj-emoji{font-size:28px;margin-bottom:.5rem}
+.subj-name{font-size:14px;font-weight:700;color:var(--txt)}
 .subj-desc{font-size:12px;color:var(--mut);margin-top:2px}
 .year-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1.25rem}
-.ytab{padding:4px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bdr);background:var(--surf);color:var(--mut);transition:all .12s}
+.ytab{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
 .ytab.on{background:var(--acc);color:white;border-color:var(--acc)}
-.q-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.1rem;margin-bottom:.65rem}
-.q-num{font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.4px;margin-bottom:.35rem}
+.q-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;margin-bottom:.75rem;box-shadow:var(--sh)}
+.q-num{font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem}
 .q-text{font-size:14px;font-weight:500;line-height:1.6;color:var(--txt)}
-.q-meta{display:flex;gap:8px;margin-top:.5rem;flex-wrap:wrap}
-.q-ans{background:var(--grn-l);border:1px solid #b2ddc8;border-radius:var(--rs);padding:.7rem 1rem;margin-top:.7rem;font-size:13px;color:#145c3a;display:none;line-height:1.55}
+.q-meta{display:flex;gap:8px;margin-top:.6rem;flex-wrap:wrap}
+.q-ans{background:var(--grn-l);border:1px solid #a8dcc2;border-radius:var(--rs);padding:.75rem 1rem;margin-top:.75rem;font-size:13px;color:var(--grn);display:none}
 .q-ans.show{display:block}
-.q-actions{display:flex;gap:5px;margin-top:.7rem;flex-wrap:wrap}
-.topic-select{padding:7px 11px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf);color:var(--txt);outline:none;cursor:pointer;transition:border-color .12s}
+.q-actions{display:flex;gap:6px;margin-top:.75rem;flex-wrap:wrap}
+.topic-select{padding:8px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none;cursor:pointer}
 .topic-select:focus{border-color:var(--acc)}
 .ai-generating{text-align:center;padding:2rem;color:var(--mut)}
-.spin{width:24px;height:24px;border:2px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .65rem}
+.spin{width:28px;height:28px;border:3px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .75rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── CONFETTI ── */
-.confetti-piece{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 1.2s ease-in forwards}
+/* SCHEDULE */
+.sched-wrap{overflow-x:auto;border:1px solid var(--bdr);border-radius:var(--r);background:var(--surf);box-shadow:var(--sh)}
+.sched-table{border-collapse:collapse;width:100%;min-width:700px;font-size:13px}
+.sched-table th{background:var(--surf2);font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;border:1px solid var(--bdr);text-align:center;white-space:nowrap}
+.sched-table th.time-col{width:70px;min-width:70px}
+.sched-table th.day-col{min-width:120px}
+.sched-table td{border:1px solid var(--bdr);padding:0;vertical-align:top;height:48px;position:relative}
+.sched-table td.time-cell{background:var(--surf2);padding:0 10px;font-size:11px;font-weight:600;color:var(--mut);font-family:var(--mono);text-align:right;vertical-align:middle;white-space:nowrap}
+.sched-cell{width:100%;height:100%;min-height:48px;padding:5px 7px;cursor:pointer;transition:background .1s;display:flex;align-items:flex-start;gap:4px}
+.sched-cell:hover{background:var(--acc-l)}
+.sched-cell.has-event{background:var(--acc-l);cursor:pointer}
+.sched-cell.has-event:hover{background:#ddd6f8}
+.sched-event{flex:1;min-width:0}
+.sched-event-title{font-size:12px;font-weight:600;color:var(--acc);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sched-event-sub{font-size:11px;color:var(--mut);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sched-del{font-size:14px;color:var(--mut);opacity:0;transition:opacity .1s;flex-shrink:0;cursor:pointer;line-height:1;padding:1px 2px;border-radius:3px}
+.sched-del:hover{background:var(--dan-l);color:var(--dan);opacity:1!important}
+.sched-cell.has-event:hover .sched-del{opacity:.5}
+.sched-today th.today-col{background:var(--acc-l);color:var(--acc)}
+.sched-color-0{background:var(--acc-l)!important}.sched-color-0 .sched-event-title{color:var(--acc)}
+.sched-color-1{background:var(--blu-l)!important}.sched-color-1 .sched-event-title{color:var(--blu)}
+.sched-color-2{background:var(--grn-l)!important}.sched-color-2 .sched-event-title{color:var(--grn)}
+.sched-color-3{background:var(--amb-l)!important}.sched-color-3 .sched-event-title{color:var(--amb)}
+.sched-color-4{background:var(--dan-l)!important}.sched-color-4 .sched-event-title{color:var(--dan)}
+.color-dots{display:flex;gap:6px;align-items:center}
+.color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.color-dot.on{border-color:var(--txt);transform:scale(1.15)}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 1.2s ease-in forwards}
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 @media(max-width:768px){.sidebar{display:none}.content{padding:1rem}.stats{grid-template-columns:1fr 1fr}.subj-grid{grid-template-columns:1fr 1fr}}
@@ -265,6 +279,7 @@ h2.auth-title{font-size:22px;font-weight:700;margin-bottom:3px;letter-spacing:-0
       </div>
       <div id="client-view" style="display:none"></div>
       <div id="qhub-view" style="display:none"></div>
+      <div id="sched-view" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -272,10 +287,7 @@ h2.auth-title{font-size:22px;font-weight:700;margin-bottom:3px;letter-spacing:-0
 <!-- MODAL -->
 <div id="modal-overlay" class="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title" id="m-title"></div>
-      <button class="modal-close" onclick="closeModal()">&#xd7;</button>
-    </div>
+    <div class="modal-title" id="m-title"></div>
     <div id="m-body"></div>
     <div class="modal-actions" id="m-actions"></div>
   </div>
@@ -426,7 +438,7 @@ function enterApp(u){
 function logout(){
   CU=null;localStorage.removeItem('flow_session');
   document.getElementById('app').style.display='none';
-  ['admin-view','client-view','qhub-view'].forEach(id=>document.getElementById(id).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('auth-screen').style.display='';
   showLogin();
 }
@@ -434,6 +446,10 @@ function logout(){
 // ── NAV ──────────────────────────────────────────────────────────
 function buildNav(role){
   const el=document.getElementById('nav-items');
+  const schedBtn=`<button class="nav-item" id="nav-sched" onclick="showSched()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Schedule
+  </button>`;
   const qhubBtn=`<button class="nav-item" id="nav-qhub" onclick="showQHub()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
     Question Hub
@@ -448,6 +464,7 @@ function buildNav(role){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Clients
       </button>
+      ${schedBtn}
       ${qhubBtn}`;
   } else {
     el.innerHTML=`
@@ -455,6 +472,7 @@ function buildNav(role){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
         My Tasks
       </button>
+      ${schedBtn}
       ${qhubBtn}`;
   }
 }
@@ -463,7 +481,7 @@ function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(n=>n.cl
 
 function showATab(tab){
   setActiveNav('nav-'+tab);
-  ['admin-view','client-view','qhub-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('admin-view').style.display='';
   document.getElementById('at-tasks').style.display=tab==='tasks'?'':'none';
   document.getElementById('at-clients').style.display=tab==='clients'?'':'none';
@@ -473,16 +491,23 @@ function showATab(tab){
 
 function showClientTasks(){
   setActiveNav('nav-mytasks');
-  ['admin-view','client-view','qhub-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('client-view').style.display='';
   renderClient();
 }
 
 function showQHub(){
   setActiveNav('nav-qhub');
-  ['admin-view','client-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('qhub-view').style.display='';
   renderQHub();
+}
+
+function showSched(){
+  setActiveNav('nav-sched');
+  ['admin-view','client-view','qhub-view'].forEach(v=>document.getElementById(v).style.display='none');
+  document.getElementById('sched-view').style.display='';
+  renderSched();
 }
 
 // ── DATE NAV ─────────────────────────────────────────────────────
@@ -549,11 +574,7 @@ async function renderClients(){
   const wt=tasks.filter(t=>t.week_key===wk);
   const done=completions.filter(c=>c.week_key===wk&&c.done).length;
   let h=`<span class="sh">Clients</span>`;
-  h+=`<div class="stats">
-    <div class="sc"><div class="sn">${clients.length}</div><div class="sl">Clients</div></div>
-    <div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div>
-    <div class="sc"><div class="sn" style="color:${wt.length&&Math.round(done/wt.length*100)>=70?'var(--grn)':'var(--acc)'}">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div>
-  </div>`;
+  h+=`<div class="stats"><div class="sc"><div class="sn">${clients.length}</div><div class="sl">Total clients</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
   h+=`<div class="card">`;
   if(!clients.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No clients yet</div></div>`;}
   else clients.forEach(c=>{
@@ -616,10 +637,10 @@ async function renderClient(){
   const myTasks=tasks.filter(t=>t.client_id===CU.id&&t.week_key===wk);
   const done=myTasks.filter(t=>completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
   const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
-  let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} 👋</div><p style="font-size:13px;color:var(--mut)">Your tasks for the week</p></div>`;
+  let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
   h+=dateNav(clientDate,'clientDate=shiftWeek(clientDate,-1);renderClient()','clientDate=shiftWeek(clientDate,1);renderClient()','clientDate=this.value;renderClient()','clientDate=todayKey();renderClient()');
   h+=`<div class="card">`;
-  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem"><span style="font-size:14px;font-weight:600">My tasks</span>${myTasks.length?`<span style="font-size:12px;color:var(--mut);font-family:var(--mono)">${done}/${myTasks.length}</span>`:''}</div>`;
+  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem"><span style="font-size:15px;font-weight:700">My tasks</span>${myTasks.length?`<span style="font-size:13px;color:var(--mut);font-family:var(--mono)">${done} / ${myTasks.length} done</span>`:''}</div>`;
   if(myTasks.length)h+=`<div class="pbar"><div class="pfill" id="client-pfill" style="width:${pct}%"></div></div>`;
   if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your coach will assign tasks here soon</p></div>`;}
   else myTasks.forEach(t=>{
@@ -953,343 +974,97 @@ function saveCustomQ(){
   renderQHub();
 }
 
-// ── DRAWING CANVAS + AI MARKING ───────────────────────────────────
-function openDraw(idx,type){
-  const q=type==='bank'?qState.questions[idx]:qState.customQs[idx];
-  if(!q)return;
-  const containerId=`draw-${type==='bank'?'bank':'cans'}-${idx}`;
-  const container=document.getElementById(containerId);
-  if(!container)return;
+// ── SCHEDULE ─────────────────────────────────────────────────────
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const HOURS=Array.from({length:16},(_,i)=>i+7);
+const COLORS=['#ECEAFA','#E3EDF8','#E3F6EE','#FBF3E3','#FCEEF2'];
+const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
+let schedEvents=JSON.parse(localStorage.getItem('flow_sched')||'{}');
+let schedPickColor=0;
 
-  if(container.innerHTML.includes('canvas')){container.innerHTML='';return;}
+function saveSched(){localStorage.setItem('flow_sched',JSON.stringify(schedEvents));}
+function schedKey(day,hour){return `${day}_${hour}`;}
 
-  container.innerHTML=`
-    <div style="margin-top:12px;border:1.5px solid var(--bdr2);border-radius:var(--r);overflow:hidden">
-      <div style="background:var(--surf2);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
-        <span style="font-size:12px;font-weight:700;color:var(--mut)">✏️ Draw your answer</span>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-          <input type="color" id="pen-color-${idx}" value="#1A1730" title="Pen colour" style="width:28px;height:28px;border:none;cursor:pointer;border-radius:4px;padding:2px">
-          <select id="pen-size-${idx}" style="padding:3px 6px;font-size:12px;border:1px solid var(--bdr2);border-radius:4px;background:var(--surf)">
-            <option value="2">Thin</option>
-            <option value="4" selected>Medium</option>
-            <option value="8">Thick</option>
-          </select>
-          <button class="btn btn-s btn-sm" onclick="clearCanvas('canvas-${idx}')">Clear</button>
-        </div>
-      </div>
-      <canvas id="canvas-${idx}" width="700" height="220" style="background:white;display:block;width:100%;cursor:crosshair;touch-action:none"></canvas>
-      <div style="padding:10px;border-top:1px solid var(--bdr);background:var(--surf3)">
-        <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Type your answer for AI marking</div>
-        <textarea id="typed-ans-${idx}" rows="3" placeholder="Type your answer here, then click AI Mark..." style="width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--surf);color:var(--txt);outline:none;resize:vertical;font-family:var(--font)"></textarea>
-        <button class="btn btn-p btn-sm" style="width:auto;margin-top:8px" onclick="markDrawing('canvas-${idx}','${esc(q.question)}','${esc(q.answer)}','${idx}','${type}')">🤖 AI Mark</button>
-      </div>
-      <div id="ai-feedback-${idx}"></div>
-    </div>`;
-
-  setTimeout(()=>initCanvas(`canvas-${idx}`,`pen-color-${idx}`,`pen-size-${idx}`),50);
-}
-
-function initCanvas(canvasId,colorId,sizeId){
-  const canvas=document.getElementById(canvasId);
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  let drawing=false,lx=0,ly=0;
-
-  function getPos(e){
-    const r=canvas.getBoundingClientRect();
-    const scaleX=canvas.width/r.width;
-    const scaleY=canvas.height/r.height;
-    const src=e.touches?e.touches[0]:e;
-    return{x:(src.clientX-r.left)*scaleX,y:(src.clientY-r.top)*scaleY};
-  }
-  function start(e){e.preventDefault();drawing=true;const p=getPos(e);lx=p.x;ly=p.y;}
-  function draw(e){
-    e.preventDefault();
-    if(!drawing)return;
-    const p=getPos(e);
-    ctx.strokeStyle=document.getElementById(colorId)?.value||'#1A1730';
-    ctx.lineWidth=parseInt(document.getElementById(sizeId)?.value||4);
-    ctx.lineCap='round';ctx.lineJoin='round';
-    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.stroke();
-    lx=p.x;ly=p.y;
-  }
-  function stop(){drawing=false;}
-  canvas.addEventListener('mousedown',start);
-  canvas.addEventListener('mousemove',draw);
-  canvas.addEventListener('mouseup',stop);
-  canvas.addEventListener('mouseleave',stop);
-  canvas.addEventListener('touchstart',start,{passive:false});
-  canvas.addEventListener('touchmove',draw,{passive:false});
-  canvas.addEventListener('touchend',stop);
-}
-
-function clearCanvas(canvasId){
-  const canvas=document.getElementById(canvasId);
-  if(canvas)canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
-  const idx=canvasId.replace('canvas-','');
-  const fb=document.getElementById('ai-feedback-'+idx);
-  if(fb)fb.innerHTML='';
-}
-
-async function markDrawing(canvasId,question,modelAnswer,idx,type){
-  // Get typed answer
-  const typedEl=document.getElementById('typed-ans-'+idx);
-  const typedAnswer=typedEl?typedEl.value.trim():'';
-  if(!typedAnswer){
-    const fbEl=document.getElementById('ai-feedback-'+idx);
-    if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);color:var(--dan);font-size:13px">Please type your answer in the box before submitting for marking.</div>`;
-    return;
-  }
-  const fbEl=document.getElementById('ai-feedback-'+idx);
-  if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);text-align:center;color:var(--mut);font-size:13px"><div style="width:20px;height:20px;border:2px solid var(--bdr2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px"></div>AI is marking your answer...</div>`;
-
-  const prompt=`You are a strict but encouraging HSC exam marker. Mark this student response.
-
-Question: ${question}
-Model answer / marking criteria: ${modelAnswer}
-Student's answer: ${typedAnswer}
-
-Respond EXACTLY in this format (no extra text):
-MARK: [number]/[total]
-FEEDBACK: [2-3 sentences on what they got right and wrong]
-TIP: [one specific improvement tip]`;
-
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:400,
-        messages:[{role:'user',content:prompt}]
-      })
+function renderSched(){
+  const el=document.getElementById('sched-view');
+  const today=new Date().getDay();
+  const todayIdx=today===0?6:today-1;
+  let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Schedule</span>
+    <button class="btn btn-p btn-sm" style="width:auto" onclick="openAddEvent()">+ Add event</button>
+  </div>
+  <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.</p>
+  <div class="sched-wrap"><table class="sched-table sched-today"><thead><tr><th class="time-col">Time</th>`;
+  DAYS.forEach((d,i)=>{h+=`<th class="day-col${i===todayIdx?' today-col':''}">${d}</th>`;});
+  h+=`</tr></thead><tbody>`;
+  HOURS.forEach(hour=>{
+    const label=hour<12?`${hour}:00 AM`:hour===12?`12:00 PM`:`${hour-12}:00 PM`;
+    h+=`<tr><td class="time-cell">${label}</td>`;
+    DAYS.forEach(day=>{
+      const key=schedKey(day,hour);
+      const ev=schedEvents[key];
+      if(ev){
+        h+=`<td><div class="sched-cell has-event sched-color-${ev.color}" onclick="openEditEvent('${key}')">
+          <div class="sched-event">
+            <div class="sched-event-title">${esc(ev.title)}</div>
+            ${ev.note?`<div class="sched-event-sub">${esc(ev.note)}</div>`:''}
+          </div>
+          <span class="sched-del" onclick="event.stopPropagation();deleteEvent('${key}')" title="Delete">×</span>
+        </div></td>`;
+      } else {
+        h+=`<td><div class="sched-cell" onclick="openAddEventAt('${day}',${hour})"></div></td>`;
+      }
     });
-    if(!resp.ok){const err=await resp.json();throw new Error(err.error?.message||resp.statusText);}
-    const data=await resp.json();
-    const text=data.content?.map(c=>c.text||'').join('').trim();
-    if(fbEl){
-      const lines=text.split('\n').filter(Boolean);
-      const markLine=lines.find(l=>l.startsWith('MARK:'))||'';
-      const fbLine=lines.find(l=>l.startsWith('FEEDBACK:'))||'';
-      const tipLine=lines.find(l=>l.startsWith('TIP:'))||'';
-      fbEl.innerHTML=`<div style="padding:14px;border-top:1px solid var(--bdr)">
-        ${markLine?`<div style="font-size:22px;font-weight:700;color:var(--acc);margin-bottom:10px">${esc(markLine)}</div>`:''}
-        ${fbLine?`<div style="font-size:13px;line-height:1.7;margin-bottom:10px;color:var(--txt)">${esc(fbLine.replace('FEEDBACK:','').trim())}</div>`:''}
-        ${tipLine?`<div style="font-size:13px;background:var(--acc-l);color:var(--acc-t);padding:10px 12px;border-radius:var(--rs)"><strong>💡 Tip:</strong> ${esc(tipLine.replace('TIP:','').trim())}</div>`:''}
-        ${!markLine&&!fbLine?`<div style="font-size:13px;color:var(--txt);line-height:1.7">${esc(text)}</div>`:''}
-      </div>`;
-    }
-  }catch(e){
-    if(fbEl)fbEl.innerHTML=`<div style="padding:12px;border-top:1px solid var(--bdr);color:var(--dan);font-size:13px">Could not reach AI marker: ${esc(e.message)}. Check your internet connection and try again.</div>`;
-  }
-}
-
-// ── INIT ─────────────────────────────────────────────────────────
-async function init(){
-  const saved=localStorage.getItem('flow_session');
-  if(saved){try{enterApp(JSON.parse(saved));return;}catch{}}
-  document.getElementById('auth-screen').style.display='';
-  const hasAdmin=await isAdminSetup();
-  if(!hasAdmin){document.getElementById('setup-view').style.display='';}
-  else{document.getElementById('login-view').style.display='';}
-}
-init();
-</script>
-</body>
-</html>
-
-  maths:{emoji:'🧮',name:'Mathematics',color:'var(--acc)',topics:{
-    7:['Whole numbers','Fractions & decimals','Percentages','Basic algebra','Geometry basics','Area & perimeter','Data & statistics'],
-    8:['Integers','Ratios & rates','Linear equations','Angle relationships','Pythagoras intro','Volume & surface area','Probability'],
-    9:['Surds & indices','Linear & quadratic equations','Coordinate geometry','Trigonometry basics','Financial maths','Data analysis'],
-    10:['Quadratic functions','Polynomials','Circle geometry','Trigonometry','Logarithms','Statistics & probability'],
-    11:['Functions','Trigonometric functions','Calculus intro','Series & sequences','Financial maths'],
-    12:['Integration','Differential equations','Exponential & log functions','Statistical analysis','Mechanics']
-  }},
-  english:{emoji:'📚',name:'English',color:'var(--blu)',topics:{
-    7:['Creative writing','Comprehension','Narrative techniques','Poetry analysis','Media texts'],
-    8:['Persuasive writing','Character analysis','Literary devices','Drama texts','Research skills'],
-    9:['Essay structure','Novel study','Language features','Multimodal texts','Argument analysis'],
-    10:['Advanced essay writing','Shakespeare','Film analysis','Speeches','Comparative study'],
-    11:['Module A: Texts & Human Experiences','Module B: Close Study','Module C: Texts & Cultures','Creative writing advanced'],
-    12:['Common Module','Module A','Module B','Module C','Exam preparation']
-  }},
-  physics:{emoji:'⚛️',name:'Physics',color:'var(--amb)',topics:{
-    7:['Forces & motion','Energy','Sound & light','Simple machines'],
-    8:['Electricity basics','Magnetism','Heat transfer','Earth & space'],
-    9:['Waves','Newton\'s laws','Work & energy','Chemical reactions'],
-    10:['Electromagnetism','Nuclear physics intro','Thermodynamics','Modern physics intro'],
-    11:['Kinematics','Dynamics','Waves & thermodynamics','Electricity & magnetism'],
-    12:['Mechanics','Electromagnetism','Ideas to Implementation','From Quanta to Quarks','Medical physics']
-  }},
-  chemistry:{emoji:'🧪',name:'Chemistry',color:'var(--grn)',topics:{
-    7:['Matter & materials','Mixtures & separation','Physical & chemical changes'],
-    8:['Elements & compounds','Periodic table intro','Acids & bases intro','Reactions'],
-    9:['Atomic structure','Chemical bonding','Reactions & equations','Rates of reaction'],
-    10:['Mole concept','Organic chemistry intro','Electrochemistry','Equilibrium intro'],
-    11:['Atomic structure & bonding','Working scientifically','Chemical reactions','Acid-base reactions','Titrations'],
-    12:['Equilibrium & acid reactions','Organic chemistry','Electrochemistry','Monitoring & management']
-  }}
-};
-
-let qState={subject:'maths',year:12,topic:null,questions:[],customQs:[],showCustomForm:false};
-
-function renderQHub(){
-  const el=document.getElementById('qhub-view');
-  const subj=SUBJECTS[qState.subject];
-  const topics=subj.topics[qState.year]||[];
-
-  let h=`<div class="row-top"><span class="sh" style="margin:0">Question Hub</span></div>`;
-
-  // Subject selector
-  h+=`<div class="subj-grid">`;
-  Object.entries(SUBJECTS).forEach(([key,s])=>{
-    h+=`<div class="subj-card${qState.subject===key?' on':''}" onclick="qState.subject='${key}';qState.topic=null;qState.questions=[];renderQHub()">
-      <div class="subj-emoji">${s.emoji}</div>
-      <div class="subj-name">${s.name}</div>
-    </div>`;
+    h+=`</tr>`;
   });
-  h+=`</div>`;
-
-  // Year selector
-  h+=`<div style="margin-bottom:1rem"><p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Year level</p><div class="year-tabs">`;
-  [7,8,9,10,11,12].forEach(y=>{
-    h+=`<button class="ytab${qState.year===y?' on':''}" onclick="qState.year=${y};qState.topic=null;qState.questions=[];renderQHub()">${y}</button>`;
-  });
-  h+=`</div></div>`;
-
-  // Topic selector
-  h+=`<div style="margin-bottom:1.5rem"><p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Topic</p>`;
-  h+=`<select class="topic-select" onchange="qState.topic=this.value;qState.questions=[];renderQHub()">`;
-  h+=`<option value="">— Select a topic —</option>`;
-  topics.forEach(t=>{h+=`<option value="${esc(t)}"${qState.topic===t?' selected':''}>${esc(t)}</option>`;});
-  h+=`</select></div>`;
-
-  if(qState.topic){
-    h+=`<div style="display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap">`;
-    h+=`<button class="btn btn-p btn-sm" style="width:auto" onclick="generateAIQuestions()">&#x2728; Generate AI questions</button>`;
-    h+=`<button class="btn btn-s btn-sm" onclick="toggleCustomForm()">+ Add my own question</button>`;
-    h+=`</div>`;
-
-    // Custom question form
-    if(qState.showCustomForm){
-      h+=`<div class="card" style="margin-bottom:1rem;border-color:var(--acc)">
-        <div style="font-size:13px;font-weight:700;margin-bottom:.75rem">Add custom question</div>
-        <div class="field"><label>Question</label><textarea id="cq-text" rows="3" placeholder="Enter your question..."></textarea></div>
-        <div class="field"><label>Answer / marking guide</label><textarea id="cq-ans" rows="2" placeholder="Enter the answer..."></textarea></div>
-        <div class="field"><label>Marks</label><select id="cq-marks"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-p btn-sm" style="width:auto" onclick="saveCustomQ()">Save question</button>
-          <button class="btn btn-s btn-sm" onclick="qState.showCustomForm=false;renderQHub()">Cancel</button>
-        </div>
-      </div>`;
-    }
-
-    // Custom questions
-    if(qState.customQs.length){
-      h+=`<div style="margin-bottom:1rem">`;
-      h+=`<p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">My questions</p>`;
-      qState.customQs.forEach((q,i)=>{
-        h+=`<div class="q-card">
-          <div class="q-num">Custom · ${q.marks} mark${q.marks>1?'s':''}</div>
-          <div class="q-text">${esc(q.text)}</div>
-          <div class="q-actions">
-            <button class="btn btn-s btn-sm" onclick="toggleAns('cans-${i}')">Show answer</button>
-            <button class="btn btn-d btn-sm" onclick="qState.customQs.splice(${i},1);renderQHub()">Delete</button>
-          </div>
-          <div class="q-ans" id="cans-${i}"><strong>Answer:</strong> ${esc(q.answer)}</div>
-        </div>`;
-      });
-      h+=`</div>`;
-    }
-
-    // AI generated questions
-    if(qState.questions.length){
-      h+=`<p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">AI generated questions</p>`;
-      qState.questions.forEach((q,i)=>{
-        h+=`<div class="q-card">
-          <div class="q-num">Question ${i+1} · ${q.marks} mark${q.marks>1?'s':''} · ${esc(q.difficulty||'Standard')}</div>
-          <div class="q-text">${esc(q.question)}</div>
-          <div class="q-actions">
-            <button class="btn btn-s btn-sm" onclick="toggleAns('aans-${i}')">Show answer</button>
-          </div>
-          <div class="q-ans" id="aans-${i}"><strong>Model answer:</strong> ${esc(q.answer)}</div>
-        </div>`;
-      });
-      h+=`<div style="margin-top:1rem"><button class="btn btn-s btn-sm" onclick="generateAIQuestions()">&#x21bb; Generate new questions</button></div>`;
-    } else if(!qState.showCustomForm){
-      h+=`<div class="empty"><div class="empty-i">&#x1F4A1;</div><div class="empty-t">Ready to practice?</div><p>Click "Generate AI questions" to get HSC-style questions for ${esc(qState.topic)}</p></div>`;
-    }
-  }
-
+  h+=`</tbody></table></div>`;
   el.innerHTML=h;
 }
 
-function toggleAns(id){const el=document.getElementById(id);if(el)el.classList.toggle('show');}
-function toggleCustomForm(){qState.showCustomForm=!qState.showCustomForm;renderQHub();}
-
-function saveCustomQ(){
-  const text=document.getElementById('cq-text').value.trim();
-  const answer=document.getElementById('cq-ans').value.trim();
-  const marks=parseInt(document.getElementById('cq-marks').value);
-  if(!text)return alert('Please enter a question.');
-  qState.customQs.push({text,answer,marks});
-  qState.showCustomForm=false;
-  renderQHub();
+function openAddEvent(){
+  document.getElementById('m-title').textContent='Add event';
+  _schedModalBody();
+  document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveSchedEvent()">Add event</button>`;
+  document.getElementById('modal-overlay').style.display='flex';
 }
-
-async function generateAIQuestions(){
-  const el=document.getElementById('qhub-view');
-  const subj=SUBJECTS[qState.subject];
-  // Show spinner inline
-  const existing=el.querySelector('.q-ans')?.closest('.card');
-  const spinDiv=document.createElement('div');
-  spinDiv.className='ai-generating';
-  spinDiv.innerHTML=`<div class="spin"></div><p>Generating Year ${qState.year} ${subj.name} questions on <strong>${qState.topic}</strong>...</p>`;
-  // append spinner
-  const content=el;
-  content.appendChild(spinDiv);
-
-  const prompt=`You are an expert Australian HSC tutor. Generate 5 unique, varied practice questions for Year ${qState.year} ${subj.name}, topic: "${qState.topic}".
-
-Requirements:
-- Mix of difficulty: easy, medium, hard
-- Vary question types: short answer, calculation, explain, analyse
-- Each question should be clearly different from the others
-- Use Australian curriculum context where relevant
-- For Year 11-12, align with NSW HSC syllabus style
-
-Respond ONLY with a JSON array, no markdown, no extra text:
-[
-  {"question":"...","answer":"...","marks":2,"difficulty":"Easy"},
-  {"question":"...","answer":"...","marks":3,"difficulty":"Medium"},
-  ...
-]`;
-
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    const data=await resp.json();
-    const text=data.content?.map(c=>c.text||'').join('').trim();
-    const clean=text.replace(/```json|```/g,'').trim();
-    const questions=JSON.parse(clean);
-    qState.questions=questions;
-  }catch(e){
-    qState.questions=[{question:'Could not generate questions. Please try again.',answer:'',marks:0,difficulty:''}];
-  }
-  renderQHub();
+function openAddEventAt(day,hour){
+  document.getElementById('m-title').textContent='Add event';
+  _schedModalBody(day,hour);
+  document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveSchedEvent()">Add event</button>`;
+  document.getElementById('modal-overlay').style.display='flex';
 }
+function openEditEvent(key){
+  const ev=schedEvents[key];if(!ev)return;
+  const [day,hourStr]=key.split('_');
+  document.getElementById('m-title').textContent='Edit event';
+  _schedModalBody(day,parseInt(hourStr),ev);
+  document.getElementById('m-actions').innerHTML=`<button class="btn btn-d btn-sm" onclick="deleteEvent('${key}');closeModal()">Delete</button><div style="flex:1"></div><button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveSchedEvent('${key}')">Save</button>`;
+  document.getElementById('modal-overlay').style.display='flex';
+}
+function _schedModalBody(day,hour,ev){
+  const colorDots=COLORS.map((c,i)=>`<div class="color-dot${(ev?ev.color:schedPickColor)===i?' on':''}" style="background:${c};border:2px solid ${(ev?ev.color:schedPickColor)===i?'#555':'var(--bdr2)'}" onclick="document.querySelectorAll('.color-dot').forEach((d,j)=>{d.classList.toggle('on',j===${i});d.style.borderColor=j===${i}?'#555':'var(--bdr2)'});schedPickColor=${i}" title="${COLOR_LABELS[i]}"></div>`).join('');
+  document.getElementById('m-body').innerHTML=`
+    <div class="field"><label>Title</label><input id="sc-title" placeholder="e.g. Maths study" value="${ev?esc(ev.title):''}"/></div>
+    <div class="field"><label>Note (optional)</label><input id="sc-note" placeholder="e.g. Chapter 3" value="${ev?esc(ev.note||''):''}"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="field"><label>Day</label><select id="sc-day">${DAYS.map(d=>`<option value="${d}"${d===(day||'Monday')?' selected':''}>${d}</option>`).join('')}</select></div>
+      <div class="field"><label>Time</label><select id="sc-hour">${HOURS.map(h=>{const l=h<12?`${h}:00 AM`:h===12?`12:00 PM`:`${h-12}:00 PM`;return`<option value="${h}"${h===(hour||9)?' selected':''}>${l}</option>`;}).join('')}</select></div>
+    </div>
+    <div class="field"><label>Colour</label><div class="color-dots">${colorDots}</div></div>`;
+}
+function saveSchedEvent(editKey){
+  const title=document.getElementById('sc-title').value.trim();
+  if(!title)return alert('Please enter a title.');
+  const day=document.getElementById('sc-day').value;
+  const hour=parseInt(document.getElementById('sc-hour').value);
+  const note=document.getElementById('sc-note').value.trim();
+  const dots=document.querySelectorAll('.color-dot');
+  let color=schedPickColor;
+  dots.forEach((d,i)=>{if(d.classList.contains('on'))color=i;});
+  if(editKey)delete schedEvents[editKey];
+  schedEvents[schedKey(day,hour)]={title,note,color};
+  saveSched();closeModal();renderSched();
+}
+function deleteEvent(key){delete schedEvents[key];saveSched();renderSched();}
 
 // ── INIT ─────────────────────────────────────────────────────────
 async function init(){
