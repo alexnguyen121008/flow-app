@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confluo</title>
+<title>Fluere</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -55,14 +55,14 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .rtag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--amb-l);color:var(--amb);letter-spacing:.3px;text-transform:uppercase}
 .rtag.cl{background:var(--blu-l);color:var(--blu)}
 .app-body{display:flex;min-height:calc(100vh - 64px)}
-.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overconfluo-y:auto}
+.sidebar{width:230px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);padding:1.25rem 1rem;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--rs);font-size:14px;font-weight:500;color:var(--mut);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
 .nav-item:hover{background:var(--surf2);color:var(--txt)}
 .nav-item.on{background:var(--acc-l);color:var(--acc);font-weight:600}
 .nav-item svg{width:16px;height:16px;flex-shrink:0}
 .nav-sep{height:1px;background:var(--bdr);margin:8px 0}
 .nav-label{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;padding:4px 12px;margin-top:4px}
-.content{flex:1;padding:2rem;overconfluo-y:auto;min-width:0}
+.content{flex:1;padding:2rem;overflow-y:auto;min-width:0}
 
 /* POMODORO */
 .pomo-widget{background:var(--surf3);border:1px solid var(--bdr);border-radius:var(--r);padding:1rem;margin-bottom:.75rem;text-align:center}
@@ -71,7 +71,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pomo-mode{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--bdr2);background:none;color:var(--mut);transition:all .15s}
 .pomo-mode.on{background:var(--acc-l);color:var(--acc);border-color:var(--acc)}
 .pomo-time{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--txt);font-family:var(--mono);line-height:1.1}
-.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overconfluo:hidden}
+.pomo-bar{height:4px;background:var(--surf2);border-radius:99px;margin:.6rem 0;overflow:hidden}
 .pomo-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .5s linear}
 .pomo-btns{display:flex;gap:5px;justify-content:center}
 .pomo-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
@@ -107,7 +107,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .dpick:focus{border-color:var(--acc)}
 .today-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
 .today-btn:hover{background:var(--acc-l);border-color:var(--acc);color:var(--acc)}
-.pbar{height:8px;background:var(--surf2);border-radius:99px;overconfluo:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
+.pbar{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--bdr)}
 .pfill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
 .pfill.flash{animation:barflash .5s ease}
 @keyframes barflash{0%{filter:brightness(1)}50%{filter:brightness(1.5)}100%{filter:brightness(1)}}
@@ -132,7 +132,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .fchip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--acc-l);color:var(--acc);font-size:12px;font-weight:600;cursor:pointer;margin:2px 2px 0 0;border:none;max-width:200px}
 .fchip:hover{background:#ddd6f8}
 .fchip.sub{background:var(--blu-l);color:var(--blu)}
-.fn{overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap;max-width:130px}
+.fn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px}
 .fdl{opacity:.5;font-size:14px;cursor:pointer}
 .fdl:hover{opacity:1}
 .frow{display:flex;flex-wrap:wrap;margin-top:6px;align-items:center}
@@ -169,7 +169,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* SCHEDULE */
-.sched-wrap{overconfluo-x:auto;border:1px solid var(--bdr);border-radius:var(--r);background:var(--surf);box-shadow:var(--sh)}
+.sched-wrap{overflow-x:auto;border:1px solid var(--bdr);border-radius:var(--r);background:var(--surf);box-shadow:var(--sh)}
 .sched-table{border-collapse:collapse;width:100%;min-width:700px;font-size:13px}
 .sched-table th{background:var(--surf2);font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;border:1px solid var(--bdr);text-align:center;white-space:nowrap}
 .sched-table th.time-col{width:70px;min-width:70px}
@@ -181,8 +181,8 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .sched-cell.has-event{background:var(--acc-l);cursor:pointer}
 .sched-cell.has-event:hover{background:#ddd6f8}
 .sched-event{flex:1;min-width:0}
-.sched-event-title{font-size:12px;font-weight:600;color:var(--acc);line-height:1.3;overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap}
-.sched-event-sub{font-size:11px;color:var(--mut);margin-top:1px;overconfluo:hidden;text-overconfluo:ellipsis;white-space:nowrap}
+.sched-event-title{font-size:12px;font-weight:600;color:var(--acc);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sched-event-sub{font-size:11px;color:var(--mut);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sched-del{font-size:14px;color:var(--mut);opacity:0;transition:opacity .1s;flex-shrink:0;cursor:pointer;line-height:1;padding:1px 2px;border-radius:3px}
 .sched-del:hover{background:var(--dan-l);color:var(--dan);opacity:1!important}
 .sched-cell.has-event:hover .sched-del{opacity:.5}
@@ -218,12 +218,12 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pa-feedback.fail{background:var(--dan-l);border:1px solid #f0b8cc;color:var(--dan)}
 .pa-feedback.neutral{background:var(--acc-l);border:1px solid var(--bdr2);color:var(--txt)}
 .pa-mark{font-size:20px;font-weight:700;margin-bottom:6px}
-.pa-score-bar{height:6px;background:var(--surf2);border-radius:99px;overconfluo:hidden;margin:1rem 0 .4rem}
+.pa-score-bar{height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;margin:1rem 0 .4rem}
 .pa-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s ease}
 .pa-progress{font-size:12px;color:var(--mut);text-align:right;margin-bottom:1.25rem}
 
 /* PAPER ANALYSER */
-.paper-overlay{position:fixed;inset:0;background:rgba(10,8,25,.55);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overconfluo-y:auto}
+.paper-overlay{position:fixed;inset:0;background:rgba(10,8,25,.55);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .paper-overlay.open{display:flex}
 .paper-modal{background:var(--surf);border-radius:18px;width:100%;max-width:680px;box-shadow:var(--shm);border:1px solid var(--bdr2);margin:auto}
 .paper-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.75rem 0}
@@ -255,7 +255,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .pq-feedback.mid{background:var(--amb-l);border:1px solid #e8c97a;color:var(--amb)}
 .pq-mark{font-size:18px;font-weight:700;margin-bottom:4px}
 .paper-prog{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
-.paper-prog-bar{flex:1;height:6px;background:var(--surf2);border-radius:99px;overconfluo:hidden}
+.paper-prog-bar{flex:1;height:6px;background:var(--surf2);border-radius:99px;overflow:hidden}
 .paper-prog-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
 .paper-summary{background:var(--surf2);border-radius:var(--r);padding:1.25rem;margin-top:1.25rem;text-align:center}
 .paper-summary .big{font-size:36px;font-weight:700;color:var(--acc);letter-spacing:-1px}
@@ -300,6 +300,21 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .game-msg.lose{background:var(--dan-l);color:var(--dan)}
 .game-msg.info{background:var(--acc-l);color:var(--acc)}
 
+/* LEADERBOARD */
+.lb-table{width:100%;border-collapse:collapse}
+.lb-table th{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;border-bottom:2px solid var(--bdr);text-align:left}
+.lb-table td{padding:12px 12px;border-bottom:1px solid var(--bdr);font-size:14px;vertical-align:middle}
+.lb-table tr:last-child td{border-bottom:none}
+.lb-rank{font-size:18px;font-weight:700;width:36px;color:var(--mut)}
+.lb-rank.gold{color:#f0b429}
+.lb-rank.silver{color:#9aa5b4}
+.lb-rank.bronze{color:#c17d52}
+.lb-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.lb-streak{font-size:13px;font-weight:700;color:var(--acc);background:var(--acc-l);padding:3px 10px;border-radius:20px}
+.lb-tabs{display:flex;gap:6px;margin-bottom:1.25rem}
+.lb-tab{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--bdr2);background:var(--surf);color:var(--mut);transition:all .15s}
+.lb-tab.on{background:var(--acc);color:white;border-color:var(--acc)}
+
 /* TASK COMPLETE RIPPLE */
 .ripple-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;border:2px solid var(--acc);animation:rippleOut .5s ease-out forwards}
 @keyframes rippleOut{0%{width:0;height:0;opacity:.7;transform:translate(-50%,-50%)}100%{width:80px;height:80px;opacity:0;transform:translate(-50%,-50%)}}
@@ -313,8 +328,8 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <div id="auth-screen">
   <div id="setup-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
-      <h2 class="auth-title">Set up Confluo</h2><p class="auth-sub">Create your admin account to get started</p>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
+      <h2 class="auth-title">Set up Fluere</h2><p class="auth-sub">Create your admin account to get started</p>
       <div id="setup-err" class="err"></div>
       <div class="field"><label>Your name</label><input id="s-name" placeholder="e.g. Sarah"/></div>
       <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="admin@yoursite.com"/></div>
@@ -324,7 +339,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   </div>
   <div id="login-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
       <h2 class="auth-title">Welcome back</h2><p class="auth-sub">Sign in to your account</p>
       <div id="login-err" class="err"></div>
       <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
@@ -335,7 +350,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   </div>
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
+      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
       <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a user</p>
       <div id="reg-err" class="err"></div>
       <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
@@ -350,7 +365,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <!-- APP -->
 <div id="app">
   <div class="hdr">
-    <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><span class="brand-name">Confluo</span></div>
+    <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
     <div class="hdr-r">
       <div class="ubadge"><div class="av" id="hdr-av"></div><span id="hdr-name"></span><span class="rtag" id="hdr-role"></span></div>
       <button class="btn btn-s btn-sm" onclick="logout()">Sign out</button>
@@ -392,6 +407,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div id="sched-view" style="display:none"></div>
       <div id="paper-view" style="display:none"></div>
       <div id="games-view" style="display:none"></div>
+      <div id="lb-view" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -553,7 +569,7 @@ function showReg(){['setup-view','login-view'].forEach(id=>document.getElementBy
 
 function enterApp(u){
   CU=u;
-  localStorage.setItem('confluo_session',JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
+  localStorage.setItem('fluere_session',JSON.stringify({id:u.id,name:u.name,email:u.email,role:u.role}));
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('hdr-av').textContent=ini(u.name);
@@ -563,7 +579,7 @@ function enterApp(u){
   rt.className='rtag'+(u.role==='user'||u.role==='client'?' cl':'');
   adminDate=todayKey();clientDate=todayKey();
   // Load this user's schedule
-  const savedSched=localStorage.getItem('confluo_sched_'+u.id)||localStorage.getItem('confluo_sched')||'{}';
+  const savedSched=localStorage.getItem('fluere_sched_'+u.id)||localStorage.getItem('fluere_sched')||'{}';
   try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
   buildNav(u.role);
   loadQuote();
@@ -571,7 +587,7 @@ function enterApp(u){
   else{document.getElementById('client-view').style.display='';renderClient();}
 }
 function logout(){
-  CU=null;localStorage.removeItem('confluo_session');
+  CU=null;localStorage.removeItem('fluere_session');
   document.getElementById('app').style.display='none';
   ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('auth-screen').style.display='';
@@ -581,6 +597,10 @@ function logout(){
 // ── NAV ──────────────────────────────────────────────────────────
 function buildNav(role){
   const el=document.getElementById('nav-items');
+  const lbBtn=`<button class="nav-item" id="nav-lb" onclick="showLeaderboard()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+    Leaderboard
+  </button>`;
   const gamesBtn=`<button class="nav-item" id="nav-games" onclick="showGames()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M9 12h2m2 0h2M12 10v2m0 2v2"/></svg>
     Games
@@ -605,28 +625,22 @@ function buildNav(role){
       </button>
       <button class="nav-item" id="nav-clients" onclick="showATab('clients')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Students
+        Users
       </button>
-      ${paperBtn}
-      ${schedBtn}
-      ${qhubBtn}
-      ${gamesBtn}`;
+      ${lbBtn}${paperBtn}${schedBtn}${qhubBtn}${gamesBtn}`;
   } else {
     el.innerHTML=`
       <button class="nav-item on" id="nav-mytasks" onclick="showClientTasks()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
         My Tasks
       </button>
-      ${paperBtn}
-      ${schedBtn}
-      ${qhubBtn}
-      ${gamesBtn}`;
+      ${lbBtn}${paperBtn}${schedBtn}${qhubBtn}${gamesBtn}`;
   }
 }
 
 function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));const el=document.getElementById(id);if(el)el.classList.add('on');}
 
-function _hideAll(){['admin-view','client-view','qhub-view','sched-view','paper-view','games-view'].forEach(v=>document.getElementById(v).style.display='none');}
+function _hideAll(){['admin-view','client-view','qhub-view','sched-view','paper-view','games-view','lb-view'].forEach(v=>document.getElementById(v).style.display='none');}
 
 function showATab(tab){
   playTick();
@@ -651,6 +665,10 @@ function showQHub(){
 function showSched(){
   playTick();setActiveNav('nav-sched');_hideAll();
   document.getElementById('sched-view').style.display='';renderSched();
+}
+function showLeaderboard(){
+  playTick();setActiveNav('nav-lb');_hideAll();
+  document.getElementById('lb-view').style.display='';renderLeaderboard();
 }
 function showPaperHub(){
   playTick();setActiveNav('nav-paper');_hideAll();
@@ -750,7 +768,7 @@ async function renderClients(){
 
 function viewClientSched(clientId, clientName){
   // Read their schedule from localStorage (keyed by student id)
-  const raw=localStorage.getItem('confluo_sched_'+clientId)||localStorage.getItem('confluo_sched')||'{}';
+  const raw=localStorage.getItem('fluere_sched_'+clientId)||localStorage.getItem('fluere_sched')||'{}';
   const events=JSON.parse(raw);
   const keys=Object.keys(events);
   document.getElementById('m-title').textContent=`${clientName}'s Schedule`;
@@ -764,7 +782,7 @@ function viewClientSched(clientId, clientName){
       const [da,ha]=a.split('_');const [db,hb]=b.split('_');
       return (dayOrder.indexOf(da)-dayOrder.indexOf(db))||parseInt(ha)-parseInt(hb);
     });
-    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overconfluo-y:auto">`;
+    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto">`;
     sorted.forEach(k=>{
       const ev=events[k];
       const [day,hourStr]=k.split('_');
@@ -1226,8 +1244,8 @@ function saveCustomQ(){
 // ── PAPER ANALYSER ───────────────────────────────────────────────
 // ── PAPER HUB ────────────────────────────────────────────────────
 // Saved papers: array of {id, name, subject, topic, questions:[{question,answer,marks,difficulty}], addedAt}
-let paperHubData = JSON.parse(localStorage.getItem('confluo_papers')||'[]');
-function savePaperHubData(){localStorage.setItem('confluo_papers',JSON.stringify(paperHubData));}
+let paperHubData = JSON.parse(localStorage.getItem('fluere_papers')||'[]');
+function savePaperHubData(){localStorage.setItem('fluere_papers',JSON.stringify(paperHubData));}
 
 // Subject detection keywords
 const SUBJ_KEYWORDS = {
@@ -1471,11 +1489,11 @@ const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunda
 const HOURS=Array.from({length:16},(_,i)=>i+7);
 const COLORS=['#ECEAFA','#E3EDF8','#E3F6EE','#FBF3E3','#FCEEF2'];
 const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
-let schedEvents=JSON.parse(localStorage.getItem('confluo_sched')||'{}');
+let schedEvents=JSON.parse(localStorage.getItem('fluere_sched')||'{}');
 let schedPickColor=0;
 
 function saveSched(){
-  const key=CU?'confluo_sched_'+CU.id:'confluo_sched';
+  const key=CU?'fluere_sched_'+CU.id:'fluere_sched';
   localStorage.setItem(key,JSON.stringify(schedEvents));
 }
 function schedKey(day,hour){return `${day}_${hour}`;}
@@ -1485,10 +1503,10 @@ function renderSched(){
   const today=new Date().getDay();
   const todayIdx=today===0?6:today-1;
   // Store schedule under user-specific key so admin can read it
-  const schedKey2=CU?'confluo_sched_'+CU.id:'confluo_sched';
+  const schedKey2=CU?'fluere_sched_'+CU.id:'fluere_sched';
   if(CU&&!schedEvents._migrated){
     // One-time migrate generic key to user key if exists
-    const generic=localStorage.getItem('confluo_sched');
+    const generic=localStorage.getItem('fluere_sched');
     if(generic&&!localStorage.getItem(schedKey2)){localStorage.setItem(schedKey2,generic);}
     schedEvents._migrated=true;
   }
@@ -1650,8 +1668,8 @@ function wKey(k){
     const g=wState.current;
     wState.guesses.push(g);
     wState.current='';
-    if(g===wState.word){wState.done=true;wState.msg='Brilliant! 🎉';}
-    else if(wState.guesses.length>=6){wState.done=true;wState.msg=`The word was ${wState.word}`;}
+    if(g===wState.word){wState.done=true;wState.msg='Brilliant! 🎉';recordWin('wordle');}
+    else if(wState.guesses.length>=6){wState.done=true;wState.msg=`The word was ${wState.word}`;recordLoss('wordle');}
     else{wState.msg='';}
   } else if(k==='⌫'){
     wState.current=wState.current.slice(0,-1);wState.msg='';
@@ -1756,11 +1774,11 @@ function cSubmit(){
     cState.solved.push(match);
     cState.selected=[];
     cState.msg=`✓ ${match.label}!`;
-    if(cState.solved.length===4){cState.done=true;cState.msg='Solved! 🎉';}
+    if(cState.solved.length===4){cState.done=true;cState.msg='Solved! 🎉';recordWin('conn');}
   } else {
     cState.mistakes++;
     cState.msg=cState.mistakes>=4?`Game over! Try again tomorrow`:`Not quite — ${4-cState.mistakes} mistake${4-cState.mistakes===1?'':'s'} left`;
-    if(cState.mistakes>=4){cState.done=true;}
+    if(cState.mistakes>=4){cState.done=true;recordLoss('conn');}
     cState.selected=[];
   }
   renderConn();
@@ -1809,9 +1827,96 @@ function renderGames(){
   else renderConn();
 }
 
+// ── LEADERBOARD ──────────────────────────────────────────────────
+// Streaks stored in localStorage keyed by user id, shared via Supabase users table notes field
+// We store streaks locally and show a merged view from all users' local data + Supabase
+
+function getLbKey(game){return`fluere_streak_${CU?CU.id:'anon'}_${game}`;}
+function getStreak(game){return parseInt(localStorage.getItem(getLbKey(game))||'0');}
+function getMaxStreak(game){return parseInt(localStorage.getItem(getLbKey(game)+'_max')||'0');}
+
+function recordWin(game){
+  const s=getStreak(game)+1;
+  localStorage.setItem(getLbKey(game),s);
+  const max=Math.max(s,getMaxStreak(game));
+  localStorage.setItem(getLbKey(game)+'_max',max);
+  // Save to Supabase so others can see it
+  if(CU){
+    const key=`streak_${game}`;
+    sb.from('users').update({[key]:max}).eq('id',CU.id).then(()=>_bust('users'));
+  }
+  return s;
+}
+
+function recordLoss(game){
+  localStorage.setItem(getLbKey(game),0);
+  if(CU){
+    const cur=getStreak(game);
+    if(cur>0)sb.from('users').update({[`streak_${game}`]:Math.max(cur,getMaxStreak(game))}).eq('id',CU.id).then(()=>_bust('users'));
+  }
+}
+
+let lbGame='wordle';
+async function renderLeaderboard(){
+  const el=document.getElementById('lb-view');
+  el.innerHTML=`<div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div><div class="loading">Loading...</div>`;
+  const users=await dbUsers();
+  const non_admin=users.filter(u=>u.role!=='admin');
+
+  const tabs=`<div class="lb-tabs">
+    <button class="lb-tab${lbGame==='wordle'?' on':''}" onclick="lbGame='wordle';renderLeaderboard()">🟩 Wordle</button>
+    <button class="lb-tab${lbGame==='conn'?' on':''}" onclick="lbGame='conn';renderLeaderboard()">🟦 Connections</button>
+  </div>`;
+
+  const gameKey=`streak_${lbGame}`;
+  // Build rows — use Supabase stored streak if available, else 0
+  const rows=non_admin.map(u=>({
+    name:u.name,
+    streak:u[gameKey]||0
+  })).sort((a,b)=>b.streak-a.streak);
+
+  // Also add current user's local data if not in list
+  if(CU&&!non_admin.find(u=>u.id===CU.id)){
+    rows.push({name:CU.name,streak:getMaxStreak(lbGame)});
+    rows.sort((a,b)=>b.streak-a.streak);
+  }
+
+  const medals=['🥇','🥈','🥉'];
+  const medalClass=['gold','silver','bronze'];
+
+  let tableRows='';
+  if(!rows.length||rows.every(r=>r.streak===0)){
+    tableRows=`<tr><td colspan="4" style="text-align:center;color:var(--mut);padding:2rem;font-size:14px">No scores yet — play a game to appear here!</td></tr>`;
+  } else {
+    rows.forEach((r,i)=>{
+      const medal=i<3?`<span style="font-size:20px">${medals[i]}</span>`:`<span class="lb-rank">${i+1}</span>`;
+      tableRows+=`<tr>
+        <td>${medal}</td>
+        <td><div style="display:flex;align-items:center;gap:10px">
+          <div class="lb-av">${ini(r.name)}</div>
+          <span style="font-weight:600">${esc(r.name)}</span>
+          ${r.name===CU?.name?'<span style="font-size:11px;color:var(--mut)">(you)</span>':''}
+        </div></td>
+        <td><span class="lb-streak">${r.streak} 🔥</span></td>
+      </tr>`;
+    });
+  }
+
+  el.innerHTML=`
+    <div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Best win streaks across all users. Play Games to climb the ranks!</p>
+    ${tabs}
+    <div class="card">
+      <table class="lb-table">
+        <thead><tr><th style="width:40px">#</th><th>Player</th><th>Best streak</th></tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>`;
+}
+
 // ── INIT ─────────────────────────────────────────────────────────
 async function init(){
-  const saved=localStorage.getItem('confluo_session');
+  const saved=localStorage.getItem('fluere_session');
   if(saved){try{enterApp(JSON.parse(saved));return;}catch{}}
   document.getElementById('auth-screen').style.display='';
   const hasAdmin=await isAdminSetup();
