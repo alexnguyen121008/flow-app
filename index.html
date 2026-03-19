@@ -196,6 +196,71 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
 .color-dot.on{border-color:var(--txt);transform:scale(1.15)}
 
+/* PAPER ANALYSER */
+.paper-drop{border:2px dashed var(--bdr2);border-radius:var(--r);padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:all .15s;background:var(--surf3);display:block;width:100%}
+.paper-drop:hover,.paper-drop.dg{border-color:var(--acc);background:var(--acc-l)}
+.paper-drop-icon{font-size:36px;margin-bottom:.75rem}
+.paper-drop p{font-size:14px;color:var(--mut)}
+.paper-drop p strong{color:var(--acc)}
+.paper-drop input{display:none}
+.topic-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--acc-l);color:var(--acc);font-size:12px;font-weight:600;margin:3px;border:1.5px solid transparent;cursor:pointer;transition:all .15s}
+.topic-chip:hover{border-color:var(--acc)}
+.topic-chip.on{background:var(--acc);color:white}
+.pa-step{display:none}.pa-step.on{display:block}
+.pa-q-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;margin-bottom:.85rem;box-shadow:var(--sh)}
+.pa-q-num{font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem}
+.pa-q-text{font-size:14px;font-weight:600;line-height:1.6;margin-bottom:.75rem}
+.pa-answer-area{width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--surf3);color:var(--txt);outline:none;resize:vertical;min-height:80px;transition:border-color .15s;font-family:var(--font)}
+.pa-answer-area:focus{border-color:var(--acc);background:var(--surf);box-shadow:0 0 0 4px rgba(91,75,212,.1)}
+.pa-feedback{border-radius:var(--rs);padding:1rem 1.1rem;margin-top:.75rem;font-size:13px;display:none;line-height:1.6}
+.pa-feedback.show{display:block}
+.pa-feedback.pass{background:var(--grn-l);border:1px solid #a8dcc2;color:#145c3a}
+.pa-feedback.fail{background:var(--dan-l);border:1px solid #f0b8cc;color:var(--dan)}
+.pa-feedback.neutral{background:var(--acc-l);border:1px solid var(--bdr2);color:var(--txt)}
+.pa-mark{font-size:20px;font-weight:700;margin-bottom:6px}
+.pa-score-bar{height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;margin:1rem 0 .4rem}
+.pa-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .6s ease}
+.pa-progress{font-size:12px;color:var(--mut);text-align:right;margin-bottom:1.25rem}
+
+/* PAPER ANALYSER */
+.paper-overlay{position:fixed;inset:0;background:rgba(10,8,25,.55);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.paper-overlay.open{display:flex}
+.paper-modal{background:var(--surf);border-radius:18px;width:100%;max-width:680px;box-shadow:var(--shm);border:1px solid var(--bdr2);margin:auto}
+.paper-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.75rem 0}
+.paper-hdr h2{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.paper-close{width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--mut);font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.paper-close:hover{background:var(--surf2)}
+.paper-body{padding:1.5rem 1.75rem 1.75rem}
+.paper-drop{border:2px dashed var(--bdr2);border-radius:var(--r);padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:all .15s;background:var(--surf3);position:relative}
+.paper-drop:hover,.paper-drop.dg{border-color:var(--acc);background:var(--acc-l)}
+.paper-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.paper-drop-icon{font-size:36px;margin-bottom:.6rem}
+.paper-drop p{font-size:14px;color:var(--mut)}
+.paper-drop p strong{color:var(--acc)}
+.paper-drop .paper-fname{font-size:13px;font-weight:600;color:var(--acc);margin-top:.5rem}
+.paper-step{display:none}.paper-step.on{display:block}
+.paper-topics{display:flex;flex-wrap:wrap;gap:8px;margin:1rem 0}
+.paper-topic{padding:5px 14px;border-radius:20px;background:var(--acc-l);color:var(--acc);font-size:13px;font-weight:600;border:1.5px solid transparent;cursor:pointer;transition:all .12s}
+.paper-topic:hover{border-color:var(--acc)}
+.pq-card{background:var(--surf3);border:1px solid var(--bdr);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:.75rem}
+.pq-meta{font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.4px;margin-bottom:.4rem}
+.pq-text{font-size:14px;font-weight:500;line-height:1.6;color:var(--txt);margin-bottom:.75rem}
+.pq-ans-wrap{margin-top:.5rem}
+.pq-ans-input{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf);color:var(--txt);outline:none;resize:vertical;min-height:70px;transition:border-color .15s;font-family:var(--font)}
+.pq-ans-input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(91,75,212,.08)}
+.pq-feedback{border-radius:var(--rs);padding:.85rem 1rem;margin-top:.65rem;font-size:13px;line-height:1.6;display:none}
+.pq-feedback.show{display:block}
+.pq-feedback.pass{background:var(--grn-l);border:1px solid #a8dcc2;color:#145c3a}
+.pq-feedback.fail{background:var(--dan-l);border:1px solid #f0b8cc;color:var(--dan)}
+.pq-feedback.mid{background:var(--amb-l);border:1px solid #e8c97a;color:var(--amb)}
+.pq-mark{font-size:18px;font-weight:700;margin-bottom:4px}
+.paper-prog{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.paper-prog-bar{flex:1;height:6px;background:var(--surf2);border-radius:99px;overflow:hidden}
+.paper-prog-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s ease}
+.paper-summary{background:var(--surf2);border-radius:var(--r);padding:1.25rem;margin-top:1.25rem;text-align:center}
+.paper-summary .big{font-size:36px;font-weight:700;color:var(--acc);letter-spacing:-1px}
+.paper-summary .lbl{font-size:13px;color:var(--mut);margin-top:2px}
+
 /* CONFETTI */
 .confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 1.2s ease-in forwards}
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
@@ -280,11 +345,11 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
       <div id="client-view" style="display:none"></div>
       <div id="qhub-view" style="display:none"></div>
       <div id="sched-view" style="display:none"></div>
+      <div id="paper-view" style="display:none"></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL -->
 <div id="modal-overlay" class="overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-title" id="m-title"></div>
@@ -438,7 +503,7 @@ function enterApp(u){
 function logout(){
   CU=null;localStorage.removeItem('flow_session');
   document.getElementById('app').style.display='none';
-  ['admin-view','client-view','qhub-view','sched-view'].forEach(id=>document.getElementById(id).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('auth-screen').style.display='';
   showLogin();
 }
@@ -446,6 +511,10 @@ function logout(){
 // ── NAV ──────────────────────────────────────────────────────────
 function buildNav(role){
   const el=document.getElementById('nav-items');
+  const paperBtn=`<button class="nav-item" id="nav-paper" onclick="showPaperHub()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Paper Hub
+  </button>`;
   const schedBtn=`<button class="nav-item" id="nav-sched" onclick="showSched()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
     Schedule
@@ -464,6 +533,7 @@ function buildNav(role){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Clients
       </button>
+      ${paperBtn}
       ${schedBtn}
       ${qhubBtn}`;
   } else {
@@ -472,6 +542,7 @@ function buildNav(role){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 000 4h6a2 2 0 000-4M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
         My Tasks
       </button>
+      ${paperBtn}
       ${schedBtn}
       ${qhubBtn}`;
   }
@@ -481,7 +552,7 @@ function setActiveNav(id){document.querySelectorAll('.nav-item').forEach(n=>n.cl
 
 function showATab(tab){
   setActiveNav('nav-'+tab);
-  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('admin-view').style.display='';
   document.getElementById('at-tasks').style.display=tab==='tasks'?'':'none';
   document.getElementById('at-clients').style.display=tab==='clients'?'':'none';
@@ -491,23 +562,30 @@ function showATab(tab){
 
 function showClientTasks(){
   setActiveNav('nav-mytasks');
-  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('client-view').style.display='';
   renderClient();
 }
 
 function showQHub(){
   setActiveNav('nav-qhub');
-  ['admin-view','client-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','sched-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('qhub-view').style.display='';
   renderQHub();
 }
 
 function showSched(){
   setActiveNav('nav-sched');
-  ['admin-view','client-view','qhub-view'].forEach(v=>document.getElementById(v).style.display='none');
+  ['admin-view','client-view','qhub-view','paper-view'].forEach(v=>document.getElementById(v).style.display='none');
   document.getElementById('sched-view').style.display='';
   renderSched();
+}
+
+function showPaperHub(){
+  setActiveNav('nav-paper');
+  ['admin-view','client-view','qhub-view','sched-view'].forEach(v=>document.getElementById(v).style.display='none');
+  document.getElementById('paper-view').style.display='';
+  renderPaperHub();
 }
 
 // ── DATE NAV ─────────────────────────────────────────────────────
@@ -973,6 +1051,249 @@ function saveCustomQ(){
   qState.showCustomForm=false;
   renderQHub();
 }
+
+// ── PAPER ANALYSER ───────────────────────────────────────────────
+// ── PAPER HUB ────────────────────────────────────────────────────
+// Saved papers: array of {id, name, subject, topic, questions:[{question,answer,marks,difficulty}], addedAt}
+let paperHubData = JSON.parse(localStorage.getItem('flow_papers')||'[]');
+function savePaperHubData(){localStorage.setItem('flow_papers',JSON.stringify(paperHubData));}
+
+// Subject detection keywords
+const SUBJ_KEYWORDS = {
+  maths:    ['math','maths','mathematics','calculus','algebra','geometry','trigonometry','statistics','probability','differentiation','integration','equation','polynomial','logarithm','vector','matrix','quadratic','function','gradient','derivative','integral'],
+  physics:  ['physics','mechanics','force','velocity','acceleration','momentum','energy','gravity','wave','optic','electric','magnetic','circuit','quantum','nuclear','thermodynamics','kinematics','projectile','newton','relativity','photon','electron','proton','neutron'],
+  chemistry:['chemistry','chemical','molecule','atom','element','compound','reaction','acid','base','ph','bond','ionic','covalent','organic','periodic','mole','stoichiometry','equilibrium','titration','oxidation','reduction','enthalpy','electrode'],
+  biology:  ['biology','biological','cell','dna','gene','chromosome','evolution','ecosystem','photosynthesis','respiration','organism','species','heredity','genetics','protein','enzyme','membrane','mitosis','meiosis','ecology','anatomy','physiology','immune','bacteria','virus'],
+  english:  ['english','essay','writing','literature','poem','poetry','novel','character','narrative','theme','metaphor','symbolism','rhetoric','persuasive','analytical','shakespeare','text','author','language','genre','discourse','argument','structure']
+};
+
+function detectSubject(text){
+  const lower = text.toLowerCase();
+  let best = null, bestCount = 0;
+  for(const [subj, kws] of Object.entries(SUBJ_KEYWORDS)){
+    const count = kws.filter(k => lower.includes(k)).length;
+    if(count > bestCount){bestCount = count; best = subj;}
+  }
+  return bestCount > 0 ? best : 'maths'; // default fallback
+}
+
+// Attempt to detect year level from text
+function detectYear(text){
+  const m = text.match(/year\s*(7|8|9|10|11|12)/i) || text.match(/grade\s*(7|8|9|10|11|12)/i) || text.match(/\b(7|8|9|10|11|12)\b/);
+  if(m){
+    const y = parseInt(m[1]);
+    if(y>=7&&y<=12) return y;
+  }
+  return 11; // default
+}
+
+// Extract lines that look like questions from plain text
+function extractQuestionsFromText(text){
+  const lines = text.split(/\n/).map(l=>l.trim()).filter(l=>l.length>10);
+  const questions = [];
+
+  // Patterns that indicate a question
+  const qPatterns = [
+    /^\(?[a-zA-Z0-9]{1,2}[\)\.]\s+.+\?/,      // (a) ... ?  or  a. ... ?
+    /^(q|question)\s*\d+[\.:)]/i,               // Q1. / Question 1:
+    /^\d+[\)\.]\s+[A-Z].{10,}/,                  // 1. Capital letter sentence
+    /^(explain|describe|calculate|find|determine|evaluate|analyse|analyze|compare|discuss|what|how|why|when|which|state|define|outline|show|prove|solve|simplify|expand|factorise|differentiate|integrate|draw|sketch|list|identify|justify|assess|examine|suggest|predict)/i
+  ];
+
+  // Answer-like follow-up lines
+  const answerHints = /^(answer|solution|model answer|ans|key|marking)[\s:]/i;
+
+  let i = 0;
+  while(i < lines.length){
+    const line = lines[i];
+    const isQ = qPatterns.some(p => p.test(line));
+    if(isQ && line.length > 15){
+      // Try to find an answer on the next few lines
+      let answer = '';
+      let j = i+1;
+      while(j < lines.length && j < i+4){
+        if(answerHints.test(lines[j])){
+          answer = lines[j].replace(answerHints,'').trim();
+          break;
+        }
+        j++;
+      }
+      // Estimate marks from any number in parentheses like (3 marks) or [2]
+      const marksMatch = line.match(/\((\d+)\s*marks?\)/i) || line.match(/\[(\d+)\]/);
+      const marks = marksMatch ? parseInt(marksMatch[1]) : (line.length > 120 ? 4 : line.length > 60 ? 2 : 1);
+
+      questions.push({
+        question: line.replace(/\(\d+\s*marks?\)/gi,'').replace(/\[\d+\]/g,'').trim(),
+        answer: answer || 'See model answer in original paper.',
+        marks: Math.min(Math.max(marks,1),8),
+        difficulty: marks >= 4 ? 'Hard' : marks >= 2 ? 'Medium' : 'Easy'
+      });
+    }
+    i++;
+  }
+  return questions;
+}
+
+// Read a plain text file
+function readTextFile(file){
+  return new Promise((resolve,reject)=>{
+    const fr = new FileReader();
+    fr.onload = e => resolve(e.target.result);
+    fr.onerror = reject;
+    fr.readAsText(file);
+  });
+}
+
+function renderPaperHub(){
+  const el = document.getElementById('paper-view');
+  let h = `<div class="row-top"><span class="sh" style="margin:0">Paper Hub</span></div>
+  <p style="font-size:14px;color:var(--mut);margin-bottom:1.5rem">Upload past papers or notes as <strong>.txt</strong> files. Questions are automatically extracted and added to the Question Hub under the right subject.</p>
+
+  <div class="card" style="margin-bottom:1.5rem">
+    <p style="font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">Upload a paper</p>
+    <label class="uz" id="ph-drop" ondragover="event.preventDefault();this.classList.add('dg')" ondragleave="this.classList.remove('dg')" ondrop="handlePaperDrop2(event);this.classList.remove('dg')">
+      <input type="file" accept=".txt,text/plain" multiple onchange="handlePaperFiles(this.files)">
+      <div class="paper-drop-icon">📄</div>
+      <p>Drop <strong>.txt</strong> files here or <strong>browse</strong></p>
+      <p style="font-size:12px;margin-top:4px">Questions, year level and subject are detected automatically</p>
+    </label>
+  </div>`;
+
+  if(paperHubData.length){
+    // Group by subject
+    const bySubj = {};
+    paperHubData.forEach(p=>{
+      if(!bySubj[p.subject]) bySubj[p.subject]=[];
+      bySubj[p.subject].push(p);
+    });
+    const subjNames = {maths:'Mathematics',physics:'Physics',chemistry:'Chemistry',biology:'Biology',english:'English'};
+    const subjEmoji = {maths:'🧮',physics:'⚛️',chemistry:'🧪',biology:'🧬',english:'📚'};
+
+    for(const [subj, papers] of Object.entries(bySubj)){
+      const totalQs = papers.reduce((a,p)=>a+p.questions.length,0);
+      h+=`<div class="card" style="margin-bottom:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:22px">${subjEmoji[subj]||'📄'}</span>
+            <div>
+              <div style="font-weight:700;font-size:15px">${subjNames[subj]||subj}</div>
+              <div style="font-size:12px;color:var(--mut)">${papers.length} paper${papers.length>1?'s':''} · ${totalQs} question${totalQs>1?'s':''} extracted</div>
+            </div>
+          </div>
+          <button class="btn btn-p btn-sm" style="width:auto" onclick="injectToQHub('${subj}')">→ Open in Question Hub</button>
+        </div>`;
+      papers.forEach(p=>{
+        h+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--bdr)">
+          <div>
+            <div style="font-size:13px;font-weight:600">${esc(p.name)}</div>
+            <div style="font-size:12px;color:var(--mut)">Year ${p.year} · ${p.questions.length} questions · Added ${new Date(p.addedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short'})}</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-s btn-sm" onclick="previewPaper('${p.id}')">Preview</button>
+            <button class="btn btn-d btn-sm" onclick="deletePaper('${p.id}')">Delete</button>
+          </div>
+        </div>`;
+      });
+      h+=`</div>`;
+    }
+  } else {
+    h+=`<div class="empty"><div class="empty-i">📂</div><div class="empty-t">No papers uploaded yet</div><p>Upload a .txt file above to get started</p></div>`;
+  }
+  el.innerHTML = h;
+}
+
+function handlePaperDrop2(e){
+  e.preventDefault();
+  handlePaperFiles(e.dataTransfer.files);
+}
+
+async function handlePaperFiles(files){
+  let added = 0;
+  for(const file of Array.from(files)){
+    if(!file.name.endsWith('.txt') && file.type !== 'text/plain'){
+      alert(`"${file.name}" is not a .txt file. Please save your paper as plain text first.`);
+      continue;
+    }
+    try{
+      const text = await readTextFile(file);
+      const subject = detectSubject(text);
+      const year = detectYear(text);
+      const questions = extractQuestionsFromText(text);
+      if(!questions.length){
+        alert(`No questions found in "${file.name}". Make sure the file contains numbered or clearly formatted questions.`);
+        continue;
+      }
+      // Find a matching topic or use filename as topic
+      const topicName = file.name.replace(/\.txt$/i,'').replace(/_/g,' ');
+      paperHubData.push({
+        id: gid(),
+        name: file.name,
+        subject,
+        year,
+        topic: topicName,
+        questions,
+        addedAt: Date.now()
+      });
+      added++;
+    }catch(e){
+      alert(`Could not read "${file.name}": ${e.message}`);
+    }
+  }
+  if(added > 0){
+    savePaperHubData();
+    renderPaperHub();
+    // Show success banner
+    const el = document.getElementById('paper-view');
+    const banner = document.createElement('div');
+    banner.style.cssText='position:fixed;top:80px;right:24px;background:var(--grn-l);color:var(--grn);border:1px solid #a8dcc2;border-radius:var(--rs);padding:12px 18px;font-size:13px;font-weight:600;z-index:999;box-shadow:var(--sh)';
+    banner.textContent = `✓ ${added} paper${added>1?'s':''} uploaded and questions extracted!`;
+    document.body.appendChild(banner);
+    setTimeout(()=>banner.remove(), 3500);
+  }
+}
+
+function deletePaper(id){
+  if(!confirm('Remove this paper?')) return;
+  paperHubData = paperHubData.filter(p=>p.id!==id);
+  savePaperHubData();
+  renderPaperHub();
+}
+
+function previewPaper(id){
+  const p = paperHubData.find(x=>x.id===id);
+  if(!p) return;
+  const subjNames = {maths:'Mathematics',physics:'Physics',chemistry:'Chemistry',biology:'Biology',english:'English'};
+  document.getElementById('m-title').textContent = `${p.name} — ${p.questions.length} questions`;
+  let h = `<p style="font-size:12px;color:var(--mut);margin-bottom:1rem">Subject: <strong>${subjNames[p.subject]||p.subject}</strong> · Year ${p.year}</p>`;
+  p.questions.slice(0,8).forEach((q,i)=>{
+    h+=`<div style="padding:10px 0;border-bottom:1px solid var(--bdr)">
+      <div style="font-size:11px;font-weight:700;color:var(--acc);margin-bottom:3px">Q${i+1} · ${q.marks} mark${q.marks>1?'s':''} · ${q.difficulty}</div>
+      <div style="font-size:13px;font-weight:500">${esc(q.question)}</div>
+    </div>`;
+  });
+  if(p.questions.length>8) h+=`<p style="font-size:12px;color:var(--mut);margin-top:.75rem">...and ${p.questions.length-8} more questions</p>`;
+  document.getElementById('m-body').innerHTML = h;
+  document.getElementById('m-actions').innerHTML = `<button class="btn btn-s" onclick="closeModal()">Close</button><button class="btn btn-p" style="width:auto" onclick="injectToQHub('${p.subject}');closeModal()">→ Open in Question Hub</button>`;
+  document.getElementById('modal-overlay').style.display='flex';
+}
+
+function injectToQHub(subject){
+  // Gather all questions for this subject from paperHubData
+  const papers = paperHubData.filter(p=>p.subject===subject);
+  if(!papers.length) return;
+  // Pick the most recent paper's topic, or use the first one
+  const paper = papers[papers.length-1];
+  // Pre-load qState with the subject, year and questions then navigate to Q-Hub
+  qState.subject = subject;
+  qState.year = paper.year;
+  qState.topic = paper.topic;
+  // Merge all questions from all papers of this subject
+  qState.questions = papers.flatMap(p=>p.questions);
+  qState.customQs = [];
+  qState.showCustomForm = false;
+  showQHub();
+}
+
 
 // ── SCHEDULE ─────────────────────────────────────────────────────
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
