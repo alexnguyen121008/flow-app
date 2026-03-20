@@ -581,7 +581,7 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <script>
 const SURL='https://eihvonzcjtxsniyzuskt.supabase.co';
 const SKEY='sb_publishable_Xt6taqN9vkSHx09WM-hTdA_ckF8rVxi';
-const sb=supabase.createClient(SURL,SKEY);
+const sb=supabase.createClient(SURL,SKEY,{db:{schema:'public'}});
 let CU=null,selC=null,adminDate=null,clientDate=null;
 
 // Half-hour slots from 7:00am to 10:30pm (key = hour as decimal e.g. 9.5 = 9:30)
@@ -950,7 +950,7 @@ async function renderATasks(){
   if(!selC&&students.length)selC=students[0].id;
   const wk=weekKey(adminDate);
   const selStudent=students.find(s=>s.id===selC);
-  const myTasks=tasks.filter(t=>t.student_id===selC&&t.week_key===wk);
+  const myTasks=tasks.filter(t=>(t.student_id===selC||t.client_id===selC)&&t.week_key===wk);
   const myDone=completions.filter(c=>c.student_id===selC&&c.week_key===wk&&c.done).length;
 
   let h=`<div class="row-top">
@@ -1185,7 +1185,8 @@ async function saveTask(){
   var dsc=document.getElementById('m-dsc').value.trim();
   var pri=document.getElementById('m-pri').value;
   var cat=document.getElementById('m-cat').value.trim();
-  var res=await sb.from('tasks').insert({id:gid(),title:title,description:dsc,student_id:studentId,week_key:wk,priority:pri,category:cat,created_at:Date.now()});
+  var taskData={id:gid(),title:title,description:dsc,student_id:studentId,week_key:wk,priority:pri,category:cat,created_at:new Date().toISOString()};
+  var res=await sb.from('tasks').insert(taskData);
   if(res.error){alert('Could not save task: '+res.error.message);return;}
   _bust('tasks');
   // Optionally add to schedule
@@ -1229,7 +1230,7 @@ async function renderClient(){
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [tasks,completions,files]=await Promise.all([dbTasks(),dbCompletions(),dbFiles()]);
   const wk=weekKey(clientDate);
-  const myTasks=tasks.filter(t=>t.student_id===CU.id&&t.week_key===wk);
+  const myTasks=tasks.filter(t=>(t.student_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
   const done=myTasks.filter(t=>completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
   const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
   let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
@@ -2647,7 +2648,7 @@ async function checkNewTasks(){
   if(!CU||CU.role==='admin')return;
   const tasks=await dbTasks();
   const wk=weekKey(todayKey());
-  const myTasks=tasks.filter(t=>t.student_id===CU.id&&t.week_key===wk);
+  const myTasks=tasks.filter(t=>(t.student_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
   const seenKey='fluere_seen_tasks_'+CU.id+'_'+wk;
   const seen=JSON.parse(localStorage.getItem(seenKey)||'[]');
   const newTasks=myTasks.filter(t=>!seen.includes(t.id));
