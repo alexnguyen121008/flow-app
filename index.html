@@ -693,14 +693,14 @@ async function renderATasks(){
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [users,tasks,files,completions]=await Promise.all([dbUsers(),dbTasks(),dbFiles(),dbCompletions()]);
   const students=users.filter(u=>u.role==='user'||u.role==='client');
-  if(!selC&&students.length)selC=clients[0].id;
+  if(!selC&&students.length)selC=students[0].id;
   const wk=weekKey(adminDate);
   const myTasks=tasks.filter(t=>t.student_id===selC&&t.week_key===wk);
   let h=`<div class="row-top"><span class="sh" style="margin:0">Weekly Tasks</span><button class="btn btn-p btn-sm" style="width:auto" onclick="openAddTask()">+ Add task</button></div>`;
   h+=dateNav(adminDate,'adminDate=shiftWeek(adminDate,-1);renderATasks()','adminDate=shiftWeek(adminDate,1);renderATasks()','adminDate=this.value;renderATasks()','adminDate=todayKey();renderATasks()');
   if(students.length){
     h+=`<div style="margin-bottom:1.25rem"><p style="font-size:11px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Student</p><div class="pills">`;
-    clients.forEach(c=>{h+=`<button class="pill${c.id===selC?' on':''}" onclick="selC='${c.id}';renderATasks()">${esc(c.name)}</button>`;});
+    students.forEach(c=>{h+=`<button class="pill${c.id===selC?' on':''}" onclick="selC='${c.id}';renderATasks()">${esc(c.name)}</button>`;});
     h+=`</div></div>`;
   }
   if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No users yet</div><p>Share your link so students can register</p></div>`;}
@@ -1861,23 +1861,23 @@ async function renderLeaderboard(){
   const el=document.getElementById('lb-view');
   el.innerHTML=`<div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div><div class="loading">Loading...</div>`;
   const users=await dbUsers();
-  const non_admin=users.filter(u=>u.role!=='admin');
-
+  // Show ALL users on the leaderboard — new users appear with 0 streak
   const tabs=`<div class="lb-tabs">
     <button class="lb-tab${lbGame==='wordle'?' on':''}" onclick="lbGame='wordle';renderLeaderboard()">🟩 Wordle</button>
     <button class="lb-tab${lbGame==='conn'?' on':''}" onclick="lbGame='conn';renderLeaderboard()">🟦 Connections</button>
   </div>`;
 
   const gameKey=`streak_${lbGame}`;
-  // Build rows — use Supabase stored streak if available, else 0
-  const rows=non_admin.map(u=>({
+  // All registered users show on the leaderboard with their current streak (0 if none yet)
+  const rows=users.map(u=>({
     name:u.name,
+    id:u.id,
     streak:u[gameKey]||0
   })).sort((a,b)=>b.streak-a.streak);
 
-  // Also add current user's local data if not in list
-  if(CU&&!non_admin.find(u=>u.id===CU.id)){
-    rows.push({name:CU.name,streak:getMaxStreak(lbGame)});
+  // Make sure current user always appears even if not yet synced to DB
+  if(CU&&!users.find(u=>u.id===CU.id)){
+    rows.push({name:CU.name,id:CU.id,streak:getMaxStreak(lbGame)});
     rows.sort((a,b)=>b.streak-a.streak);
   }
 
