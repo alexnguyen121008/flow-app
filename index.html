@@ -1086,7 +1086,7 @@ async function viewClientSched(clientId, clientName){
     .select('data')
     .eq('task_id','schedule_'+clientId)
     .eq('role','schedule')
-    .single();
+    .maybeSingle();
   if(schedFile?.data){
     try{ events=JSON.parse(schedFile.data); }catch{}
   }
@@ -1167,33 +1167,59 @@ function openEditTask(id,title,desc,priority,category){
   document.getElementById('modal-overlay').style.display='flex';
 }
 async function saveTask(){
-  const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
+  const title=document.getElementById('m-ttl').value.trim();
+  if(!title)return alert('Please enter a title.');
   const wk=weekKey(document.getElementById('m-wk').value);
   const studentId=document.getElementById('m-cli').value;
-  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),student_id:studentId,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
+
+  // Insert the task — wrap in try/catch so errors show clearly
+  try{
+    const {error}=await sb.from('tasks').insert({
+      id:gid(),title,
+      description:document.getElementById('m-dsc').value.trim(),
+      student_id:studentId,
+      week_key:wk,
+      priority:document.getElementById('m-pri').value,
+      category:document.getElementById('m-cat').value.trim(),
+      created_at:Date.now()
+    });
+    if(error){alert('Could not save task: '+error.message);return;}
+  }catch(e){alert('Error saving task: '+e.message);return;}
   _bust('tasks');
 
-  // Optionally add to the student's schedule
-  const schedDay=document.getElementById('m-sched-day')?.value;
-  if(schedDay){
-    const schedSlot=parseFloat(document.getElementById('m-sched-time').value);
-    const schedColor=parseInt(document.getElementById('m-sched-color').value);
-    const sKey=schedDay+'_'+schedSlot;
-    // Fetch student's current schedule from Supabase files table
-    const {data:existing}=await sb.from('files').select('id,data').eq('task_id','schedule_'+studentId).eq('role','schedule').single();
-    let studentSched={};
-    if(existing?.data){try{studentSched=JSON.parse(existing.data);}catch{}}
-    studentSched[sKey]={title,note:document.getElementById('m-dsc').value.trim()||'',color:schedColor};
-    const newData=JSON.stringify(studentSched);
-    if(existing){
-      await sb.from('files').update({data:newData}).eq('id',existing.id);
-    } else {
-      await sb.from('files').insert({id:gid(),task_id:'schedule_'+studentId,role:'schedule',name:studentId,type:'application/json',data:newData});
+  // Optionally add to student's schedule — only if a day was selected
+  try{
+    const schedDayEl=document.getElementById('m-sched-day');
+    const schedDay=schedDayEl?schedDayEl.value:'';
+    if(schedDay){
+      const schedSlot=parseFloat(document.getElementById('m-sched-time').value);
+      const schedColor=parseInt(document.getElementById('m-sched-color').value||'0');
+      const sKey=schedDay+'_'+schedSlot;
+      const desc=document.getElementById('m-dsc').value.trim();
+      // Use maybeSingle() instead of single() — won't error if no row found
+      const {data:existing}=await sb.from('files')
+        .select('id,data')
+        .eq('task_id','schedule_'+studentId)
+        .eq('role','schedule')
+        .maybeSingle();
+      let studentSched={};
+      if(existing?.data){try{studentSched=JSON.parse(existing.data);}catch{}}
+      studentSched[sKey]={title,note:desc,color:schedColor};
+      const newData=JSON.stringify(studentSched);
+      if(existing){
+        await sb.from('files').update({data:newData}).eq('id',existing.id);
+      } else {
+        await sb.from('files').insert({id:gid(),task_id:'schedule_'+studentId,role:'schedule',name:studentId,type:'application/json',data:newData});
+      }
+      _bust('files');
     }
-    _bust('files');
+  }catch(e){
+    // Schedule save failed — task still saved, just log it
+    console.warn('Schedule sync failed:',e.message);
   }
 
-  closeModal();renderATasks();
+  closeModal();
+  renderATasks();
 }
 async function updateTask(id){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
@@ -1876,7 +1902,7 @@ async function saveSched(){
     .select('id')
     .eq('task_id','schedule_'+CU.id)
     .eq('role','schedule')
-    .single();
+    .maybeSingle();
   if(existing){
     await sb.from('files').update({data,type:'application/json'}).eq('id',existing.id);
   } else {
