@@ -796,9 +796,15 @@ function enterApp(u){
   // Load this user's schedule
   const savedSched=localStorage.getItem('fluere_sched_'+u.id)||localStorage.getItem('fluere_sched')||'{}';
   try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
-  // If user has local schedule data not yet in Supabase, push it up
-  if(u.role!=='admin'&&!u.schedule&&savedSched!=='{}'){
-    sb.from('users').update({schedule:savedSched}).eq('id',u.id);
+  // Push existing local schedule to Supabase files table if not there yet
+  if(u.role!=='admin'&&savedSched!=='{}'){
+    sb.from('files').select('id').eq('task_id','schedule_'+u.id).eq('role','schedule').single()
+      .then(({data:ex})=>{
+        if(!ex){
+          // No schedule in DB yet — upload it now
+          sb.from('files').insert({id:gid(),task_id:'schedule_'+u.id,role:'schedule',name:u.id,type:'application/json',data:savedSched});
+        }
+      });
   }
   buildNav(u.role);
   loadQuote();
@@ -1074,11 +1080,15 @@ async function viewClientSched(clientId, clientName){
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Close</button>`;
   document.getElementById('modal-overlay').style.display='flex';
 
-  // Fetch directly from Supabase — the only reliable source across devices
-  const {data:userData}=await sb.from('users').select('schedule').eq('id',clientId).single();
+  // Read from Supabase files table where we store schedule JSON
   let events={};
-  if(userData?.schedule){
-    try{ events=JSON.parse(userData.schedule); }catch{}
+  const {data:schedFile}=await sb.from('files')
+    .select('data')
+    .eq('task_id','schedule_'+clientId)
+    .eq('role','schedule')
+    .single();
+  if(schedFile?.data){
+    try{ events=JSON.parse(schedFile.data); }catch{}
   }
 
   const keys=Object.keys(events).filter(k=>k!=='_migrated');
@@ -1806,15 +1816,26 @@ const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
 let schedEvents=JSON.parse(localStorage.getItem('fluere_sched')||'{}');
 let schedPickColor=0;
 
-function saveSched(){
-  // Save locally
+async function saveSched(){
+  // Save locally first (instant)
   const key=CU?'fluere_sched_'+CU.id:'fluere_sched';
   const data=JSON.stringify(schedEvents);
   localStorage.setItem(key,data);
-  // Also save to Supabase so admin can read it
-  if(CU){
-    sb.from('users').update({schedule:data}).eq('id',CU.id).then(()=>_bust('users'));
+  // Save to Supabase files table (guaranteed to exist) so admin can read it
+  // We use task_id='schedule', role='schedule', name=userId to identify it
+  if(!CU)return;
+  // Check if a schedule record already exists for this user
+  const {data:existing}=await sb.from('files')
+    .select('id')
+    .eq('task_id','schedule_'+CU.id)
+    .eq('role','schedule')
+    .single();
+  if(existing){
+    await sb.from('files').update({data,type:'application/json'}).eq('id',existing.id);
+  } else {
+    await sb.from('files').insert({id:gid(),task_id:'schedule_'+CU.id,role:'schedule',name:CU.id,type:'application/json',data});
   }
+  _bust('files');
 }
 function schedKey(day,hour){return `${day}_${hour}`;}
 
