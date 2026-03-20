@@ -584,6 +584,18 @@ const SKEY='sb_publishable_Xt6taqN9vkSHx09WM-hTdA_ckF8rVxi';
 const sb=supabase.createClient(SURL,SKEY);
 let CU=null,selC=null,adminDate=null,clientDate=null;
 
+// Half-hour slots from 7:00am to 10:30pm (key = hour as decimal e.g. 9.5 = 9:30)
+const SLOTS=[];
+for(let h=7;h<=22;h++){SLOTS.push(h);SLOTS.push(h+0.5);}
+// Helper to format a slot value to a readable time
+function slotLabel(s){
+  const h=Math.floor(s);const m=s%1===0.5?'30':'00';
+  if(h<12)return`${h}:${m} AM`;
+  if(h===12)return`12:${m} PM`;
+  return`${h-12}:${m} PM`;
+}
+
+
 // ── UTILS ────────────────────────────────────────────────────────
 function gid(){return '_'+Math.random().toString(36).slice(2)+Date.now();}
 function ini(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
@@ -1848,16 +1860,6 @@ function injectToQHub(subject){
 
 // ── SCHEDULE ─────────────────────────────────────────────────────
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-// Half-hour slots from 7:00am to 10:30pm (key = hour as decimal e.g. 9.5 = 9:30)
-const SLOTS=[];
-for(let h=7;h<=22;h++){SLOTS.push(h);SLOTS.push(h+0.5);}
-// Helper to format a slot value to a readable time
-function slotLabel(s){
-  const h=Math.floor(s);const m=s%1===0.5?'30':'00';
-  if(h<12)return`${h}:${m} AM`;
-  if(h===12)return`12:${m} PM`;
-  return`${h-12}:${m} PM`;
-}
 const COLORS=['#ECEAFA','#E3EDF8','#E3F6EE','#FBF3E3','#FCEEF2'];
 const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
 let schedEvents=JSON.parse(localStorage.getItem('fluere_sched')||'{}');
