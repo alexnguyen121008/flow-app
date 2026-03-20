@@ -800,6 +800,14 @@ function enterApp(u){
   loadQuote();
   initTheme();
   updateStreakWidget();
+  migrateOldStreaks();
+  // Ensure new users always appear on leaderboard with 0 streak immediately
+  if(u.role!=='admin'){
+    const hasWordle=u.streak_wordle!==undefined||u.best_wordle!==undefined;
+    if(!hasWordle){
+      sb.from('users').update({streak_wordle:0,best_wordle:0,streak_conn:0,best_conn:0}).eq('id',u.id).then(()=>_bust('users'));
+    }
+  }
   if(u.role==='admin'){document.getElementById('admin-view').style.display='';showATab('tasks');}
   else{
     document.getElementById('client-view').style.display='';renderClient();
@@ -2230,29 +2238,62 @@ function renderGames(){
 // Streaks stored in localStorage keyed by user id, shared via Supabase users table notes field
 // We store streaks locally and show a merged view from all users' local data + Supabase
 
-function getLbKey(game){return`fluere_streak_${CU?CU.id:'anon'}_${game}`;}
-function getStreak(game){return parseInt(localStorage.getItem(getLbKey(game))||'0');}
-function getMaxStreak(game){return parseInt(localStorage.getItem(getLbKey(game)+'_max')||'0');}
+// ── LEADERBOARD STREAK SYSTEM ────────────────────────────────────
+// Saves both current streak and best streak to Supabase after every game.
+// Uses two columns per game: streak_wordle (current) + best_wordle (all-time best)
+// New users automatically appear with 0 on the leaderboard.
+
+function getCurStreak(game){return parseInt(localStorage.getItem('cur_'+game+'_'+( CU?.id||'anon'))||'0');}
+function getBestStreak(game){return parseInt(localStorage.getItem('best_'+game+'_'+(CU?.id||'anon'))||'0');}
+function setCurStreak(game,val){localStorage.setItem('cur_'+game+'_'+(CU?.id||'anon'),val);}
+function setBestStreak(game,val){localStorage.setItem('best_'+game+'_'+(CU?.id||'anon'),val);}
+
+async function pushStreakToSupabase(game){
+  if(!CU)return;
+  const cur=getCurStreak(game);
+  const best=getBestStreak(game);
+  // Save current streak and best streak as separate columns
+  await sb.from('users').update({
+    [`streak_${game}`]: cur,
+    [`best_${game}`]: best
+  }).eq('id',CU.id);
+  _bust('users');
+}
 
 function recordWin(game){
-  const s=getStreak(game)+1;
-  localStorage.setItem(getLbKey(game),s);
-  const max=Math.max(s,getMaxStreak(game));
-  localStorage.setItem(getLbKey(game)+'_max',max);
-  // Save to Supabase so others can see it
-  if(CU){
-    const key=`streak_${game}`;
-    sb.from('users').update({[key]:max}).eq('id',CU.id).then(()=>_bust('users'));
-  }
-  return s;
+  const cur=getCurStreak(game)+1;
+  const best=Math.max(cur,getBestStreak(game));
+  setCurStreak(game,cur);
+  setBestStreak(game,best);
+  pushStreakToSupabase(game);
+  // Refresh leaderboard if open
+  if(document.getElementById('lb-view').style.display!=='none') renderLeaderboard();
+  return cur;
 }
 
 function recordLoss(game){
-  localStorage.setItem(getLbKey(game),0);
-  if(CU){
-    const cur=getStreak(game);
-    if(cur>0)sb.from('users').update({[`streak_${game}`]:Math.max(cur,getMaxStreak(game))}).eq('id',CU.id).then(()=>_bust('users'));
-  }
+  const cur=getCurStreak(game);
+  const best=getBestStreak(game);
+  // Keep best, reset current to 0
+  setCurStreak(game,0);
+  setBestStreak(game,best);
+  pushStreakToSupabase(game);
+  // Refresh leaderboard if open
+  if(document.getElementById('lb-view').style.display!=='none') renderLeaderboard();
+}
+
+// Also keep old keys working for anyone who has existing data
+function migrateOldStreaks(){
+  if(!CU||localStorage.getItem('streak_migrated_'+CU.id))return;
+  ['wordle','conn'].forEach(game=>{
+    const oldCur=parseInt(localStorage.getItem(`fluere_streak_${CU.id}_${game}`)||'0');
+    const oldBest=parseInt(localStorage.getItem(`fluere_streak_${CU.id}_${game}_max`)||'0');
+    if(oldBest>0&&getBestStreak(game)===0){
+      setCurStreak(game,oldCur);
+      setBestStreak(game,oldBest);
+    }
+  });
+  localStorage.setItem('streak_migrated_'+CU.id,'1');
 }
 
 let lbGame='wordle';
@@ -2260,54 +2301,61 @@ async function renderLeaderboard(){
   const el=document.getElementById('lb-view');
   el.innerHTML=`<div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div><div class="loading">Loading...</div>`;
   const users=await dbUsers();
-  // Show ALL users on the leaderboard — new users appear with 0 streak
+
   const tabs=`<div class="lb-tabs">
     <button class="lb-tab${lbGame==='wordle'?' on':''}" onclick="lbGame='wordle';renderLeaderboard()">🟩 Wordle</button>
     <button class="lb-tab${lbGame==='conn'?' on':''}" onclick="lbGame='conn';renderLeaderboard()">🟦 Connections</button>
   </div>`;
 
-  const gameKey=`streak_${lbGame}`;
-  // All registered users show on the leaderboard with their current streak (0 if none yet)
-  const rows=users.map(u=>({
-    name:u.name,
-    id:u.id,
-    streak:u[gameKey]||0
-  })).sort((a,b)=>b.streak-a.streak);
+  // Build rows for ALL users — show current streak and best streak
+  // Current user's live local data always takes priority over DB data
+  const rows=users.map(u=>{
+    const isMe=CU&&u.id===CU.id;
+    const cur=isMe?getCurStreak(lbGame):(u[`streak_${lbGame}`]||0);
+    const best=isMe?getBestStreak(lbGame):(u[`best_${lbGame}`]||u[`streak_${lbGame}`]||0);
+    return{name:u.name,id:u.id,cur,best,isMe};
+  }).sort((a,b)=>b.best-a.best||b.cur-a.cur);
 
-  // Make sure current user always appears even if not yet synced to DB
+  // If current user not in DB yet, append them
   if(CU&&!users.find(u=>u.id===CU.id)){
-    rows.push({name:CU.name,id:CU.id,streak:getMaxStreak(lbGame)});
-    rows.sort((a,b)=>b.streak-a.streak);
+    rows.push({name:CU.name,id:CU.id,cur:getCurStreak(lbGame),best:getBestStreak(lbGame),isMe:true});
+    rows.sort((a,b)=>b.best-a.best||b.cur-a.cur);
   }
 
   const medals=['🥇','🥈','🥉'];
-  const medalClass=['gold','silver','bronze'];
-
   let tableRows='';
-  if(!rows.length||rows.every(r=>r.streak===0)){
-    tableRows=`<tr><td colspan="4" style="text-align:center;color:var(--mut);padding:2rem;font-size:14px">No scores yet — play a game to appear here!</td></tr>`;
-  } else {
-    rows.forEach((r,i)=>{
-      const medal=i<3?`<span style="font-size:20px">${medals[i]}</span>`:`<span class="lb-rank">${i+1}</span>`;
-      tableRows+=`<tr>
-        <td>${medal}</td>
-        <td><div style="display:flex;align-items:center;gap:10px">
-          <div class="lb-av">${ini(r.name)}</div>
-          <span style="font-weight:600">${esc(r.name)}</span>
-          ${r.name===CU?.name?'<span style="font-size:11px;color:var(--mut)">(you)</span>':''}
-        </div></td>
-        <td><span class="lb-streak">${r.streak} 🔥</span></td>
-      </tr>`;
-    });
-  }
+
+  rows.forEach((r,i)=>{
+    const medal=i<3?`<span style="font-size:20px">${medals[i]}</span>`:`<span class="lb-rank" style="font-size:14px;font-weight:700;color:var(--mut);padding-left:6px">${i+1}</span>`;
+    const isYou=r.isMe||r.id===CU?.id;
+    tableRows+=`<tr style="${isYou?'background:var(--acc-l);':''}">
+      <td style="padding:12px 8px">${medal}</td>
+      <td style="padding:12px 8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="lb-av" style="${isYou?'box-shadow:0 0 0 2px var(--acc)':''}">${ini(r.name)}</div>
+          <div>
+            <div style="font-weight:600;font-size:14px">${esc(r.name)}${isYou?' <span style="font-size:11px;color:var(--acc);font-weight:700">(you)</span>':''}</div>
+            <div style="font-size:11px;color:var(--mut)">Current: ${r.cur} 🔥</div>
+          </div>
+        </div>
+      </td>
+      <td style="padding:12px 8px"><span class="lb-streak">${r.best} 🏆</span></td>
+    </tr>`;
+  });
+
+  if(!rows.length) tableRows=`<tr><td colspan="3" style="text-align:center;color:var(--mut);padding:2rem">No players yet — play a game!</td></tr>`;
 
   el.innerHTML=`
     <div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div>
-    <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Best win streaks across all users. Play Games to climb the ranks!</p>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Win streaks update live after every game. All users visible from day one.</p>
     ${tabs}
     <div class="card">
       <table class="lb-table">
-        <thead><tr><th style="width:40px">#</th><th>Player</th><th>Best streak</th></tr></thead>
+        <thead><tr>
+          <th style="width:40px">#</th>
+          <th>Player</th>
+          <th>Best streak 🏆</th>
+        </tr></thead>
         <tbody>${tableRows}</tbody>
       </table>
     </div>`;
