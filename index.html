@@ -1136,7 +1136,22 @@ function openAddTask(){
     <div class="field"><label>Student</label><select id="m-cli"></select></div>
     <div class="field"><label>Week (pick any date in that week)</label><input type="date" id="m-wk" class="dpick" style="width:100%" value="${adminDate||todayKey()}"/></div>
     <div class="field"><label>Priority</label><select id="m-pri"><option value="normal">Normal</option><option value="high">High</option></select></div>
-    <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>`;
+    <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>
+    <div style="background:var(--surf2);border-radius:var(--rs);padding:12px;margin-top:.5rem">
+      <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📅 Add to student schedule (optional)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="field" style="margin:0"><label>Day</label><select id="m-sched-day" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
+          <option value="">None</option>
+          ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d=>`<option value="${d}">${d}</option>`).join('')}
+        </select></div>
+        <div class="field" style="margin:0"><label>Time</label><select id="m-sched-time" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
+          ${SLOTS.map(s=>`<option value="${s}">${slotLabel(s)}</option>`).join('')}
+        </select></div>
+        <div class="field" style="margin:0"><label>Colour</label><select id="m-sched-color" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
+          <option value="0">Purple</option><option value="1">Blue</option><option value="2">Green</option><option value="3">Amber</option><option value="4">Red</option>
+        </select></div>
+      </div>
+    </div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
   document.getElementById('modal-overlay').style.display='flex';
   dbUsers().then(users=>{const students=users.filter(u=>u.role==='user'||u.role==='client');document.getElementById('m-cli').innerHTML=students.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
@@ -1154,8 +1169,31 @@ function openEditTask(id,title,desc,priority,category){
 async function saveTask(){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
   const wk=weekKey(document.getElementById('m-wk').value);
-  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),student_id:document.getElementById('m-cli').value,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
-  _bust('tasks');closeModal();renderATasks();
+  const studentId=document.getElementById('m-cli').value;
+  await sb.from('tasks').insert({id:gid(),title,description:document.getElementById('m-dsc').value.trim(),student_id:studentId,week_key:wk,priority:document.getElementById('m-pri').value,category:document.getElementById('m-cat').value.trim(),created_at:Date.now()});
+  _bust('tasks');
+
+  // Optionally add to the student's schedule
+  const schedDay=document.getElementById('m-sched-day')?.value;
+  if(schedDay){
+    const schedSlot=parseFloat(document.getElementById('m-sched-time').value);
+    const schedColor=parseInt(document.getElementById('m-sched-color').value);
+    const sKey=schedDay+'_'+schedSlot;
+    // Fetch student's current schedule from Supabase files table
+    const {data:existing}=await sb.from('files').select('id,data').eq('task_id','schedule_'+studentId).eq('role','schedule').single();
+    let studentSched={};
+    if(existing?.data){try{studentSched=JSON.parse(existing.data);}catch{}}
+    studentSched[sKey]={title,note:document.getElementById('m-dsc').value.trim()||'',color:schedColor};
+    const newData=JSON.stringify(studentSched);
+    if(existing){
+      await sb.from('files').update({data:newData}).eq('id',existing.id);
+    } else {
+      await sb.from('files').insert({id:gid(),task_id:'schedule_'+studentId,role:'schedule',name:studentId,type:'application/json',data:newData});
+    }
+    _bust('files');
+  }
+
+  closeModal();renderATasks();
 }
 async function updateTask(id){
   const title=document.getElementById('m-ttl').value.trim();if(!title)return alert('Please enter a title.');
@@ -1810,7 +1848,16 @@ function injectToQHub(subject){
 
 // ── SCHEDULE ─────────────────────────────────────────────────────
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-const HOURS=Array.from({length:16},(_,i)=>i+7);
+// Half-hour slots from 7:00am to 10:30pm (key = hour as decimal e.g. 9.5 = 9:30)
+const SLOTS=[];
+for(let h=7;h<=22;h++){SLOTS.push(h);SLOTS.push(h+0.5);}
+// Helper to format a slot value to a readable time
+function slotLabel(s){
+  const h=Math.floor(s);const m=s%1===0.5?'30':'00';
+  if(h<12)return`${h}:${m} AM`;
+  if(h===12)return`12:${m} PM`;
+  return`${h-12}:${m} PM`;
+}
 const COLORS=['#ECEAFA','#E3EDF8','#E3F6EE','#FBF3E3','#FCEEF2'];
 const COLOR_LABELS=['Purple','Blue','Green','Amber','Red'];
 let schedEvents=JSON.parse(localStorage.getItem('fluere_sched')||'{}');
@@ -1837,7 +1884,7 @@ async function saveSched(){
   }
   _bust('files');
 }
-function schedKey(day,hour){return `${day}_${hour}`;}
+function schedKey(day,slot){return `${day}_${slot}`;}
 
 function renderSched(){
   const el=document.getElementById('sched-view');
@@ -1869,14 +1916,18 @@ function renderSched(){
   <div class="sched-wrap"><table class="sched-table sched-today"><thead><tr><th class="time-col">Time</th>`;
   DAYS.forEach((d,i)=>{h+=`<th class="day-col${i===todayIdx?' today-col':''}">${d}</th>`;});
   h+=`</tr></thead><tbody>`;
-  HOURS.forEach(hour=>{
-    const label=hour<12?`${hour}:00 AM`:hour===12?`12:00 PM`:`${hour-12}:00 PM`;
-    h+=`<tr><td class="time-cell">${label}</td>`;
+  SLOTS.forEach(slot=>{
+    const isHalf=slot%1!==0;
+    const label=slotLabel(slot);
+    const rowStyle=isHalf?'border-top:1px dashed var(--bdr2);':'';
+    const cellH=isHalf?'height:28px;':'height:44px;';
+    const timeStyle=isHalf?'font-size:10px;color:var(--bdr2);vertical-align:top;padding-top:3px;':'';
+    h+=`<tr style="${rowStyle}"><td class="time-cell" style="${timeStyle}${cellH}">${isHalf?'· 30':label}</td>`;
     DAYS.forEach(day=>{
-      const key=schedKey(day,hour);
+      const key=schedKey(day,slot);
       const ev=schedEvents[key];
       if(ev){
-        h+=`<td><div class="sched-cell has-event sched-color-${ev.color}" onclick="openEditEvent('${key}')">
+        h+=`<td style="${cellH}"><div class="sched-cell has-event sched-color-${ev.color}" onclick="openEditEvent('${key}')">
           <div class="sched-event">
             <div class="sched-event-title">${esc(ev.title)}</div>
             ${ev.note?`<div class="sched-event-sub">${esc(ev.note)}</div>`:''}
@@ -1884,7 +1935,7 @@ function renderSched(){
           <span class="sched-del" onclick="event.stopPropagation();deleteEvent('${key}')" title="Delete">×</span>
         </div></td>`;
       } else {
-        h+=`<td><div class="sched-cell" onclick="openAddEventAt('${day}',${hour})"></div></td>`;
+        h+=`<td style="${cellH}"><div class="sched-cell" style="${cellH}" onclick="openAddEventAt('${day}',${slot})"></div></td>`;
       }
     });
     h+=`</tr>`;
@@ -1916,7 +1967,7 @@ function openEditEvent(key){
   const ev=schedEvents[key];if(!ev)return;
   const [day,hourStr]=key.split('_');
   document.getElementById('m-title').textContent='Edit event';
-  _schedModalBody(day,parseInt(hourStr),ev);
+  _schedModalBody(day,parseFloat(hourStr),ev);
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-d btn-sm" onclick="deleteEvent('${key}');closeModal()">Delete</button><div style="flex:1"></div><button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveSchedEvent('${key}')">Save</button>`;
   document.getElementById('modal-overlay').style.display='flex';
 }
@@ -1927,7 +1978,7 @@ function _schedModalBody(day,hour,ev){
     <div class="field"><label>Note (optional)</label><input id="sc-note" placeholder="e.g. Chapter 3" value="${ev?esc(ev.note||''):''}"/></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="field"><label>Day</label><select id="sc-day">${DAYS.map(d=>`<option value="${d}"${d===(day||'Monday')?' selected':''}>${d}</option>`).join('')}</select></div>
-      <div class="field"><label>Time</label><select id="sc-hour">${HOURS.map(h=>{const l=h<12?`${h}:00 AM`:h===12?`12:00 PM`:`${h-12}:00 PM`;return`<option value="${h}"${h===(hour||9)?' selected':''}>${l}</option>`;}).join('')}</select></div>
+      <div class="field"><label>Time</label><select id="sc-hour">${SLOTS.map(s=>`<option value="${s}"${s===(hour||9)?' selected':''}>${slotLabel(s)}</option>`).join('')}</select></div>
     </div>
     <div class="field"><label>Colour</label><div class="color-dots">${colorDots}</div></div>`;
 }
@@ -1935,7 +1986,7 @@ function saveSchedEvent(editKey){
   const title=document.getElementById('sc-title').value.trim();
   if(!title)return alert('Please enter a title.');
   const day=document.getElementById('sc-day').value;
-  const hour=parseInt(document.getElementById('sc-hour').value);
+  const hour=parseFloat(document.getElementById('sc-hour').value);
   const note=document.getElementById('sc-note').value.trim();
   const dots=document.querySelectorAll('.color-dot');
   let color=schedPickColor;
