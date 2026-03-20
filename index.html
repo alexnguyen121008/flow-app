@@ -1827,14 +1827,65 @@ function loadQuote(){
 let activeGame='wordle';
 
 // ── WORDLE ──
-const WORDLE_WORDS=['STUDY','BRAIN','FOCUS','LEARN','GRADE','THINK','LOGIC','POWER','SKILL','SMART','WRITE','NOTES','SOLVE','MATHS','WORDS','BOOKS','ESSAY','PAPER','SCORE','ROUND','PLANT','HEART','LIGHT','MUSIC','DANCE','SLEEP','DREAM','FLAME','STORM','CLOUD','CHAIR','TABLE','CLOCK','PHONE','VOICE','LAUGH','HAPPY','BRAVE','CLEAR','QUIET','SWIFT','SHARP','STONE','PRIDE','TRUST','PEACE','FAITH','GRACE','BLOOM','SPARK'];
+// ── SYDNEY DAILY KEY ─────────────────────────────────────────────
+// Returns a stable date string that resets at midnight Sydney time (AEDT/AEST)
+function sydneyDayKey(){
+  // Sydney is UTC+11 (AEDT) or UTC+10 (AEST). Using Intl for accuracy.
+  const now=new Date();
+  const sydStr=now.toLocaleDateString('en-AU',{timeZone:'Australia/Sydney',year:'numeric',month:'2-digit',day:'2-digit'});
+  return sydStr; // e.g. "20/03/2025"
+}
+function sydneyDayIndex(listLen){
+  const key=sydneyDayKey();
+  // Hash the date string to a stable index
+  let h=0;for(let i=0;i<key.length;i++)h=(h*31+key.charCodeAt(i))>>>0;
+  return h%listLen;
+}
+
+// ── WORDLE ───────────────────────────────────────────────────────
+// Large, harder word list — mix of academic, science, humanities vocabulary
+const WORDLE_WORDS=[
+  'AXIOM','PRISM','QUERY','QUOTA','NEXUS','EPOCH','ETHOS','TROPE','REDUX','STOIC',
+  'IONIC','CONIC','LYRIC','CIVIC','TOXIC','OPTIC','SONIC','CUBIC','LOGIC','TONIC',
+  'PROXY','CYCLE','GLYPH','LYMPH','NYMPH','CRYPT','GRAFT','SYNTH','BRINE','FORGE',
+  'SMELT','ALLOY','ANNEX','INERT','INFER','IMPLY','INDEX','PIXEL','PIVOT','PROXY',
+  'QUEST','QUIRK','QUALM','QUOTA','QUAFF','TRIAD','NEXUS','ETHOS','VENOM','VIGOR',
+  'VISTA','VOCAB','VALVE','VALID','VALOR','VAPOR','VAULT','VENOM','VERSE','VICAR',
+  'TIDAL','TONIC','TOPAZ','TORSO','TOXIC','TRACT','TRAMP','TRAWL','TRIAD','TRICK',
+  'SIGMA','SKIFF','SKIMP','SKULL','SLANG','SLASH','SLEEK','SLEET','SLEPT','SLICE',
+  'RESIN','REIGN','RELAY','REALM','REBUT','RECON','RECUT','REDUX','REEDY','REFIT',
+  'PLUMB','PLUME','PLUNK','PLUSH','POSED','POSIT','POSSE','POTENT','POUCH','POUTY',
+  'ORBIT','ORDER','ONSET','OPERA','OPTIC','OVARY','OXIDE','OZONE','GRAZE','GREED',
+  'FUNGI','FUROR','FUSED','FATTY','FAUNA','FIBER','FIBRE','FEMUR','FETCH','FETID',
+  'ECLAT','EDIFY','EJECT','ELUDE','EMOTE','ENACT','ENDOW','ENSUE','EPOCH','EQUIP',
+  'DEPOT','DEPTH','DERBY','DECAY','DECOR','DECOY','DECRY','DEFER','DEIFY','DEITY',
+  'COBRA','CODEC','COMET','CORAL','CREDO','CREEK','CREEP','CREST','CRIMP','CROAK',
+  'BARON','BASIN','BATCH','BATHE','BATON','BAYOU','BEADY','BEARD','BEAST','BEIGE',
+  'ABHOR','ABIDE','ABYSS','ADAGE','ADAPT','ADDAX','ADEPT','ADMIN','ADORN','ADULT',
+  'MANOR','MIRTH','MOCHA','MODAL','MOGUL','MOODY','MORSE','MORPH','MOSSY','MOTIF',
+  'NADIR','NAIVE','NATAL','NAVAL','NERVE','NOTCH','NOVEL','NUDGE','NUKED','NYMPH',
+  'KARMA','KNACK','KNAVE','KNEEL','KNELT','KNOLL','KNOWN','KOALA','KUDOS','KYOTO',
+];
+
 let wState={word:'',guesses:[],current:'',done:false,msg:''};
 
 function wNewGame(){
-  const day=new Date().toDateString();
-  const idx=Math.abs(day.split('').reduce((a,c)=>a+c.charCodeAt(0),0))%WORDLE_WORDS.length;
+  const idx=sydneyDayIndex(WORDLE_WORDS.length);
+  // Check if we already played today
+  const savedKey=localStorage.getItem('wordle_day');
+  const todayKey=sydneyDayKey();
+  if(savedKey===todayKey){
+    const saved=localStorage.getItem('wordle_state');
+    if(saved){try{wState=JSON.parse(saved);renderWordle();return;}catch{}}
+  }
   wState={word:WORDLE_WORDS[idx],guesses:[],current:'',done:false,msg:''};
+  localStorage.setItem('wordle_day',todayKey);
+  saveWordleState();
   renderWordle();
+}
+
+function saveWordleState(){
+  localStorage.setItem('wordle_state',JSON.stringify({word:wState.word,guesses:wState.guesses,done:wState.done,msg:wState.msg,current:''}));
 }
 
 function wKey(k){
@@ -1847,6 +1898,7 @@ function wKey(k){
     if(g===wState.word){wState.done=true;wState.msg='Brilliant! 🎉';recordWin('wordle');}
     else if(wState.guesses.length>=6){wState.done=true;wState.msg=`The word was ${wState.word}`;recordLoss('wordle');}
     else{wState.msg='';}
+    saveWordleState();
   } else if(k==='⌫'){
     wState.current=wState.current.slice(0,-1);wState.msg='';
   } else if(wState.current.length<5&&/^[A-Z]$/.test(k)){
@@ -1901,37 +1953,95 @@ function renderWordle(){
 }
 
 // ── CONNECTIONS ──
+// Harder puzzles with tricky/overlapping categories and academic themes
 const CONN_PUZZLES=[
   {groups:[
-    {label:'Planets',color:0,words:['MARS','VENUS','EARTH','SATURN']},
-    {label:'Greek letters',color:1,words:['ALPHA','BETA','GAMMA','DELTA']},
-    {label:'Types of energy',color:2,words:['SOLAR','KINETIC','THERMAL','NUCLEAR']},
-    {label:'Famous scientists',color:3,words:['NEWTON','DARWIN','CURIE','TESLA']},
+    {label:'Types of fallacy',color:0,words:['STRAW MAN','AD HOMINEM','SLIPPERY SLOPE','FALSE DICHOTOMY']},
+    {label:'Philosophical schools',color:1,words:['STOICISM','EMPIRICISM','RATIONALISM','EXISTENTIALISM']},
+    {label:'Parts of a neuron',color:2,words:['AXON','DENDRITE','SYNAPSE','MYELIN']},
+    {label:'Economic systems',color:3,words:['CAPITALISM','SOCIALISM','FEUDALISM','MERCANTILISM']},
   ]},
   {groups:[
-    {label:'Parts of a cell',color:0,words:['NUCLEUS','MEMBRANE','RIBOSOME','CYTOPLASM']},
-    {label:'Literary devices',color:1,words:['SIMILE','METAPHOR','IRONY','ALLUSION']},
-    {label:'Types of angles',color:2,words:['ACUTE','OBTUSE','REFLEX','RIGHT']},
-    {label:'Australian states',color:3,words:['VICTORIA','QUEENSLAND','TASMANIA','NSW']},
+    {label:'Shakespearean tragedies',color:0,words:['HAMLET','MACBETH','OTHELLO','KING LEAR']},
+    {label:'Types of irony',color:1,words:['DRAMATIC','SITUATIONAL','VERBAL','COSMIC']},
+    {label:'Literary movements',color:2,words:['ROMANTICISM','MODERNISM','REALISM','NATURALISM']},
+    {label:'Narrative perspectives',color:3,words:['OMNISCIENT','FIRST PERSON','UNRELIABLE','STREAM OF CONSCIOUSNESS']},
   ]},
   {groups:[
-    {label:'Maths operations',color:0,words:['ADD','DIVIDE','MULTIPLY','SUBTRACT']},
-    {label:'Types of graphs',color:1,words:['BAR','LINE','PIE','SCATTER']},
-    {label:'Periodic table groups',color:2,words:['HALOGEN','NOBLE','ALKALI','METAL']},
-    {label:'Writing styles',color:3,words:['NARRATIVE','PERSUASIVE','EXPOSITORY','DESCRIPTIVE']},
+    {label:'Trigonometric identities',color:0,words:['SINE','COSINE','TANGENT','COSECANT']},
+    {label:'Types of proof',color:1,words:['INDUCTION','CONTRADICTION','CONTRAPOSITIVE','DIRECT']},
+    {label:'Statistical measures',color:2,words:['MEDIAN','MODE','VARIANCE','SKEWNESS']},
+    {label:'Types of sequences',color:3,words:['ARITHMETIC','GEOMETRIC','FIBONACCI','HARMONIC']},
+  ]},
+  {groups:[
+    {label:'Atomic models (scientists)',color:0,words:['DALTON','THOMSON','RUTHERFORD','BOHR']},
+    {label:'Types of bonds',color:1,words:['IONIC','COVALENT','METALLIC','HYDROGEN']},
+    {label:'Reaction types',color:2,words:['SYNTHESIS','DECOMPOSITION','COMBUSTION','REDOX']},
+    {label:'States of matter',color:3,words:['SOLID','LIQUID','PLASMA','BOSE-EINSTEIN']},
+  ]},
+  {groups:[
+    {label:'Parts of natural selection',color:0,words:['VARIATION','HEREDITY','SELECTION','ADAPTATION']},
+    {label:'Cell division stages',color:1,words:['PROPHASE','METAPHASE','ANAPHASE','TELOPHASE']},
+    {label:'Types of mutation',color:2,words:['INSERTION','DELETION','SUBSTITUTION','INVERSION']},
+    {label:'Ecological relationships',color:3,words:['MUTUALISM','PARASITISM','COMMENSALISM','COMPETITION']},
+  ]},
+  {groups:[
+    {label:'Branches of physics',color:0,words:['MECHANICS','THERMODYNAMICS','QUANTUM','RELATIVITY']},
+    {label:'Types of waves',color:1,words:['TRANSVERSE','LONGITUDINAL','STANDING','ELECTROMAGNETIC']},
+    {label:'Newton's laws (key words)',color:2,words:['INERTIA','FORCE','ACCELERATION','ACTION-REACTION']},
+    {label:'Particle physics',color:3,words:['QUARK','LEPTON','BOSON','FERMION']},
+  ]},
+  {groups:[
+    {label:'Rhetorical devices',color:0,words:['ANAPHORA','EPISTROPHE','CHIASMUS','ANTITHESIS']},
+    {label:'Types of essays',color:1,words:['EXPOSITORY','ARGUMENTATIVE','ANALYTICAL','REFLECTIVE']},
+    {label:'Poetic forms',color:2,words:['SONNET','VILLANELLE','HAIKU','BALLAD']},
+    {label:'Narrative techniques',color:3,words:['FORESHADOWING','FLASHBACK','IN MEDIAS RES','FRAME NARRATIVE']},
+  ]},
+  {groups:[
+    {label:'Cognitive biases',color:0,words:['CONFIRMATION','ANCHORING','DUNNING-KRUGER','AVAILABILITY']},
+    {label:'Memory types',color:1,words:['SEMANTIC','EPISODIC','PROCEDURAL','WORKING']},
+    {label:'Freudian concepts',color:2,words:['EGO','ID','SUPEREGO','LIBIDO']},
+    {label:'Schools of psychology',color:3,words:['BEHAVIOURISM','COGNITIVISM','HUMANISM','PSYCHOANALYSIS']},
+  ]},
+  {groups:[
+    {label:'Australian biomes',color:0,words:['SAVANNA','RAINFOREST','MALLEE','ALPINE']},
+    {label:'Indigenous Australian concepts',color:1,words:['SONGLINES','DREAMING','COUNTRY','LORE']},
+    {label:'Australian government bodies',color:2,words:['SENATE','HOUSE','HIGH COURT','CABINET']},
+    {label:'Australian literary figures',color:3,words:['HENRY LAWSON','BANJO PATERSON','TIM WINTON','KATE GRENVILLE']},
+  ]},
+  {groups:[
+    {label:'Logical operators',color:0,words:['AND','OR','NOT','XOR']},
+    {label:'Programming paradigms',color:1,words:['FUNCTIONAL','OBJECT-ORIENTED','PROCEDURAL','DECLARATIVE']},
+    {label:'Data structures',color:2,words:['STACK','QUEUE','LINKED LIST','BINARY TREE']},
+    {label:'Algorithm types',color:3,words:['SORTING','SEARCHING','GREEDY','DYNAMIC PROGRAMMING']},
   ]},
 ];
-let cState={puzzle:null,selected:[],solved:[],mistakes:0,done:false,msg:''};
+
+let cState={puzzle:null,cards:[],selected:[],solved:[],mistakes:0,done:false,msg:''};
 
 function cNewGame(){
-  const day=new Date().toDateString();
-  const idx=Math.abs(day.split('').reduce((a,c)=>a+c.charCodeAt(0),0))%CONN_PUZZLES.length;
+  const idx=sydneyDayIndex(CONN_PUZZLES.length);
+  // Check if we already played today
+  const savedKey=localStorage.getItem('conn_day');
+  const todayKey=sydneyDayKey();
+  if(savedKey===todayKey){
+    const saved=localStorage.getItem('conn_state');
+    if(saved){try{
+      const s=JSON.parse(saved);
+      cState=s;renderConn();return;
+    }catch{}}
+  }
   const p=CONN_PUZZLES[idx];
   const all=p.groups.flatMap(g=>g.words.map(w=>({word:w,group:g.label,color:g.color})));
-  // shuffle
   for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
   cState={puzzle:p,cards:all,selected:[],solved:[],mistakes:0,done:false,msg:''};
+  localStorage.setItem('conn_day',todayKey);
+  saveConnState();
   renderConn();
+}
+
+function saveConnState(){
+  localStorage.setItem('conn_state',JSON.stringify(cState));
 }
 
 function cToggle(word){
@@ -1957,6 +2067,7 @@ function cSubmit(){
     if(cState.mistakes>=4){cState.done=true;recordLoss('conn');}
     cState.selected=[];
   }
+  saveConnState();
   renderConn();
 }
 
