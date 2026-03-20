@@ -1185,7 +1185,7 @@ async function saveTask(){
   var dsc=document.getElementById('m-dsc').value.trim();
   var pri=document.getElementById('m-pri').value;
   var cat=document.getElementById('m-cat').value.trim();
-  var taskData={id:gid(),title:title,description:dsc,client_id:studentId,week_key:wk,priority:pri,category:cat,created_at:new Date().toISOString()};
+  var taskData={id:gid(),title:title,description:dsc,client_id:studentId,week_key:wk,priority:pri,category:cat,created_at:Date.now()};
   var res=await sb.from('tasks').insert(taskData);
   if(res.error){alert('Could not save task: '+res.error.message);return;}
   _bust('tasks');
