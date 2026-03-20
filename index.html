@@ -796,11 +796,16 @@ function enterApp(u){
   // Load this user's schedule
   const savedSched=localStorage.getItem('fluere_sched_'+u.id)||localStorage.getItem('fluere_sched')||'{}';
   try{schedEvents=JSON.parse(savedSched);}catch{schedEvents={};}
+  // If user has local schedule data not yet in Supabase, push it up
+  if(u.role!=='admin'&&!u.schedule&&savedSched!=='{}'){
+    sb.from('users').update({schedule:savedSched}).eq('id',u.id);
+  }
   buildNav(u.role);
   loadQuote();
   initTheme();
   updateStreakWidget();
   migrateOldStreaks();
+  subscribeLeaderboard(); // start realtime listener for instant leaderboard updates
   // Ensure new users appear on leaderboard immediately with streak = 0
   if(u.role!=='admin'){
     const hasStreak = u.streak_wordle !== undefined && u.streak_wordle !== null;
@@ -816,6 +821,7 @@ function enterApp(u){
   }
 }
 function logout(){
+  unsubscribeLeaderboard(); // stop realtime listener
   CU=null;localStorage.removeItem('fluere_session');
   document.getElementById('app').style.display='none';
   ['admin-view','client-view','qhub-view','sched-view','paper-view'].forEach(id=>document.getElementById(id).style.display='none');
@@ -1062,39 +1068,51 @@ async function renderClients(){
   el.innerHTML=h;
 }
 
-function viewClientSched(clientId, clientName){
-  // Read their schedule from localStorage (keyed by student id)
-  const raw=localStorage.getItem('fluere_sched_'+clientId)||localStorage.getItem('fluere_sched')||'{}';
-  const events=JSON.parse(raw);
-  const keys=Object.keys(events);
+async function viewClientSched(clientId, clientName){
   document.getElementById('m-title').textContent=`${clientName}'s Schedule`;
-  if(!keys.length){
-    document.getElementById('m-body').innerHTML=`<p style="color:var(--mut);font-size:14px">No schedule events saved yet.</p>`;
-  } else {
-    const dayOrder=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    const COLORS_BG=['var(--acc-l)','var(--blu-l)','var(--grn-l)','var(--amb-l)','var(--dan-l)'];
-    const COLORS_TXT=['var(--acc)','var(--blu)','var(--grn)','var(--amb)','var(--dan)'];
-    const sorted=keys.sort((a,b)=>{
-      const [da,ha]=a.split('_');const [db,hb]=b.split('_');
-      return (dayOrder.indexOf(da)-dayOrder.indexOf(db))||parseInt(ha)-parseInt(hb);
-    });
-    let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto">`;
-    sorted.forEach(k=>{
-      const ev=events[k];
-      const [day,hourStr]=k.split('_');
-      const hour=parseInt(hourStr);
-      const label=hour<12?`${hour}:00 AM`:hour===12?`12:00 PM`:`${hour-12}:00 PM`;
-      const bg=COLORS_BG[ev.color||0];const tc=COLORS_TXT[ev.color||0];
-      h+=`<div style="display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:var(--rs);background:${bg}">
-        <div style="font-size:11px;font-weight:700;color:${tc};min-width:90px">${day} ${label}</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${tc}">${esc(ev.title)}</div>${ev.note?`<div style="font-size:12px;opacity:.75">${esc(ev.note)}</div>`:''}</div>
-      </div>`;
-    });
-    h+=`</div>`;
-    document.getElementById('m-body').innerHTML=h;
-  }
+  document.getElementById('m-body').innerHTML=`<div class="loading">Loading...</div>`;
   document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Close</button>`;
   document.getElementById('modal-overlay').style.display='flex';
+
+  // Fetch directly from Supabase — the only reliable source across devices
+  const {data:userData}=await sb.from('users').select('schedule').eq('id',clientId).single();
+  let events={};
+  if(userData?.schedule){
+    try{ events=JSON.parse(userData.schedule); }catch{}
+  }
+
+  const keys=Object.keys(events).filter(k=>k!=='_migrated');
+  if(!keys.length){
+    document.getElementById('m-body').innerHTML=`<div class="empty" style="padding:2rem"><div class="empty-i">📅</div><div class="empty-t">No schedule yet</div><p>${esc(clientName)} hasn't added any events to their schedule.</p></div>`;
+    return;
+  }
+
+  const dayOrder=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const COLORS_BG=['var(--acc-l)','var(--blu-l)','var(--grn-l)','var(--amb-l)','var(--dan-l)'];
+  const COLORS_TXT=['var(--acc)','var(--blu)','var(--grn)','var(--amb)','var(--dan)'];
+  const sorted=keys.sort((a,b)=>{
+    const [da,ha]=a.split('_');const [db,hb]=b.split('_');
+    return (dayOrder.indexOf(da)-dayOrder.indexOf(db))||parseInt(ha)-parseInt(hb);
+  });
+
+  let h=`<div style="display:flex;flex-direction:column;gap:6px;max-height:460px;overflow-y:auto">`;
+  sorted.forEach(k=>{
+    const ev=events[k];
+    if(!ev||!ev.title)return;
+    const [day,hourStr]=k.split('_');
+    const hour=parseInt(hourStr);
+    const label=hour<12?`${hour}:00 AM`:hour===12?`12:00 PM`:`${hour-12}:00 PM`;
+    const bg=COLORS_BG[ev.color||0];const tc=COLORS_TXT[ev.color||0];
+    h+=`<div style="display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:var(--rs);background:${bg}">
+      <div style="font-size:11px;font-weight:700;color:${tc};min-width:110px;flex-shrink:0">${day}<br>${label}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:${tc}">${esc(ev.title)}</div>
+        ${ev.note?`<div style="font-size:12px;opacity:.75;color:${tc}">${esc(ev.note)}</div>`:''}
+      </div>
+    </div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('m-body').innerHTML=h;
 }
 
 async function delClient(id){if(!confirm('Remove this user?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('student_id',id);await sb.from('completions').delete().eq('student_id',id);_bustAll();renderClients();}
@@ -1789,8 +1807,14 @@ let schedEvents=JSON.parse(localStorage.getItem('fluere_sched')||'{}');
 let schedPickColor=0;
 
 function saveSched(){
+  // Save locally
   const key=CU?'fluere_sched_'+CU.id:'fluere_sched';
-  localStorage.setItem(key,JSON.stringify(schedEvents));
+  const data=JSON.stringify(schedEvents);
+  localStorage.setItem(key,data);
+  // Also save to Supabase so admin can read it
+  if(CU){
+    sb.from('users').update({schedule:data}).eq('id',CU.id).then(()=>_bust('users'));
+  }
 }
 function schedKey(day,hour){return `${day}_${hour}`;}
 
@@ -2239,10 +2263,8 @@ function renderGames(){
 // We store streaks locally and show a merged view from all users' local data + Supabase
 
 // ── LEADERBOARD STREAK SYSTEM ────────────────────────────────────
-// Simple & reliable: streaks stored in localStorage per user.
-// One column in Supabase: streak_wordle and streak_conn (already exist).
-// We write the BEST streak to Supabase so everyone can see it.
-// Current streak is local only — resets on loss, increments on win.
+// Streaks saved to Supabase immediately (awaited) after every game.
+// Supabase Realtime subscription keeps all viewers in sync live.
 
 function lsKey(type, game){ return `fs_${type}_${game}_${CU?.id||'anon'}`; }
 function getCurStreak(game){ return parseInt(localStorage.getItem(lsKey('cur',game))||'0'); }
@@ -2250,41 +2272,42 @@ function getBestStreak(game){ return parseInt(localStorage.getItem(lsKey('best',
 function setCurStreak(game,v){ localStorage.setItem(lsKey('cur',game),v); }
 function setBestStreak(game,v){ localStorage.setItem(lsKey('best',game),v); }
 
-function saveStreakToDB(game){
-  // Only uses existing streak_wordle / streak_conn columns
+// Awaited version — waits for DB write to finish before refreshing
+async function saveStreakToDB(game){
   if(!CU) return;
   const best = getBestStreak(game);
-  sb.from('users')
-    .update({ [`streak_${game}`]: best })
-    .eq('id', CU.id)
-    .then(({error}) => {
-      if(!error) _bust('users');
-    });
+  const cur  = getCurStreak(game);
+  const { error } = await sb.from('users')
+    .update({ [`streak_${game}`]: best, [`cur_${game}`]: cur })
+    .eq('id', CU.id);
+  // Even if cur_ column doesn't exist, streak_ will save fine
+  _bust('users');
 }
 
-function recordWin(game){
-  const cur = getCurStreak(game) + 1;
+async function recordWin(game){
+  const cur  = getCurStreak(game) + 1;
   const best = Math.max(cur, getBestStreak(game));
   setCurStreak(game, cur);
   setBestStreak(game, best);
-  saveStreakToDB(game);
-  // Live-refresh leaderboard if it's currently visible
-  const lbEl = document.getElementById('lb-view');
-  if(lbEl && lbEl.style.display !== 'none') renderLeaderboard();
+  await saveStreakToDB(game);   // await so DB is updated before leaderboard reads
+  refreshLeaderboardIfOpen();
   return cur;
 }
 
-function recordLoss(game){
-  const best = getBestStreak(game); // keep best, reset current
+async function recordLoss(game){
+  const best = getBestStreak(game);
   setCurStreak(game, 0);
   setBestStreak(game, best);
-  saveStreakToDB(game);
+  await saveStreakToDB(game);   // await so DB is updated before leaderboard reads
+  refreshLeaderboardIfOpen();
+}
+
+function refreshLeaderboardIfOpen(){
   const lbEl = document.getElementById('lb-view');
   if(lbEl && lbEl.style.display !== 'none') renderLeaderboard();
 }
 
 function migrateOldStreaks(){
-  // Carry over any streak data from the old key format
   if(!CU || localStorage.getItem('fs_migrated_'+CU.id)) return;
   ['wordle','conn'].forEach(game => {
     const oldBest = parseInt(localStorage.getItem(`fluere_streak_${CU.id}_${game}_max`)||'0');
@@ -2298,12 +2321,31 @@ function migrateOldStreaks(){
   localStorage.setItem('fs_migrated_'+CU.id, '1');
 }
 
+// Supabase Realtime — updates leaderboard for ALL viewers instantly
+let _lbChannel = null;
+function subscribeLeaderboard(){
+  if(_lbChannel) return; // already subscribed
+  _lbChannel = sb.channel('leaderboard')
+    .on('postgres_changes', {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'users'
+    }, () => {
+      _bust('users');
+      refreshLeaderboardIfOpen();
+    })
+    .subscribe();
+}
+function unsubscribeLeaderboard(){
+  if(_lbChannel){ sb.removeChannel(_lbChannel); _lbChannel=null; }
+}
+
 let lbGame = 'wordle';
 async function renderLeaderboard(){
   const el = document.getElementById('lb-view');
   el.innerHTML = `<div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div><div class="loading">Loading...</div>`;
-  
-  // Force fresh fetch — no cache
+
+  // Always bust cache so we get the freshest data
   _bust('users');
   const users = await dbUsers();
 
@@ -2312,21 +2354,20 @@ async function renderLeaderboard(){
     <button class="lb-tab${lbGame==='conn'?' on':''}" onclick="lbGame='conn';renderLeaderboard()">🟦 Connections</button>
   </div>`;
 
-  // Build a row for every registered user
+  // Every registered user gets a row — new users show 0
   const rows = users.map(u => {
-    const isMe = CU && u.id === CU.id;
-    // For current user, always use fresh localStorage data
+    const isMe  = CU && u.id === CU.id;
+    // For yourself: use live localStorage. For others: use Supabase value.
     const best  = isMe ? getBestStreak(lbGame) : (u[`streak_${lbGame}`] || 0);
-    const cur   = isMe ? getCurStreak(lbGame)  : 0; // only know our own current streak
+    const cur   = isMe ? getCurStreak(lbGame)  : 0;
     return { name: u.name, id: u.id, best, cur, isMe };
   });
 
-  // Ensure current user always appears even if somehow missing from DB
+  // Ensure logged-in user always appears even if not yet in DB
   if(CU && !users.find(u => u.id === CU.id)){
     rows.push({ name: CU.name, id: CU.id, best: getBestStreak(lbGame), cur: getCurStreak(lbGame), isMe: true });
   }
 
-  // Sort by best streak descending, then alphabetically
   rows.sort((a,b) => b.best - a.best || a.name.localeCompare(b.name));
 
   const medals = ['🥇','🥈','🥉'];
@@ -2336,19 +2377,19 @@ async function renderLeaderboard(){
     const rankCell = i < 3
       ? `<span style="font-size:20px">${medals[i]}</span>`
       : `<span style="font-size:14px;font-weight:700;color:var(--mut);padding-left:8px">${i+1}</span>`;
-    const isYou = !!r.isMe;
-    const rowBg = isYou ? 'background:var(--acc-l);' : (i%2===0?'':'background:var(--surf3);');
-    const curBadge = isYou && r.cur > 0
-      ? `<span style="font-size:11px;color:var(--grn);font-weight:700;margin-left:6px">🔥 ${r.cur} now</span>`
-      : '';
+    const rowBg = r.isMe ? 'background:var(--acc-l);' : (i%2===0 ? '' : 'background:var(--surf3);');
+
     tableRows += `<tr style="${rowBg}border-bottom:1px solid var(--bdr)">
       <td style="padding:14px 10px;width:44px;text-align:center">${rankCell}</td>
       <td style="padding:14px 10px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="lb-av" style="${isYou?'box-shadow:0 0 0 2.5px var(--acc);':''}background:linear-gradient(135deg,${isYou?'var(--acc),var(--acc2)':'#706C8A,#9693A8'})">${ini(r.name)}</div>
+          <div class="lb-av" style="${r.isMe?'box-shadow:0 0 0 2.5px var(--acc);':''}">${ini(r.name)}</div>
           <div>
-            <div style="font-weight:600;font-size:14px;color:var(--txt)">${esc(r.name)}${isYou?'<span style="font-size:11px;color:var(--acc);font-weight:700;margin-left:6px">(you)</span>':''}</div>
-            ${isYou?`<div style="font-size:11px;color:var(--mut)">Your current run: ${r.cur} 🔥</div>`:''}
+            <div style="font-weight:600;font-size:14px;color:var(--txt)">
+              ${esc(r.name)}
+              ${r.isMe?'<span style="font-size:11px;color:var(--acc);font-weight:700;margin-left:6px">(you)</span>':''}
+            </div>
+            ${r.isMe && r.cur > 0 ? `<div style="font-size:11px;color:var(--grn);font-weight:600">🔥 On a ${r.cur}-game streak</div>` : ''}
           </div>
         </div>
       </td>
@@ -2359,13 +2400,13 @@ async function renderLeaderboard(){
   });
 
   if(!rows.length){
-    tableRows = `<tr><td colspan="3" style="text-align:center;color:var(--mut);padding:3rem;font-size:14px">No players yet — play a game to get on the board!</td></tr>`;
+    tableRows = `<tr><td colspan="3" style="text-align:center;color:var(--mut);padding:3rem;font-size:14px">No players yet — complete a game to appear!</td></tr>`;
   }
 
   el.innerHTML = `
     <div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div>
     <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">
-      Every user appears here. Best streak 🏆 updates after each game — win to build yours, lose to reset!
+      Updates live for everyone. Win games to build your streak — lose and it resets! 🔥
     </p>
     ${tabs}
     <div class="card" style="padding:0;overflow:hidden">
