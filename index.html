@@ -1130,31 +1130,28 @@ async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from
 
 function openAddTask(){
   document.getElementById('m-title').textContent='Add task';
-  document.getElementById('m-body').innerHTML=`
-    <div class="field"><label>Title</label><input id="m-ttl" placeholder="e.g. Complete intake form"/></div>
-    <div class="field"><label>Description (optional)</label><textarea id="m-dsc" rows="2" style="resize:vertical" placeholder="Details..."></textarea></div>
-    <div class="field"><label>Student</label><select id="m-cli"></select></div>
-    <div class="field"><label>Week (pick any date in that week)</label><input type="date" id="m-wk" class="dpick" style="width:100%" value="${adminDate||todayKey()}"/></div>
-    <div class="field"><label>Priority</label><select id="m-pri"><option value="normal">Normal</option><option value="high">High</option></select></div>
-    <div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>
-    <div style="background:var(--surf2);border-radius:var(--rs);padding:12px;margin-top:.5rem">
-      <div style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📅 Add to student schedule (optional)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div class="field" style="margin:0"><label>Day</label><select id="m-sched-day" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
-          <option value="">None</option>
-          ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d=>`<option value="${d}">${d}</option>`).join('')}
-        </select></div>
-        <div class="field" style="margin:0"><label>Time</label><select id="m-sched-time" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
-          ${SLOTS.map(s=>`<option value="${s}">${slotLabel(s)}</option>`).join('')}
-        </select></div>
-        <div class="field" style="margin:0"><label>Colour</label><select id="m-sched-color" style="width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">
-          <option value="0">Purple</option><option value="1">Blue</option><option value="2">Green</option><option value="3">Amber</option><option value="4">Red</option>
-        </select></div>
-      </div>
-    </div>`;
-  document.getElementById('m-actions').innerHTML=`<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>`;
+  var timeOpts=SLOTS.map(function(s){return '<option value="'+s+'">'+slotLabel(s)+'</option>';}).join('');
+  var dayOpts=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(function(d){return '<option value="'+d+'">'+d+'</option>';}).join('');
+  document.getElementById('m-body').innerHTML=
+    '<div class="field"><label>Title</label><input id="m-ttl" placeholder="e.g. Complete intake form"/></div>'+
+    '<div class="field"><label>Description (optional)</label><textarea id="m-dsc" rows="2" style="resize:vertical" placeholder="Details..."></textarea></div>'+
+    '<div class="field"><label>Student</label><select id="m-cli"></select></div>'+
+    '<div class="field"><label>Week</label><input type="date" id="m-wk" class="dpick" style="width:100%" value="'+(adminDate||todayKey())+'"/></div>'+
+    '<div class="field"><label>Priority</label><select id="m-pri"><option value="normal">Normal</option><option value="high">High</option></select></div>'+
+    '<div class="field"><label>Category (optional)</label><input id="m-cat" placeholder="e.g. Exercise"/></div>'+
+    '<div style="background:var(--surf2);border-radius:var(--rs);padding:12px;margin-top:.5rem">'+
+    '<p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">&#128197; Add to student schedule (optional)</p>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
+    '<div class="field" style="margin:0"><label>Day</label><select id="m-sched-day" style="width:100%;padding:8px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none"><option value="">None</option>'+dayOpts+'</select></div>'+
+    '<div class="field" style="margin:0"><label>Time</label><select id="m-sched-time" style="width:100%;padding:8px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--surf3);color:var(--txt);outline:none">'+timeOpts+'</select></div>'+
+    '</div></div>';
+  document.getElementById('m-actions').innerHTML='<button class="btn btn-s" onclick="closeModal()">Cancel</button><button class="btn btn-p" style="width:auto" onclick="saveTask()">Add task</button>';
   document.getElementById('modal-overlay').style.display='flex';
-  dbUsers().then(users=>{const students=users.filter(u=>u.role==='user'||u.role==='client');document.getElementById('m-cli').innerHTML=students.map(c=>`<option value="${c.id}"${c.id===selC?' selected':''}>${esc(c.name)}</option>`).join('');});
+  dbUsers().then(function(users){
+    var students=users.filter(function(u){return u.role==='user'||u.role==='client';});
+    var el=document.getElementById('m-cli');
+    if(el)el.innerHTML=students.map(function(c){return '<option value="'+c.id+'"'+(c.id===selC?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  });
 }
 function openEditTask(id,title,desc,priority,category){
   document.getElementById('m-title').textContent='Edit task';
@@ -1167,57 +1164,34 @@ function openEditTask(id,title,desc,priority,category){
   document.getElementById('modal-overlay').style.display='flex';
 }
 async function saveTask(){
-  const title=document.getElementById('m-ttl').value.trim();
+  var title=document.getElementById('m-ttl').value.trim();
   if(!title)return alert('Please enter a title.');
-  const wk=weekKey(document.getElementById('m-wk').value);
-  const studentId=document.getElementById('m-cli').value;
-
-  // Insert the task — wrap in try/catch so errors show clearly
-  try{
-    const {error}=await sb.from('tasks').insert({
-      id:gid(),title,
-      description:document.getElementById('m-dsc').value.trim(),
-      student_id:studentId,
-      week_key:wk,
-      priority:document.getElementById('m-pri').value,
-      category:document.getElementById('m-cat').value.trim(),
-      created_at:Date.now()
-    });
-    if(error){alert('Could not save task: '+error.message);return;}
-  }catch(e){alert('Error saving task: '+e.message);return;}
+  var wkEl=document.getElementById('m-wk');
+  var wk=weekKey(wkEl?wkEl.value:null);
+  var studentId=document.getElementById('m-cli').value;
+  if(!studentId)return alert('Please select a student.');
+  var dsc=document.getElementById('m-dsc').value.trim();
+  var pri=document.getElementById('m-pri').value;
+  var cat=document.getElementById('m-cat').value.trim();
+  var res=await sb.from('tasks').insert({id:gid(),title:title,description:dsc,student_id:studentId,week_key:wk,priority:pri,category:cat,created_at:Date.now()});
+  if(res.error){alert('Could not save task: '+res.error.message);return;}
   _bust('tasks');
-
-  // Optionally add to student's schedule — only if a day was selected
-  try{
-    const schedDayEl=document.getElementById('m-sched-day');
-    const schedDay=schedDayEl?schedDayEl.value:'';
-    if(schedDay){
-      const schedSlot=parseFloat(document.getElementById('m-sched-time').value);
-      const schedColor=parseInt(document.getElementById('m-sched-color').value||'0');
-      const sKey=schedDay+'_'+schedSlot;
-      const desc=document.getElementById('m-dsc').value.trim();
-      // Use maybeSingle() instead of single() — won't error if no row found
-      const {data:existing}=await sb.from('files')
-        .select('id,data')
-        .eq('task_id','schedule_'+studentId)
-        .eq('role','schedule')
-        .maybeSingle();
-      let studentSched={};
-      if(existing?.data){try{studentSched=JSON.parse(existing.data);}catch{}}
-      studentSched[sKey]={title,note:desc,color:schedColor};
-      const newData=JSON.stringify(studentSched);
-      if(existing){
-        await sb.from('files').update({data:newData}).eq('id',existing.id);
-      } else {
-        await sb.from('files').insert({id:gid(),task_id:'schedule_'+studentId,role:'schedule',name:studentId,type:'application/json',data:newData});
-      }
+  // Optionally add to schedule
+  var schedDay=(document.getElementById('m-sched-day')||{}).value||'';
+  if(schedDay){
+    try{
+      var schedSlot=parseFloat((document.getElementById('m-sched-time')||{}).value||'9');
+      var sKey=schedDay+'_'+schedSlot;
+      var exRes=await sb.from('files').select('id,data').eq('task_id','schedule_'+studentId).eq('role','schedule').maybeSingle();
+      var sched={};
+      if(exRes.data&&exRes.data.data){try{sched=JSON.parse(exRes.data.data);}catch{}}
+      sched[sKey]={title:title,note:dsc,color:1};
+      var nd=JSON.stringify(sched);
+      if(exRes.data){await sb.from('files').update({data:nd}).eq('id',exRes.data.id);}
+      else{await sb.from('files').insert({id:gid(),task_id:'schedule_'+studentId,role:'schedule',name:studentId,type:'application/json',data:nd});}
       _bust('files');
-    }
-  }catch(e){
-    // Schedule save failed — task still saved, just log it
-    console.warn('Schedule sync failed:',e.message);
+    }catch(e){console.warn('Schedule:',e);}
   }
-
   closeModal();
   renderATasks();
 }
@@ -2109,6 +2083,88 @@ const WORDLE_WORDS=[
   'KARMA','KNACK','KNAVE','KNEEL','KNELT','KNOLL','KNOWN','KOALA','KUDOS','KYOTO',
 ];
 
+// Common 5-letter words accepted as guesses
+const VALID_WORDS=new Set([
+  'ABOUT','ABOVE','ABUSE','ACUTE','ADMIT','ADOPT','AGENT','AGILE','AGREE','ALARM',
+  'ALBUM','ALERT','ALIKE','ALIGN','ALIVE','ALLEY','ALLOW','ALONE','ALONG','ALTER',
+  'ANGEL','ANGER','ANGLE','ANKLE','ANNOY','APART','APPLE','APPLY','ARENA','ARGUE',
+  'ARISE','ARMOR','AROSE','ARRAY','ARROW','ASIDE','ASSET','AVOID','AWAKE','AWARD',
+  'AWARE','BADLY','BASIC','BASIS','BEACH','BEGAN','BEGIN','BEING','BELOW','BENCH',
+  'BIRTH','BLACK','BLADE','BLAME','BLANK','BLAST','BLAZE','BLINK','BLOCK','BLOOD',
+  'BLOOM','BLOWN','BOARD','BOAST','BOOST','BOUND','BRAIN','BREAK','BRICK','BRING',
+  'BROKE','BROOK','BUILD','BUILT','BURST','CARRY','CATCH','CAUSE','CHAIN','CHAIR',
+  'CHASE','CHEAP','CHECK','CHEEK','CHESS','CHEST','CHILD','CHOIR','CHOSE','CLAIM',
+  'CLASS','CLEAN','CLERK','CLICK','CLIMB','CLOSE','COACH','COLOR','COULD','COVER',
+  'CRASH','CRAZY','CRIME','CROSS','CRUEL','CRUSH','DAILY','DANCE','DEATH','DEBUT',
+  'DELAY','DENSE','DEPTH','DEVIL','DIRTY','DODGE','DOUBT','DRAFT','DRAMA','DRAWN',
+  'DREAM','DRESS','DRINK','DRIVE','DROVE','EAGLE','EARLY','EARTH','EIGHT','ELITE',
+  'EMPTY','ENEMY','ENJOY','ENTER','EQUAL','ERROR','ESSAY','EVERY','EXACT','EXIST',
+  'EXTRA','FAINT','FAIRY','FAITH','FALSE','FANCY','FATAL','FAULT','FEAST','FENCE',
+  'FEVER','FIELD','FIFTH','FIFTY','FIGHT','FINAL','FIRST','FIXED','FLAME','FLASH',
+  'FLEET','FLESH','FLOAT','FLOOR','FLOUR','FOCUS','FORCE','FOUND','FRAME','FRANK',
+  'FRAUD','FRESH','FRONT','FROST','FROZE','FRUIT','FULLY','FUNNY','GHOST','GIVEN',
+  'GLASS','GLOBE','GLORY','GLOVE','GOING','GRACE','GRADE','GRAIN','GRANT','GRASP',
+  'GRASS','GRAVE','GREAT','GREEN','GREET','GRIEF','GRIND','GROUP','GROVE','GROWN',
+  'GUARD','GUESS','GUIDE','GUILT','GUSTO','HAPPY','HARSH','HAVEN','HEART','HEAVY',
+  'HENCE','HOBBY','HONEY','HONOR','HORSE','HOTEL','HOUSE','HUMAN','HUMOR','HURRY',
+  'IMAGE','INBOX','INDEX','INNER','INPUT','ISSUE','JAPAN','JEWEL','JOINT','JOKER',
+  'JUDGE','JUICE','JUMBO','KNIFE','KNOCK','KNOWN','LABEL','LANCE','LARGE','LASER',
+  'LATER','LAUGH','LAYER','LEARN','LEASE','LEAVE','LEGAL','LEMON','LEVEL','LIGHT',
+  'LOCAL','LODGE','LOOSE','LOVER','LOWER','LUCKY','LUNCH','LYING','MAGIC','MAJOR',
+  'MAKER','MARCH','MATCH','MAYOR','MEDIA','MERCY','MERIT','METAL','MIGHT','MINOR',
+  'MINUS','MIXED','MODEL','MONEY','MONTH','MORAL','MOTOR','MOUNT','MOUSE','MOUTH',
+  'MOVED','MOVIE','MUSIC','NAIVE','NAMED','NIGHT','NOBLE','NOISE','NORTH','NURSE',
+  'OCCUR','OFFER','OFTEN','OLIVE','OTHER','OUGHT','OUTER','OWNED','OWNER','PANEL',
+  'PANIC','PAPER','PARTY','PASTA','PATCH','PAUSE','PEACE','PEACH','PEARL','PHASE',
+  'PHONE','PHOTO','PIANO','PILOT','PITCH','PLACE','PLAIN','PLANE','PLANT','PLATE',
+  'PLAZA','POINT','POWER','PRICE','PRIDE','PRIME','PRINT','PRIZE','PROSE','PROUD',
+  'PROVE','PULSE','QUEEN','QUICK','QUIET','QUOTE','RADAR','RADIO','RAISE','RANGE',
+  'RAPID','RATIO','REACH','READY','REBEL','REFER','RELAX','REPLY','RIGHT','RIVER',
+  'ROBOT','ROUGH','ROUND','ROUTE','ROYAL','RULER','RURAL','SAINT','SAUCE','SCALE',
+  'SCARE','SCENE','SCOPE','SCORE','SCOUT','SENSE','SERVE','SEVEN','SHADE','SHAKE',
+  'SHALL','SHAME','SHAPE','SHARE','SHARK','SHIFT','SHINE','SHIRT','SHOCK','SHOOT',
+  'SHORT','SHOUT','SIGHT','SILLY','SINCE','SIXTH','SIZED','SKILL','SLAVE','SLEEP',
+  'SLIDE','SLOPE','SMALL','SMART','SMELL','SMILE','SMOKE','SNAKE','SOLAR','SOLID',
+  'SOLVE','SORRY','SOUTH','SPACE','SPARE','SPARK','SPEAK','SPEED','SPEND','SPLIT',
+  'SPOON','SPORT','SPRAY','SQUAD','STACK','STAGE','STAIN','STAND','STARE','START',
+  'STATE','STEAM','STEEL','STEEP','STERN','STICK','STILL','STOCK','STORM','STORY',
+  'STUCK','STUFF','STYLE','SUGAR','SUITE','SUNNY','SURGE','SWEAR','SWEET','SWIFT',
+  'SWORD','TABLE','TASTE','TEACH','TEETH','THANK','THEIR','THEME','THICK','THING',
+  'THINK','THOSE','THREE','THREW','THROW','TIRED','TITLE','TOAST','TODAY','TOKEN',
+  'TOPIC','TOTAL','TOUCH','TOUGH','TOWEL','TOWER','TRACE','TRACK','TRADE','TRAIL',
+  'TRAIN','TRASH','TREAT','TREND','TRIAL','TRIBE','TRIED','TRUCK','TRULY','TRUST',
+  'TRUTH','TUMOR','TUTOR','TWICE','TWIST','UNDER','UNION','UNITY','UNTIL','UPPER',
+  'UPSET','URBAN','USUAL','VAGUE','VALUE','VIDEO','VISIT','VITAL','VOICE','WASTE',
+  'WATCH','WATER','WEARY','WEIGH','WEIRD','WHILE','WHITE','WHOLE','WHOSE','WITCH',
+  'WOMAN','WORLD','WORRY','WORSE','WORST','WORTH','WOULD','WOUND','WRITE','WROTE',
+  'YACHT','YEARN','YIELD','YOUNG','YOUTH','ZEBRA','AXIOM','PRISM','QUERY','NEXUS',
+  'EPOCH','ETHOS','TROPE','STOIC','IONIC','LYRIC','CIVIC','TOXIC','OPTIC','SONIC',
+  'CUBIC','LOGIC','CYCLE','CRYPT','BRINE','FORGE','ALLOY','ANNEX','INERT','INFER',
+  'IMPLY','PIXEL','PIVOT','QUEST','QUIRK','QUALM','TRIAD','VIGOR','VISTA','VALVE',
+  'VALID','VALOR','VAPOR','VAULT','VERSE','TIDAL','TOPAZ','TORSO','TRACT','SIGMA',
+  'SKULL','SLANG','SLEEK','SLICE','RESIN','REIGN','RELAY','REALM','REBUT','ORBIT',
+  'ORDER','OVARY','OXIDE','OZONE','FUNGI','FAUNA','FEMUR','ECLAT','EDIFY','EJECT',
+  'ELUDE','EMOTE','ENACT','ENDOW','ENSUE','EQUIP','DEPOT','DECAY','DECOR','DECOY',
+  'DEFER','DEITY','COBRA','COMET','CORAL','CREDO','CREEK','CREST','BARON','BASIN',
+  'BATCH','BATON','BAYOU','BEARD','BEAST','MANOR','MIRTH','MODAL','MOGUL','MORPH',
+  'MOTIF','NADIR','NAVAL','NERVE','NOTCH','NOVEL','NUDGE','KARMA','KNACK','KNAVE',
+  'KNEEL','KNOLL','KUDOS','BLAZE','BLEAK','BLEND','BLESS','BLUNT','BRAND','BRAVE',
+  'BREAD','BREED','BRIBE','BRIDE','BRIEF','BRINK','BROIL','BROOD','BROOM','BROTH',
+  'BRUSH','BRUTE','BULGE','BUNCH','BYLAW','CABAL','CACHE','CAMEL','CANAL','CANON',
+  'CAPER','CARGO','CARVE','CAUSE','CEASE','CEDAR','CHALK','CHANT','CHAOS','CHARM',
+  'CHASM','CHEER','CHIEF','CHORD','CHUNK','CLAMP','CLASH','CLASP','CLEFT','CLIFF',
+  'CLING','CLOAK','CLONE','CLOUD','CLOUT','CLOWN','COAST','COMMA','COUCH','COUNT',
+  'COURT','CRACK','CRAFT','CRAMP','CRANE','CRANK','CRAZE','CREAK','CREAM','CRISP',
+  'CROWD','CROWN','FLANK','FLARE','FLASK','FLEET','FLESH','FLINT','FLOCK','FLOOD',
+  'FLOSS','FLOUT','FLUTE','FOCAL','FOLIO','FORTE','FORUM','FRAIL','FRAUD','FREAK',
+  'FREED','FROTH','FUMED','GAUZE','GIANT','GIRTH','GLAND','GLARE','GLAZE','GLEAM',
+  'GLIDE','GLINT','GLOAT','GLOOM','GLOSS','GNASH','GOURD','GRAIN','GRAND','GRAPH',
+  'GRAZE','GREED','GRIEF','GRIND','GROAN','GROWL','GRUEL','GRUFF','GUILE','GUISE',
+  'GULCH','HABIT','HASTY','HAZEL','HINGE','HOIST','HOLLY','HONOR','HORNS','HOUND',
+  'HOVER','BLEAT','BLOAT','BLOBS','BLOKE','BLOOD','BLOWN','BLUFF','BLURB','BOGUS',
+  'BONUS','BOXER','BRACE','BRAID','BRAKE','BRAWL','BREAM','BREVE','BRISK','BROACH',
+]);
+
 let wState={word:'',guesses:[],current:'',done:false,msg:''};
 
 function wNewGame(){
@@ -2134,6 +2190,7 @@ function wKey(k){
   if(wState.done)return;
   if(k==='ENTER'){
     if(wState.current.length<5){wState.msg='Not enough letters';renderWordle();return;}
+    if(!VALID_WORDS.has(wState.current)){wState.msg='Not a real word!';renderWordle();return;}
     const g=wState.current;
     wState.guesses.push(g);
     wState.current='';
@@ -2198,64 +2255,64 @@ function renderWordle(){
 // Harder puzzles with tricky/overlapping categories and academic themes
 const CONN_PUZZLES=[
   {groups:[
-    {label:'Logical fallacies',color:0,words:['STRAWMAN','ADHOMINEM','SLIPPERY','DICHOTOMY']},
-    {label:'Philosophical schools',color:1,words:['STOICISM','EMPIRICISM','RATIONALISM','EXISTENTIALISM']},
-    {label:'Parts of a neuron',color:2,words:['AXON','DENDRITE','SYNAPSE','MYELIN']},
-    {label:'Economic systems',color:3,words:['CAPITALISM','SOCIALISM','FEUDALISM','MERCANTILISM']},
+    {label:'Things that can be "acute"',color:0,words:['ANGLE','PAIN','ILLNESS','SHORTAGE']},
+    {label:'___ table',color:1,words:['TIMES','PERIODIC','TURN','WATER']},
+    {label:'Parts of the eye',color:2,words:['IRIS','PUPIL','CORNEA','RETINA']},
+    {label:'Famous Australians',color:3,words:['IRWIN','THORPE','FREEMAN','KIDMAN']},
   ]},
   {groups:[
-    {label:'Shakespearean tragedies',color:0,words:['HAMLET','MACBETH','OTHELLO','LEAR']},
-    {label:'Types of irony',color:1,words:['DRAMATIC','SITUATIONAL','VERBAL','COSMIC']},
-    {label:'Literary movements',color:2,words:['ROMANTICISM','MODERNISM','REALISM','NATURALISM']},
-    {label:'Narrative perspectives',color:3,words:['OMNISCIENT','UNRELIABLE','STREAM','EPISTOLARY']},
+    {label:'___ wave',color:0,words:['HEAT','CRIME','MICRO','BRAIN']},
+    {label:'Shakespearean villains',color:1,words:['IAGO','SHYLOCK','CLAUDIUS','RICHARD']},
+    {label:'Things with keys',color:2,words:['PIANO','MAP','CIPHER','REEF']},
+    {label:'Types of bond',color:3,words:['HYDROGEN','IONIC','COVALENT','METALLIC']},
   ]},
   {groups:[
-    {label:'Trig functions',color:0,words:['SINE','COSINE','TANGENT','COSECANT']},
-    {label:'Types of proof',color:1,words:['INDUCTION','CONTRADICTION','CONTRAPOSITIVE','DIRECT']},
-    {label:'Statistical measures',color:2,words:['MEDIAN','MODE','VARIANCE','SKEWNESS']},
-    {label:'Types of sequences',color:3,words:['ARITHMETIC','GEOMETRIC','FIBONACCI','HARMONIC']},
+    {label:'___ pool',color:0,words:['CAR','GENE','SWIMMING','ROCK']},
+    {label:'Things that can "break"',color:1,words:['RECORD','DAWN','GROUND','HEART']},
+    {label:'Types of government',color:2,words:['MONARCHY','REPUBLIC','DEMOCRACY','OLIGARCHY']},
+    {label:'Figures of speech',color:3,words:['SIMILE','IRONY','PARADOX','HYPERBOLE']},
   ]},
   {groups:[
-    {label:'Atomic model scientists',color:0,words:['DALTON','THOMSON','RUTHERFORD','BOHR']},
-    {label:'Types of bonds',color:1,words:['IONIC','COVALENT','METALLIC','HYDROGEN']},
-    {label:'Reaction types',color:2,words:['SYNTHESIS','DECOMPOSITION','COMBUSTION','REDOX']},
-    {label:'States of matter',color:3,words:['SOLID','LIQUID','PLASMA','CONDENSATE']},
+    {label:'___ cell',color:0,words:['SOLAR','STEM','BLOOD','FUEL']},
+    {label:'Types of triangle',color:1,words:['SCALENE','ISOCELES','EQUILATERAL','RIGHT']},
+    {label:'"Dark" ___',color:2,words:['MATTER','ENERGY','AGES','HORSE']},
+    {label:'Mitosis phases',color:3,words:['PROPHASE','METAPHASE','ANAPHASE','TELOPHASE']},
   ]},
   {groups:[
-    {label:'Natural selection',color:0,words:['VARIATION','HEREDITY','SELECTION','ADAPTATION']},
-    {label:'Mitosis stages',color:1,words:['PROPHASE','METAPHASE','ANAPHASE','TELOPHASE']},
-    {label:'Types of mutation',color:2,words:['INSERTION','DELETION','SUBSTITUTION','INVERSION']},
-    {label:'Ecological relationships',color:3,words:['MUTUALISM','PARASITISM','COMMENSALISM','COMPETITION']},
+    {label:'___ reaction',color:0,words:['CHAIN','GUT','CHEMICAL','NUCLEAR']},
+    {label:'"Cold" ___',color:1,words:['FRONT','CASE','SHOULDER','BLOODED']},
+    {label:'Rhetorical devices',color:2,words:['ANAPHORA','CHIASMUS','ANTITHESIS','EPISTROPHE']},
+    {label:'___ theory',color:3,words:['GAME','STRING','CHAOS','EVOLUTION']},
   ]},
   {groups:[
-    {label:'Branches of physics',color:0,words:['MECHANICS','THERMODYNAMICS','QUANTUM','RELATIVITY']},
-    {label:'Types of waves',color:1,words:['TRANSVERSE','LONGITUDINAL','STANDING','ELECTROMAGNETIC']},
-    {label:'Newtons laws keywords',color:2,words:['INERTIA','FORCE','ACCELERATION','REACTION']},
-    {label:'Particle physics',color:3,words:['QUARK','LEPTON','BOSON','FERMION']},
+    {label:'Things that can be "relative"',color:0,words:['HUMIDITY','MOTION','PRONOUN','CLAUSE']},
+    {label:'Cognitive biases',color:1,words:['ANCHORING','RECENCY','FRAMING','CONFIRMATION']},
+    {label:'"Blind" ___',color:2,words:['SPOT','FOLD','SIDE','DATE']},
+    {label:'___ potential',color:3,words:['ELECTRIC','ACTION','GROWTH','EARNING']},
   ]},
   {groups:[
-    {label:'Rhetorical devices',color:0,words:['ANAPHORA','EPISTROPHE','CHIASMUS','ANTITHESIS']},
-    {label:'Types of essays',color:1,words:['EXPOSITORY','ARGUMENTATIVE','ANALYTICAL','REFLECTIVE']},
-    {label:'Poetic forms',color:2,words:['SONNET','VILLANELLE','HAIKU','BALLAD']},
-    {label:'Narrative techniques',color:3,words:['FORESHADOWING','FLASHBACK','PROLEPSIS','ANALEPSIS']},
+    {label:'___ current',color:0,words:['DIRECT','OCEAN','ROGUE','ALTERNATING']},
+    {label:'Types of irony',color:1,words:['DRAMATIC','VERBAL','SITUATIONAL','COSMIC']},
+    {label:'Things with poles',color:2,words:['MAGNET','EARTH','BATTERY','ELECTION']},
+    {label:'"Critical" ___',color:3,words:['THINKING','MASS','PATH','POINT']},
   ]},
   {groups:[
-    {label:'Cognitive biases',color:0,words:['CONFIRMATION','ANCHORING','AVAILABILITY','RECENCY']},
-    {label:'Memory types',color:1,words:['SEMANTIC','EPISODIC','PROCEDURAL','WORKING']},
-    {label:'Freudian concepts',color:2,words:['EGO','ID','SUPEREGO','LIBIDO']},
-    {label:'Psychology schools',color:3,words:['BEHAVIOURISM','COGNITIVISM','HUMANISM','PSYCHOANALYSIS']},
+    {label:'"Natural" ___',color:0,words:['SELECTION','DISASTER','HABITAT','GAS']},
+    {label:'Things that are "compound"',color:1,words:['SENTENCE','INTEREST','EYE','FRACTURE']},
+    {label:'Parts of an argument',color:2,words:['PREMISE','CLAIM','EVIDENCE','REBUTTAL']},
+    {label:'___ law',color:3,words:['COMMON','CRIMINAL','MURPHY','OHMS']},
   ]},
   {groups:[
-    {label:'Australian biomes',color:0,words:['SAVANNA','RAINFOREST','MALLEE','ALPINE']},
-    {label:'Australian writers',color:1,words:['LAWSON','PATERSON','WINTON','GRENVILLE']},
-    {label:'Government bodies',color:2,words:['SENATE','CABINET','JUDICIARY','EXECUTIVE']},
-    {label:'Indigenous concepts',color:3,words:['SONGLINES','DREAMING','COUNTRY','LORE']},
+    {label:'___ pressure',color:0,words:['BLOOD','PEER','HIGH','OSMOTIC']},
+    {label:'Things with plates',color:1,words:['EARTH','DINNER','ARMOUR','TECTONIC']},
+    {label:'Poetic forms',color:2,words:['SONNET','HAIKU','BALLAD','ELEGY']},
+    {label:'"Absolute" ___',color:3,words:['ZERO','POWER','VALUE','MONARCHY']},
   ]},
   {groups:[
-    {label:'Logical operators',color:0,words:['AND','OR','NOT','XOR']},
-    {label:'Programming paradigms',color:1,words:['FUNCTIONAL','PROCEDURAL','DECLARATIVE','IMPERATIVE']},
-    {label:'Data structures',color:2,words:['STACK','QUEUE','HASHTABLE','TREEMAP']},
-    {label:'Algorithm strategies',color:3,words:['GREEDY','DYNAMIC','RECURSIVE','ITERATIVE']},
+    {label:'___ force',color:0,words:['TASK','AIR','WORK','CENTRIPETAL']},
+    {label:'Literary movements',color:1,words:['REALISM','MODERNISM','ROMANTICISM','NATURALISM']},
+    {label:'Things that can be "acute"',color:2,words:['TRIANGLE','ACCENT','AWARENESS','OBSERVER']},
+    {label:'___ function',color:3,words:['WAVE','LUNG','TRIG','COGNITIVE']},
   ]},
 ];
 
@@ -2503,9 +2560,7 @@ async function renderLeaderboard(){
 
   el.innerHTML = `
     <div class="row-top"><span class="sh" style="margin:0">Leaderboard</span></div>
-    <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">
-      Updates live for everyone. Win games to build your streak — lose and it resets! 🔥
-    </p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem"><p style="font-size:13px;color:var(--mut);margin:0">Win games to build your streak — lose and it resets! 🔥</p><button class="btn btn-s btn-sm" onclick="_bust('users');renderLeaderboard()">&#x21bb; Refresh</button></div>
     ${tabs}
     <div class="card" style="padding:0;overflow:hidden">
       <table class="lb-table" style="margin:0">
