@@ -950,8 +950,8 @@ async function renderATasks(){
   if(!selC&&students.length)selC=students[0].id;
   const wk=weekKey(adminDate);
   const selStudent=students.find(s=>s.id===selC);
-  const myTasks=tasks.filter(t=>(t.student_id===selC||t.client_id===selC)&&t.week_key===wk);
-  const myDone=completions.filter(c=>c.student_id===selC&&c.week_key===wk&&c.done).length;
+  const myTasks=tasks.filter(t=>(t.client_id===selC||t.client_id===selC)&&t.week_key===wk);
+  const myDone=completions.filter(c=>c.client_id===selC&&c.week_key===wk&&c.done).length;
 
   let h=`<div class="row-top">
     <span class="sh" style="margin:0">Weekly Tasks</span>
@@ -975,8 +975,8 @@ async function renderATasks(){
     <div class="student-list" id="student-list">`;
 
   students.forEach(c=>{
-    const ct=tasks.filter(t=>t.student_id===c.id&&t.week_key===wk).length;
-    const cd=completions.filter(x=>x.student_id===c.id&&x.week_key===wk&&x.done).length;
+    const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk).length;
+    const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
     h+=`<div class="student-item${c.id===selC?' on':''}" id="si-${c.id}" onclick="selC='${c.id}';renderATasks()" data-name="${esc(c.name.toLowerCase())}" data-email="${esc((c.email||'').toLowerCase())}">
       <div class="av-sm">${ini(c.name)}</div>
       <div style="flex:1;min-width:0">
@@ -1008,7 +1008,7 @@ async function renderATasks(){
       myTasks.forEach((t,idx)=>{
         const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
         const cf=files.filter(f=>f.task_id===t.id&&f.role==='user');
-        const isDone=completions.some(c=>c.student_id===selC&&c.week_key===wk&&c.task_id===t.id&&c.done);
+        const isDone=completions.some(c=>c.client_id===selC&&c.week_key===wk&&c.task_id===t.id&&c.done);
         h+=`<div class="ti-admin">
           <div class="task-num">${idx+1}</div>
           <div style="flex:1;min-width:0">
@@ -1064,8 +1064,8 @@ async function renderClients(){
   h+=`<div class="card">`;
   if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No users yet</div></div>`;}
   else students.forEach(c=>{
-    const ct=tasks.filter(t=>t.student_id===c.id&&t.week_key===wk);
-    const cd=completions.filter(x=>x.student_id===c.id&&x.week_key===wk&&x.done).length;
+    const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
+    const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
     const privKey='sched_private_'+c.id;
     const isPrivate=localStorage.getItem(privKey)==='1';
     h+=`<div class="ci">
@@ -1137,7 +1137,7 @@ async function viewClientSched(clientId, clientName){
   document.getElementById('m-body').innerHTML=h;
 }
 
-async function delClient(id){if(!confirm('Remove this user?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('student_id',id);await sb.from('completions').delete().eq('student_id',id);_bustAll();renderClients();}
+async function delClient(id){if(!confirm('Remove this user?'))return;await sb.from('users').delete().eq('id',id);await sb.from('tasks').delete().eq('client_id',id);await sb.from('completions').delete().eq('client_id',id);_bustAll();renderClients();}
 async function delTask(id){if(!confirm('Delete this task?'))return;await sb.from('tasks').delete().eq('id',id);await sb.from('completions').delete().eq('task_id',id);await sb.from('files').delete().eq('task_id',id);_bustAll();renderATasks();}
 
 function openAddTask(){
@@ -1185,7 +1185,7 @@ async function saveTask(){
   var dsc=document.getElementById('m-dsc').value.trim();
   var pri=document.getElementById('m-pri').value;
   var cat=document.getElementById('m-cat').value.trim();
-  var taskData={id:gid(),title:title,description:dsc,student_id:studentId,week_key:wk,priority:pri,category:cat,created_at:new Date().toISOString()};
+  var taskData={id:gid(),title:title,description:dsc,client_id:studentId,week_key:wk,priority:pri,category:cat,created_at:new Date().toISOString()};
   var res=await sb.from('tasks').insert(taskData);
   if(res.error){alert('Could not save task: '+res.error.message);return;}
   _bust('tasks');
@@ -1230,8 +1230,8 @@ async function renderClient(){
   el.innerHTML=`<div class="loading">Loading...</div>`;
   const [tasks,completions,files]=await Promise.all([dbTasks(),dbCompletions(),dbFiles()]);
   const wk=weekKey(clientDate);
-  const myTasks=tasks.filter(t=>(t.student_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
-  const done=myTasks.filter(t=>completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
+  const myTasks=tasks.filter(t=>(t.client_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
+  const done=myTasks.filter(t=>completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done)).length;
   const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
   let h=`<div style="margin-bottom:1.5rem"><div class="sh">Hey, ${esc(CU.name.split(' ')[0])} &#x1F44B;</div><p style="font-size:14px;color:var(--mut)">Here are your tasks for the week</p></div>`;
   h+=dateNav(clientDate,'clientDate=shiftWeek(clientDate,-1);renderClient()','clientDate=shiftWeek(clientDate,1);renderClient()','clientDate=this.value;renderClient()','clientDate=todayKey();renderClient()');
@@ -1240,7 +1240,7 @@ async function renderClient(){
   if(myTasks.length)h+=`<div class="pbar"><div class="pfill" id="client-pfill" style="width:${pct}%"></div></div>`;
   if(!myTasks.length){h+=`<div class="empty"><div class="empty-i">&#x1F33F;</div><div class="empty-t">No tasks assigned yet</div><p>Your admin will assign tasks here soon</p></div>`;}
   else myTasks.forEach(t=>{
-    const isDone=completions.some(c=>c.student_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
+    const isDone=completions.some(c=>c.client_id===CU.id&&c.week_key===wk&&c.task_id===t.id&&c.done);
     const af=files.filter(f=>f.task_id===t.id&&f.role==='admin');
     const cf=files.filter(f=>f.task_id===t.id&&f.role==='user');
     h+=`<div class="ti" style="align-items:flex-start">
@@ -1307,8 +1307,8 @@ async function toggleTask(tid,wk,isDone,chkEl){
     if(counter){counter.textContent=`${doneCount} / ${total} done`;}
   }
   // Persist to DB
-  if(nowDone){await sb.from('completions').upsert({student_id:CU.id,week_key:wk,task_id:tid,done:true});}
-  else{await sb.from('completions').delete().eq('student_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
+  if(nowDone){await sb.from('completions').upsert({client_id:CU.id,week_key:wk,task_id:tid,done:true});}
+  else{await sb.from('completions').delete().eq('client_id',CU.id).eq('week_key',wk).eq('task_id',tid);}
   _bust('completions');
 }
 
@@ -2648,7 +2648,7 @@ async function checkNewTasks(){
   if(!CU||CU.role==='admin')return;
   const tasks=await dbTasks();
   const wk=weekKey(todayKey());
-  const myTasks=tasks.filter(t=>(t.student_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
+  const myTasks=tasks.filter(t=>(t.client_id===CU.id||t.client_id===CU.id)&&t.week_key===wk);
   const seenKey='fluere_seen_tasks_'+CU.id+'_'+wk;
   const seen=JSON.parse(localStorage.getItem(seenKey)||'[]');
   const newTasks=myTasks.filter(t=>!seen.includes(t.id));
