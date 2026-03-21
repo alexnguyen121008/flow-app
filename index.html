@@ -389,32 +389,68 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .dark-toggle:hover{background:var(--surf2);border-color:var(--acc)}
 
 /* ── LANDING PAGE ── */
-#landing-screen{display:none;min-height:100vh;background:linear-gradient(160deg,#0F0B24 0%,#1A1040 50%,#0F0B24 100%);color:white;font-family:var(--font)}
-.land-nav{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 4rem;position:sticky;top:0;z-index:10;background:rgba(15,11,36,.8);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+#landing-screen{display:none;min-height:100vh;background:#0A0818;color:white;font-family:var(--font);overflow-x:hidden;position:relative}
+.land-bg-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.land-float{position:absolute;font-family:monospace;font-weight:700;pointer-events:none;animation:floatUp linear infinite;white-space:nowrap}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(var(--r))}10%{opacity:var(--o)}85%{opacity:var(--o)}100%{opacity:0;transform:translateY(-100vh) rotate(var(--r))}}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 4rem;position:sticky;top:0;z-index:100;background:rgba(10,8,24,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 .land-nav-btns{display:flex;gap:10px}
-.land-btn-ghost{padding:8px 20px;border-radius:var(--rs);border:1.5px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.8);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
-.land-btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4)}
+.land-btn-ghost{padding:8px 20px;border-radius:var(--rs);border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.75);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.land-btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.35);color:white}
 .land-btn-solid{padding:8px 20px;border-radius:var(--rs);border:none;background:linear-gradient(135deg,#5B4BD4,#7B68E8);color:white;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;box-shadow:0 4px 16px rgba(91,75,212,.4)}
 .land-btn-solid:hover{opacity:.9;transform:translateY(-1px)}
-.land-hero{text-align:center;padding:6rem 2rem 4rem;max-width:800px;margin:0 auto}
-.land-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(91,75,212,.2);border:1px solid rgba(91,75,212,.4);font-size:12px;font-weight:700;color:#9B8FF8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1.5rem}
-.land-h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:1.25rem;background:linear-gradient(135deg,#fff 40%,#9B8FF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.land-sub{font-size:1.1rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:560px;margin:0 auto 2.5rem}
-.land-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.land-cta-p{padding:14px 32px;border-radius:var(--rs);border:none;background:linear-gradient(135deg,#5B4BD4,#7B68E8);color:white;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(91,75,212,.5)}
-.land-cta-p:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(91,75,212,.6)}
-.land-cta-s{padding:14px 32px;border-radius:var(--rs);border:1.5px solid rgba(255,255,255,.2);background:transparent;color:white;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
-.land-cta-s:hover{background:rgba(255,255,255,.06)}
-.land-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1000px;margin:5rem auto 3rem;padding:0 2rem}
-.land-feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.75rem;transition:all .2s}
-.land-feat:hover{background:rgba(255,255,255,.07);border-color:rgba(123,104,232,.3);transform:translateY(-3px)}
-.land-feat-icon{font-size:28px;margin-bottom:1rem}
-.land-feat-title{font-size:16px;font-weight:700;margin-bottom:.5rem}
-.land-feat-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
-.land-stats{display:flex;gap:40px;justify-content:center;padding:3rem 2rem;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);max-width:700px;margin:0 auto;flex-wrap:wrap}
-.land-stat-num{font-size:2.5rem;font-weight:800;background:linear-gradient(135deg,#7B68E8,#9B8FF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px}
-.land-stat-lbl{font-size:12px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-top:4px}
-.land-footer{text-align:center;padding:2.5rem;color:rgba(255,255,255,.25);font-size:13px}
+.land-content{position:relative;z-index:1}
+.land-hero{text-align:center;padding:7rem 2rem 3rem;max-width:860px;margin:0 auto}
+.land-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:20px;background:rgba(91,75,212,.18);border:1px solid rgba(91,75,212,.5);font-size:12px;font-weight:700;color:#B8AAFF;letter-spacing:.6px;text-transform:uppercase;margin-bottom:2rem}
+.land-h1{font-size:clamp(2.6rem,6vw,4.5rem);font-weight:900;line-height:1.08;letter-spacing:-2.5px;margin-bottom:1.5rem}
+.land-h1-line1{display:block;color:white}
+.land-h1-line2{display:block;background:linear-gradient(135deg,#7B68E8,#B8AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.land-h1-line3{display:block;color:rgba(255,255,255,.5)}
+.land-sub{font-size:1.15rem;color:rgba(255,255,255,.5);line-height:1.75;max-width:580px;margin:0 auto 3rem}
+.land-sub strong{color:rgba(255,255,255,.85)}
+.land-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:4rem}
+.land-cta-p{padding:15px 36px;border-radius:var(--rs);border:none;background:linear-gradient(135deg,#5B4BD4,#7B68E8);color:white;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 6px 28px rgba(91,75,212,.55);letter-spacing:.2px}
+.land-cta-p:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(91,75,212,.65)}
+.land-cta-s{padding:15px 36px;border-radius:var(--rs);border:1.5px solid rgba(255,255,255,.18);background:transparent;color:rgba(255,255,255,.8);font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}
+.land-cta-s:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.35);color:white}
+/* Proof strip */
+.land-proof{display:flex;gap:32px;justify-content:center;align-items:center;padding:2rem;flex-wrap:wrap;margin-bottom:1rem}
+.land-proof-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.45)}
+.land-proof-dot{width:6px;height:6px;border-radius:50%;background:#7B68E8;flex-shrink:0}
+/* Subject showcase */
+.land-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:3rem auto;padding:0 2rem}
+.land-subject{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:2rem 1.75rem;transition:all .25s;position:relative;overflow:hidden}
+.land-subject:hover{background:rgba(255,255,255,.07);border-color:rgba(123,104,232,.35);transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.4)}
+.land-subject-emoji{font-size:32px;margin-bottom:1rem}
+.land-subject-name{font-size:17px;font-weight:800;margin-bottom:.4rem}
+.land-subject-topics{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7}
+.land-subject-glow{position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.25}
+/* How it works */
+.land-how{max-width:900px;margin:4rem auto;padding:0 2rem}
+.land-how-title{text-align:center;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:.75rem}
+.land-how-sub{text-align:center;font-size:14px;color:rgba(255,255,255,.4);margin-bottom:3rem}
+.land-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.land-step{text-align:center;padding:2rem 1.5rem}
+.land-step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5B4BD4,#7B68E8);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 20px rgba(91,75,212,.4)}
+.land-step-title{font-size:16px;font-weight:700;margin-bottom:.5rem}
+.land-step-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65}
+/* Testimonial */
+.land-quote{max-width:680px;margin:4rem auto;padding:0 2rem;text-align:center}
+.land-quote-text{font-size:1.3rem;font-style:italic;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:1.25rem;position:relative}
+.land-quote-text::before{content:'"';font-size:4rem;color:#7B68E8;opacity:.4;position:absolute;top:-20px;left:-10px;line-height:1}
+.land-quote-author{font-size:13px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+/* CTA bottom */
+.land-cta-bottom{text-align:center;padding:5rem 2rem;background:linear-gradient(180deg,transparent,rgba(91,75,212,.08))}
+.land-cta-bottom h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:1rem}
+.land-cta-bottom p{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:2.5rem}
+.land-footer{text-align:center;padding:2rem;color:rgba(255,255,255,.2);font-size:13px;border-top:1px solid rgba(255,255,255,.05)}
+/* Stats */
+.land-stats{display:flex;gap:0;justify-content:center;max-width:700px;margin:3rem auto;border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.03)}
+.land-stat{flex:1;padding:2rem 1.5rem;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.land-stat:last-child{border-right:none}
+.land-stat-num{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#7B68E8,#B8AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px}
+.land-stat-lbl{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-top:4px}
+@media(max-width:768px){.land-nav{padding:1rem 1.5rem}.land-showcase{grid-template-columns:1fr}.land-steps{grid-template-columns:1fr;gap:0}.land-stats{flex-direction:column}.land-stat{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}.land-stat:last-child{border-bottom:none}}
 
 /* ── STREAK WIDGET ── */
 .streak-widget{background:linear-gradient(135deg,var(--acc-l),var(--surf3));border:1px solid var(--bdr);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:10px}
@@ -441,38 +477,179 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 <!-- AUTH -->
 <!-- LANDING PAGE -->
 <div id="landing-screen">
+  <div class="land-bg-canvas" id="land-bg"></div>
+
   <nav class="land-nav">
     <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name" style="color:white">Fluere</span></div>
     <div class="land-nav-btns">
       <button class="land-btn-ghost" onclick="goToLogin()">Sign in</button>
-      <button class="land-btn-solid" onclick="goToLogin()">Get started free</button>
+      <button class="land-btn-solid" onclick="goToLogin()">Get started &rarr;</button>
     </div>
   </nav>
-  <div class="land-hero">
-    <div class="land-badge">&#x1F393; Built for tutors &amp; students</div>
-    <h1 class="land-h1">Your students.<br/>Their progress.<br/>All in one place.</h1>
-    <p class="land-sub">Fluere is the smart study platform that helps tutors assign tasks, track progress, and keep students engaged — with games, AI help, and more.</p>
-    <div class="land-cta-row">
-      <button class="land-cta-p" onclick="goToLogin()">Start for free &#x2192;</button>
-      <button class="land-cta-s" onclick="goToLogin()">Sign in to your account</button>
+
+  <div class="land-content">
+
+    <!-- HERO -->
+    <div class="land-hero">
+      <div class="land-badge">&#x1F393; Trusted by tutors &amp; families across NSW</div>
+      <h1 class="land-h1">
+        <span class="land-h1-line1">Your child deserves</span>
+        <span class="land-h1-line2">every advantage.</span>
+        <span class="land-h1-line3">We help make it happen.</span>
+      </h1>
+      <p class="land-sub">Fluere gives tutors the tools to assign work, track progress and keep students on task — while giving parents full visibility into how their child is going, every week.</p>
+      <div class="land-cta-row">
+        <button class="land-cta-p" onclick="goToLogin()">Get started for free &rarr;</button>
+        <button class="land-cta-s" onclick="goToLogin()">Sign in to your account</button>
+      </div>
+      <div class="land-proof">
+        <div class="land-proof-item"><div class="land-proof-dot"></div>NSW HSC aligned</div>
+        <div class="land-proof-item"><div class="land-proof-dot"></div>Maths &bull; English &bull; Science</div>
+        <div class="land-proof-item"><div class="land-proof-dot"></div>Years 7&ndash;12</div>
+        <div class="land-proof-item"><div class="land-proof-dot"></div>100% free</div>
+      </div>
     </div>
-  </div>
-  <div class="land-stats">
-    <div style="text-align:center"><div class="land-stat-num">100%</div><div class="land-stat-lbl">Free to use</div></div>
-    <div style="text-align:center"><div class="land-stat-num">5+</div><div class="land-stat-lbl">Built-in tools</div></div>
-    <div style="text-align:center"><div class="land-stat-num">Daily</div><div class="land-stat-lbl">Games &amp; challenges</div></div>
-  </div>
-  <div class="land-features">
-    <div class="land-feat"><div class="land-feat-icon">&#x1F4CB;</div><div class="land-feat-title">Weekly Task Management</div><div class="land-feat-desc">Assign, track and manage tasks for each student. Students submit work directly in the app.</div></div>
 
-    <div class="land-feat"><div class="land-feat-icon">&#x1F4DA;</div><div class="land-feat-title">Question Hub</div><div class="land-feat-desc">Hundreds of HSC-aligned practice questions across Maths, English, Science and more.</div></div>
-    <div class="land-feat"><div class="land-feat-icon">&#x1F3AE;</div><div class="land-feat-title">Daily Games</div><div class="land-feat-desc">Wordle and Connections puzzles refresh every day at midnight to keep students sharp.</div></div>
-    <div class="land-feat"><div class="land-feat-icon">&#x23F1;&#xFE0F;</div><div class="land-feat-title">Pomodoro Timer</div><div class="land-feat-desc">Built-in focus timer with full-screen mode to help students stay in the zone.</div></div>
-    <div class="land-feat"><div class="land-feat-icon">&#x1F4C5;</div><div class="land-feat-title">Schedule Planner</div><div class="land-feat-desc">Students build their weekly timetable. Admins can view it at a glance.</div></div>
+    <!-- STATS -->
+    <div class="land-stats" style="max-width:760px;margin:0 auto 5rem">
+      <div class="land-stat"><div class="land-stat-num">500+</div><div class="land-stat-lbl">Practice questions</div></div>
+      <div class="land-stat"><div class="land-stat-num">5</div><div class="land-stat-lbl">Subjects covered</div></div>
+      <div class="land-stat"><div class="land-stat-num">Yr 7–12</div><div class="land-stat-lbl">All year levels</div></div>
+      <div class="land-stat"><div class="land-stat-num">100%</div><div class="land-stat-lbl">Free to use</div></div>
+    </div>
+
+    <!-- FOR PARENTS SECTION -->
+    <div style="max-width:960px;margin:0 auto 5rem;padding:0 2rem">
+      <div style="text-align:center;margin-bottom:3rem">
+        <div style="display:inline-block;padding:5px 14px;border-radius:20px;background:rgba(42,154,106,.15);border:1px solid rgba(42,154,106,.35);font-size:11px;font-weight:700;color:#6ECFA0;text-transform:uppercase;letter-spacing:.7px;margin-bottom:1rem">For Parents</div>
+        <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:.75rem">Always know how your child is tracking</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,.4);max-width:520px;margin:0 auto">No more guessing. Fluere gives tutors the structure to hold students accountable — and gives you peace of mind.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+        <div class="land-feat" style="border-color:rgba(42,154,106,.2)">
+          <div class="land-feat-icon">&#x2705;</div>
+          <div class="land-feat-title">Weekly task tracking</div>
+          <div class="land-feat-desc">Your child's tutor assigns specific tasks each week. Every item is tracked — completed or outstanding — so nothing slips through the cracks.</div>
+        </div>
+        <div class="land-feat" style="border-color:rgba(42,154,106,.2)">
+          <div class="land-feat-icon">&#x1F4C8;</div>
+          <div class="land-feat-title">Clear progress visibility</div>
+          <div class="land-feat-desc">Tutors can see exactly what your child has completed each week at a glance — making tutor sessions more focused and productive.</div>
+        </div>
+        <div class="land-feat" style="border-color:rgba(42,154,106,.2)">
+          <div class="land-feat-icon">&#x1F4C5;</div>
+          <div class="land-feat-title">Structured study schedule</div>
+          <div class="land-feat-desc">Students build a weekly timetable for their study sessions. A consistent routine is one of the strongest predictors of academic success.</div>
+        </div>
+        <div class="land-feat" style="border-color:rgba(42,154,106,.2)">
+          <div class="land-feat-icon">&#x1F4DA;</div>
+          <div class="land-feat-title">Curriculum-aligned practice</div>
+          <div class="land-feat-desc">Over 500 questions mapped directly to the NSW curriculum — from Year 7 right through to HSC. Practice the right content, the right way.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBJECT SHOWCASE -->
+    <div style="text-align:center;padding:0 2rem;margin-bottom:1.5rem">
+      <div style="display:inline-block;padding:5px 14px;border-radius:20px;background:rgba(91,75,212,.15);border:1px solid rgba(91,75,212,.35);font-size:11px;font-weight:700;color:#B8AAFF;text-transform:uppercase;letter-spacing:.7px;margin-bottom:1rem">Subjects</div>
+      <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:.6rem">Built for the Australian curriculum</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.4);max-width:500px;margin:0 auto">Practice questions, tasks and resources aligned to what students are actually being tested on.</p>
+    </div>
+    <div class="land-showcase">
+      <div class="land-subject">
+        <div class="land-subject-glow" style="background:#4A90D9"></div>
+        <div class="land-subject-emoji">🧮</div>
+        <div class="land-subject-name">Mathematics</div>
+        <div class="land-subject-topics">Integration &bull; Differentiation<br>Quadratics &bull; Statistics<br>Trigonometry &bull; Sequences</div>
+        <div style="margin-top:1.25rem;font-size:11px;font-weight:700;color:#7B68E8;letter-spacing:.5px">Years 7–12 &bull; HSC ready</div>
+      </div>
+      <div class="land-subject">
+        <div class="land-subject-glow" style="background:#2A9A6A"></div>
+        <div class="land-subject-emoji">📚</div>
+        <div class="land-subject-name">English</div>
+        <div class="land-subject-topics">Essay writing &bull; Analysis<br>Rhetoric &bull; Craft of writing<br>Module A, B &amp; C preparation</div>
+        <div style="margin-top:1.25rem;font-size:11px;font-weight:700;color:#7B68E8;letter-spacing:.5px">Years 7–12 &bull; HSC ready</div>
+      </div>
+      <div class="land-subject">
+        <div class="land-subject-glow" style="background:#9B59B6"></div>
+        <div class="land-subject-emoji">⚛️</div>
+        <div class="land-subject-name">Science</div>
+        <div class="land-subject-topics">Physics &bull; Chemistry<br>Biology &bull; Mechanics<br>Genetics &bull; Equilibrium</div>
+        <div style="margin-top:1.25rem;font-size:11px;font-weight:700;color:#7B68E8;letter-spacing:.5px">Years 7–12 &bull; HSC ready</div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="land-how">
+      <div style="display:inline-block;padding:5px 14px;border-radius:20px;background:rgba(91,75,212,.15);border:1px solid rgba(91,75,212,.35);font-size:11px;font-weight:700;color:#B8AAFF;text-transform:uppercase;letter-spacing:.7px;margin-bottom:1rem"></div>
+      <h2 class="land-how-title">Simple. Structured. Effective.</h2>
+      <p class="land-how-sub">How Fluere supports your child every week.</p>
+      <div class="land-steps">
+        <div class="land-step">
+          <div class="land-step-num">1</div>
+          <div class="land-step-title">Tutor sets the week</div>
+          <div class="land-step-desc">Each week, the tutor assigns specific tasks, uploads resources and — if needed — schedules study sessions directly into the student's timetable.</div>
+        </div>
+        <div class="land-step">
+          <div class="land-step-num">2</div>
+          <div class="land-step-title">Student studies independently</div>
+          <div class="land-step-desc">Students work through their tasks using the Question Hub, focus timer and structured schedule — building the habits that lead to real results.</div>
+        </div>
+        <div class="land-step">
+          <div class="land-step-num">3</div>
+          <div class="land-step-title">Progress is tracked &amp; reviewed</div>
+          <div class="land-step-desc">Tutors instantly see what's been completed before each session — so every minute of tuition is spent on what actually needs work.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR STUDENTS SECTION -->
+    <div style="max-width:960px;margin:2rem auto 5rem;padding:0 2rem">
+      <div style="text-align:center;margin-bottom:3rem">
+        <div style="display:inline-block;padding:5px 14px;border-radius:20px;background:rgba(91,75,212,.15);border:1px solid rgba(91,75,212,.35);font-size:11px;font-weight:700;color:#B8AAFF;text-transform:uppercase;letter-spacing:.7px;margin-bottom:1rem">For Students</div>
+        <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:.75rem">Study tools that actually work</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,.4);max-width:500px;margin:0 auto">Fluere keeps students focused, organised and engaged — with tools designed around how students actually learn best.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+        <div class="land-feat">
+          <div class="land-feat-icon">&#x23F1;&#xFE0F;</div>
+          <div class="land-feat-title">Focus timer</div>
+          <div class="land-feat-desc">The Pomodoro technique is proven to improve concentration. Students use structured work and rest intervals to study smarter, not longer.</div>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">&#x1F9E0;</div>
+          <div class="land-feat-title">Daily cognitive challenges</div>
+          <div class="land-feat-desc">Short, daily word and logic puzzles sharpen critical thinking and vocabulary — skills that directly translate to better exam performance.</div>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">&#x1F4C4;</div>
+          <div class="land-feat-title">Past paper practice</div>
+          <div class="land-feat-desc">Upload past papers and the platform extracts questions automatically — making exam preparation targeted and efficient.</div>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">&#x1F3AF;</div>
+          <div class="land-feat-title">Goal &amp; streak tracking</div>
+          <div class="land-feat-desc">Students build weekly study streaks and track their progress over time — creating the consistency and accountability that drives results.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="land-quote">
+      <div class="land-quote-text">Consistency beats intensity. Fluere is built around the small daily habits that compound into real academic growth.</div>
+      <div class="land-quote-author">The Fluere approach &mdash; NSW HSC aligned</div>
+    </div>
+
+    <!-- CTA BOTTOM -->
+    <div class="land-cta-bottom">
+      <h2>Give your child the structure to succeed.</h2>
+      <p>Join Fluere today — completely free for students and tutors.</p>
+      <button class="land-cta-p" onclick="goToLogin()" style="font-size:17px;padding:16px 48px">Get started for free &rarr;</button>
+    </div>
+
+    <div class="land-footer">&#169; 2025 Fluere &mdash; Built for student success. NSW HSC aligned &bull; Years 7&ndash;12</div>
   </div>
-  <div class="land-footer">&#169; 2025 Fluere &mdash; Made for students who want to grow.</div>
 </div>
-
 <div id="auth-screen">
   <div id="setup-view" class="screen" style="display:none">
     <div class="auth-card">
@@ -1058,25 +1235,50 @@ async function renderClients(){
   const students=users.filter(u=>u.role==='user'||u.role==='client');
   const wk=weekKey(todayKey());
   const wt=tasks.filter(t=>t.week_key===wk);
-  const done=completions.filter(c=>c.week_key===wk&&c.done).length;
-  let h=`<span class="sh">Users</span>`;
-  h+=`<div class="stats"><div class="sc"><div class="sn">${students.length}</div><div class="sl">Total users</div></div><div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div><div class="sc"><div class="sn">${wt.length?Math.round(done/wt.length*100)+'%':'—'}</div><div class="sl">Completion rate</div></div></div>`;
+  const doneCount=completions.filter(c=>c.week_key===wk&&c.done).length;
+  const rate=wt.length?Math.round(doneCount/wt.length*100):0;
+
+  let h=`<div class="row-top"><span class="sh" style="margin:0">Users</span></div>`;
+
+  // Stats — completion rate card is clickable
+  h+=`<div class="stats">
+    <div class="sc"><div class="sn">${students.length}</div><div class="sl">Total users</div></div>
+    <div class="sc"><div class="sn">${wt.length}</div><div class="sl">Tasks this week</div></div>
+    <div class="sc" style="cursor:pointer;transition:all .15s" onclick="viewAllCompletions()" title="Click to see who completed what">
+      <div class="sn" style="color:${rate===100?'var(--grn)':rate>=50?'var(--amb)':'var(--acc)'}">${wt.length?rate+'%':'—'}</div>
+      <div class="sl">Completion rate ↗</div>
+    </div>
+  </div>`;
+
   h+=`<div class="card">`;
   if(!students.length){h+=`<div class="empty"><div class="empty-i">&#x1F464;</div><div class="empty-t">No users yet</div></div>`;}
   else students.forEach(c=>{
     const ct=tasks.filter(t=>t.client_id===c.id&&t.week_key===wk);
     const cd=completions.filter(x=>x.client_id===c.id&&x.week_key===wk&&x.done).length;
+    const pct=ct.length?Math.round(cd/ct.length*100):0;
     const privKey='sched_private_'+c.id;
     const isPrivate=localStorage.getItem(privKey)==='1';
+    // Progress bar colour
+    const barCol=pct===100?'var(--grn)':pct>=50?'var(--amb)':'var(--acc)';
     h+=`<div class="ci">
-      <div class="ci-info"><div class="av">${ini(c.name)}</div><div>
-        <div style="font-weight:600;font-size:14px">${esc(c.name)}</div>
-        <div style="font-size:13px;color:var(--mut)">${esc(c.email)} · ${cd}/${ct.length} tasks this week</div>
-      </div></div>
-      <div style="display:flex;gap:6px;align-items:center">
+      <div class="ci-info" style="flex:1;min-width:0;gap:12px">
+        <div class="av">${ini(c.name)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="font-weight:600;font-size:14px">${esc(c.name)}</div>
+            <span style="font-size:12px;font-weight:700;color:${barCol};flex-shrink:0;margin-left:8px">${cd}/${ct.length} done</span>
+          </div>
+          <div style="font-size:12px;color:var(--mut);margin-bottom:6px">${esc(c.email)}</div>
+          ${ct.length?`<div style="height:5px;background:var(--surf2);border-radius:99px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${barCol};border-radius:99px;transition:width .4s ease"></div>
+          </div>`:'<div style="font-size:12px;color:var(--mut);font-style:italic">No tasks assigned this week</div>'}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;margin-left:12px">
+        <button class="btn btn-s btn-sm" onclick="viewClientCompletions('${c.id}','${esc(c.name)}')">✅ Tasks</button>
         ${isPrivate
-          ? `<span style="font-size:11px;color:var(--mut);background:var(--surf2);padding:3px 8px;border-radius:20px;border:1px solid var(--bdr)">🔒 Schedule hidden</span>`
-          : `<button class="btn btn-s btn-sm" onclick="viewClientSched('${c.id}','${esc(c.name)}')">📅 View schedule</button>`
+          ? `<span style="font-size:11px;color:var(--mut);background:var(--surf2);padding:3px 8px;border-radius:20px;border:1px solid var(--bdr)">🔒 Sched hidden</span>`
+          : `<button class="btn btn-s btn-sm" onclick="viewClientSched('${c.id}','${esc(c.name)}')">📅 Schedule</button>`
         }
         <button class="btn btn-d btn-sm" onclick="delClient('${c.id}')">Remove</button>
       </div>
@@ -1084,6 +1286,100 @@ async function renderClients(){
   });
   h+=`</div>`;
   el.innerHTML=h;
+}
+
+// Show all students' completions in one modal
+async function viewAllCompletions(){
+  document.getElementById('m-title').textContent='Task Completions — This Week';
+  document.getElementById('m-body').innerHTML='<div class="loading">Loading...</div>';
+  document.getElementById('m-actions').innerHTML='<button class="btn btn-s" onclick="closeModal()">Close</button>';
+  document.getElementById('modal-overlay').style.display='flex';
+
+  const [users,tasks,completions]=await Promise.all([dbUsers(),dbTasks(),dbCompletions()]);
+  const students=users.filter(u=>u.role==='user'||u.role==='client');
+  const wk=weekKey(todayKey());
+
+  let h='<div style="display:flex;flex-direction:column;gap:16px;max-height:500px;overflow-y:auto">';
+  students.forEach(s=>{
+    const st=tasks.filter(t=>t.client_id===s.id&&t.week_key===wk);
+    const done=completions.filter(c=>c.client_id===s.id&&c.week_key===wk&&c.done);
+    const pct=st.length?Math.round(done.length/st.length*100):0;
+    const barCol=pct===100?'var(--grn)':pct>=50?'var(--amb)':'var(--acc)';
+    h+=`<div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div class="av" style="width:28px;height:28px;font-size:11px">${ini(s.name)}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px">${esc(s.name)}</div>
+          <div style="font-size:11px;color:var(--mut)">${done.length}/${st.length} tasks completed${st.length?` · ${pct}%`:''}</div>
+        </div>
+        ${st.length?`<span style="font-size:13px;font-weight:700;color:${barCol}">${pct===100?'🎉 All done!':pct+'%'}</span>`:''}
+      </div>
+      ${st.length?`<div style="display:flex;flex-direction:column;gap:5px;padding-left:38px">
+        ${st.map(t=>{
+          const isDone=done.some(c=>c.task_id===t.id);
+          return`<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:var(--rs);background:${isDone?'var(--grn-l)':'var(--surf2)'}">
+            <span style="font-size:14px">${isDone?'✅':'⬜'}</span>
+            <span style="font-size:13px;font-weight:${isDone?'400':'600'};color:${isDone?'var(--grn)':'var(--txt)'};${isDone?'text-decoration:line-through;opacity:.7':''}">${esc(t.title)}</span>
+            ${t.category?`<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--blu-l);color:var(--blu);margin-left:auto">${esc(t.category)}</span>`:''}
+          </div>`;
+        }).join('')}
+      </div>`:'<div style="padding-left:38px;font-size:13px;color:var(--mut);font-style:italic">No tasks assigned this week</div>'}
+    </div>`;
+  });
+  h+='</div>';
+  if(!students.length) h='<div class="empty" style="padding:2rem"><div class="empty-t">No students yet</div></div>';
+  document.getElementById('m-body').innerHTML=h;
+}
+
+// Show one student's task completions
+async function viewClientCompletions(clientId, clientName){
+  document.getElementById('m-title').textContent=`${clientName}'s Tasks`;
+  document.getElementById('m-body').innerHTML='<div class="loading">Loading...</div>';
+  document.getElementById('m-actions').innerHTML='<button class="btn btn-s" onclick="closeModal()">Close</button>';
+  document.getElementById('modal-overlay').style.display='flex';
+
+  const [tasks,completions]=await Promise.all([dbTasks(),dbCompletions()]);
+  const wk=weekKey(todayKey());
+  const myTasks=tasks.filter(t=>t.client_id===clientId&&t.week_key===wk);
+  const done=completions.filter(c=>c.client_id===clientId&&c.week_key===wk&&c.done);
+
+  if(!myTasks.length){
+    document.getElementById('m-body').innerHTML=`<div class="empty" style="padding:2rem"><div class="empty-i">📋</div><div class="empty-t">No tasks this week</div><p>Assign tasks to ${esc(clientName)} from the Tasks tab.</p></div>`;
+    return;
+  }
+
+  const pct=Math.round(done.length/myTasks.length*100);
+  const barCol=pct===100?'var(--grn)':pct>=50?'var(--amb)':'var(--acc)';
+
+  let h=`<div style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:13px;font-weight:600;color:var(--mut)">${done.length} of ${myTasks.length} completed</span>
+      <span style="font-size:15px;font-weight:800;color:${barCol}">${pct===100?'🎉 All done!':pct+'%'}</span>
+    </div>
+    <div style="height:8px;background:var(--surf2);border-radius:99px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:${barCol};border-radius:99px;transition:width .4s ease"></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">`;
+
+  myTasks.forEach(t=>{
+    const isDone=done.some(c=>c.task_id===t.id);
+    h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rs);background:${isDone?'var(--grn-l)':'var(--surf2)'};border:1px solid ${isDone?'#a8dcc2':'var(--bdr)'}">
+      <span style="font-size:18px;flex-shrink:0">${isDone?'✅':'⬜'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:${isDone?'400':'600'};color:${isDone?'var(--grn)':'var(--txt)'};${isDone?'text-decoration:line-through;opacity:.7':''}">${esc(t.title)}</div>
+        ${t.description?`<div style="font-size:12px;color:var(--mut);margin-top:2px">${esc(t.description)}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        ${t.priority==='high'?'<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--amb-l);color:var(--amb)">High</span>':''}
+        ${t.category?`<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--blu-l);color:var(--blu)">${esc(t.category)}</span>`:''}
+        <span style="font-size:11px;color:var(--mut)">${isDone?'✓ Completed':'Pending'}</span>
+      </div>
+    </div>`;
+  });
+
+  h+='</div>';
+  document.getElementById('m-body').innerHTML=h;
 }
 
 async function viewClientSched(clientId, clientName){
@@ -2594,6 +2890,54 @@ async function renderLeaderboard(){
 function showLanding(){
   document.getElementById('landing-screen').style.display='block';
   document.getElementById('auth-screen').style.display='none';
+  spawnFloaters();
+}
+
+function spawnFloaters(){
+  const bg=document.getElementById('land-bg');
+  if(!bg||bg._spawned)return;
+  bg._spawned=true;
+  const symbols=[
+    // Maths
+    'x²+y²=r²','∫f(x)dx','dy/dx','sin(θ)','π','∑','√','lim','∞','Δx',
+    'E=mc²','f\u2019(x)','log₂n','nCr','∂/∂x','∫₀∞','eˣ','ln(x)',
+    // English
+    '"..."','metaphor','thesis','syntax','motif','pathos','ethos','logos',
+    'allusion','irony','→ argue','analyze',
+    // Physics
+    'F=ma','v=u+at','λ=h/mv','E=hf','ΔE','P=IV','W=Fd','c=fλ',
+    'KE=½mv²','qV=½mv²','I=V/R',
+    // Chemistry
+    'pH=-log[H⁺]','ΔH','Ka','Ksp','n=CV','PV=nRT','Kc','E°cell',
+    // Biology
+    'DNA','ATP','mRNA','allele','mitosis','genotype','phenotype',
+  ];
+  const colors=['rgba(123,104,232,','rgba(74,144,217,','rgba(42,154,106,','rgba(155,89,182,','rgba(180,160,255,'];
+
+  function spawn(){
+    if(!document.getElementById('land-bg')) return;
+    const el=document.createElement('div');
+    el.className='land-float';
+    const sym=symbols[Math.floor(Math.random()*symbols.length)];
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    const opacity=(Math.random()*0.18+0.06).toFixed(2);
+    const size=Math.random()*10+11;
+    const dur=Math.random()*20+18;
+    const left=Math.random()*100;
+    const rot=(Math.random()*30-15).toFixed(0)+'deg';
+    el.textContent=sym;
+    el.style.cssText=`left:${left}%;bottom:-60px;font-size:${size}px;color:${col}${opacity});--o:${opacity};--r:${rot};animation-duration:${dur}s;animation-delay:${(Math.random()*8).toFixed(1)}s`;
+    bg.appendChild(el);
+    setTimeout(()=>el.remove(), dur*1000+8000);
+  }
+
+  // Spawn initial batch
+  for(let i=0;i<28;i++) setTimeout(spawn, i*300);
+  // Keep spawning
+  const iv=setInterval(()=>{
+    if(!document.getElementById('land-bg')){clearInterval(iv);return;}
+    spawn();
+  }, 1200);
 }
 async function goToLogin(){
   document.getElementById('landing-screen').style.display='none';
