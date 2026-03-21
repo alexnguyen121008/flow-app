@@ -1917,7 +1917,20 @@ function renderSched(){
   </div>
   <p style="font-size:13px;color:var(--mut);margin-bottom:1.25rem">Click any cell to add an event, or use the button above.${isPrivate?' <strong style="color:var(--amb)">🔒 Your schedule is hidden from your admin.</strong>':''}</p>
   <div class="sched-wrap"><table class="sched-table sched-today"><thead><tr><th class="time-col">Time</th>`;
-  DAYS.forEach((d,i)=>{h+=`<th class="day-col${i===todayIdx?' today-col':''}">${d}</th>`;});
+  // Calculate the date for each day of the current week (Mon-Sun)
+  const now=new Date();
+  const currentDayIdx=now.getDay()===0?6:now.getDay()-1; // 0=Mon, 6=Sun
+  const weekStart=new Date(now);
+  weekStart.setDate(now.getDate()-currentDayIdx); // Monday of this week
+  DAYS.forEach((d,i)=>{
+    const dayDate=new Date(weekStart);
+    dayDate.setDate(weekStart.getDate()+i);
+    const dateStr=dayDate.toLocaleDateString('en-AU',{day:'numeric',month:'short'});
+    h+=`<th class="day-col${i===todayIdx?' today-col':''}">
+      <div style="font-weight:700">${d}</div>
+      <div style="font-size:10px;font-weight:400;opacity:.7;margin-top:1px">${dateStr}</div>
+    </th>`;
+  });
   h+=`</tr></thead><tbody>`;
   SLOTS.forEach(slot=>{
     const isHalf=slot%1!==0;
