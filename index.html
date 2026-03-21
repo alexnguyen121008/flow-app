@@ -24,8 +24,9 @@
 }
 body{font-family:var(--font);background:var(--bg);color:var(--txt);font-size:15px;line-height:1.6;min-height:100vh}
 input,select,textarea,button{font-family:var(--font)}
-.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg)}
-.auth-card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:2.75rem;width:100%;max-width:420px;box-shadow:var(--shm)}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(160deg,#0A0818 0%,#12103A 50%,#0A0818 100%);position:relative;overflow:hidden}
+.screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 30%,rgba(91,75,212,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(74,144,217,0.08) 0%,transparent 55%);pointer-events:none}
+.auth-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:3rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.05);position:relative;z-index:1}
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:2rem}
 .brand-ic{width:38px;height:38px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(91,75,212,.3)}
 .brand-ic svg{width:20px;height:20px;fill:white}
@@ -36,6 +37,17 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 .field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
 .field input,.field select,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:15px;background:var(--surf3);color:var(--txt);outline:none;transition:all .15s}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--acc);background:var(--surf);box-shadow:0 0 0 4px rgba(91,75,212,.1)}
+/* Auth screen specific overrides */
+.auth-card .field input,.auth-card .field select,.auth-card .field textarea{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:white;border-radius:10px}
+.auth-card .field input::placeholder,.auth-card .field textarea::placeholder{color:rgba(255,255,255,0.3)}
+.auth-card .field input:focus,.auth-card .field select:focus,.auth-card .field textarea:focus{background:rgba(255,255,255,0.09);border-color:rgba(123,104,232,0.7);box-shadow:0 0 0 4px rgba(91,75,212,0.15)}
+.auth-card .field label{color:rgba(255,255,255,0.55)}
+.auth-card h2.auth-title{color:white}
+.auth-card .auth-sub{color:rgba(255,255,255,0.45)}
+.auth-card .brand-name{color:white}
+.auth-card .toggle{color:rgba(255,255,255,0.4)}
+.auth-card .toggle a{color:#9B8FF8}
+.auth-card .err{background:rgba(192,56,90,0.15);border-color:rgba(192,56,90,0.4);color:#FF8FAB}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;background:none;color:var(--txt)}
 .btn-p{background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;width:100%;padding:12px;font-size:15px;border:none;box-shadow:0 4px 12px rgba(91,75,212,.3)}
 .btn-p:hover{opacity:.9;transform:translateY(-1px)}
@@ -390,9 +402,10 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
 
 /* ── LANDING PAGE ── */
 #landing-screen{display:none;min-height:100vh;background:#0A0818;color:white;font-family:var(--font);overflow-x:hidden;position:relative}
+#landing-screen::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(91,75,212,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 70%,rgba(74,144,217,0.09) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 50% 100%,rgba(42,154,106,0.07) 0%,transparent 50%);pointer-events:none;z-index:0}
 .land-bg-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.land-float{position:absolute;font-family:monospace;font-weight:700;pointer-events:none;animation:floatUp linear infinite;white-space:nowrap}
-@keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(var(--r))}10%{opacity:var(--o)}85%{opacity:var(--o)}100%{opacity:0;transform:translateY(-100vh) rotate(var(--r))}}
+.land-float{position:absolute;font-family:monospace;font-weight:600;pointer-events:none;animation:floatUp linear infinite;white-space:nowrap;text-shadow:0 0 20px currentColor}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(var(--r)) scale(.9)}8%{opacity:var(--o)}88%{opacity:var(--o)}100%{opacity:0;transform:translateY(-105vh) rotate(var(--r)) scale(1.05)}}
 .land-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 4rem;position:sticky;top:0;z-index:100;background:rgba(10,8,24,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 .land-nav-btns{display:flex;gap:10px}
 .land-btn-ghost{padding:8px 20px;border-radius:var(--rs);border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.75);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
@@ -651,40 +664,59 @@ h2.auth-title{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:-0
   </div>
 </div>
 <div id="auth-screen">
+
+  <!-- SETUP -->
   <div id="setup-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
-      <h2 class="auth-title">Set up Fluere</h2><p class="auth-sub">Create your admin account to get started</p>
+      <div style="text-align:center;margin-bottom:2rem">
+        <div class="brand-ic" style="width:52px;height:52px;border-radius:14px;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(91,75,212,0.5)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px;margin-bottom:6px">Set up Fluere</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4)">Create your tutor account to get started</div>
+      </div>
       <div id="setup-err" class="err"></div>
-      <div class="field"><label>Your name</label><input id="s-name" placeholder="e.g. Sarah"/></div>
-      <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="admin@yoursite.com"/></div>
-      <div class="field"><label>Password</label><input id="s-pass" type="password" placeholder="Choose a password"/></div>
-      <button class="btn btn-p" onclick="doSetup()">Create admin account</button>
+      <div class="field"><label>Your name</label><input id="s-name" placeholder="e.g. Sarah Johnson"/></div>
+      <div class="field"><label>Email address</label><input id="s-email" type="email" placeholder="you@example.com"/></div>
+      <div class="field"><label>Password</label><input id="s-pass" type="password" placeholder="Choose a strong password"/></div>
+      <button class="btn btn-p" onclick="doSetup()" style="margin-top:.5rem;font-size:15px;padding:13px;border-radius:12px;box-shadow:0 6px 20px rgba(91,75,212,0.5)">Create account &rarr;</button>
+      <div style="text-align:center;margin-top:1.5rem;font-size:12px;color:rgba(255,255,255,0.25)">NSW HSC aligned &bull; Free to use &bull; Years 7–12</div>
     </div>
   </div>
+
+  <!-- LOGIN -->
   <div id="login-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
-      <h2 class="auth-title">Welcome back</h2><p class="auth-sub">Sign in to your account</p>
+      <div style="text-align:center;margin-bottom:2.25rem">
+        <div class="brand-ic" style="width:52px;height:52px;border-radius:14px;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(91,75,212,0.5)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px;margin-bottom:6px">Welcome back</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4)">Sign in to your Fluere account</div>
+      </div>
       <div id="login-err" class="err"></div>
-      <div class="field"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"/></div>
-      <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••"/></div>
-      <button class="btn btn-p" onclick="doLogin()">Sign in</button>
-      <div class="toggle">New user? <a onclick="showReg()">Create account</a></div>
+      <div class="field"><label>Email address</label><input id="l-email" type="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn btn-p" onclick="doLogin()" style="margin-top:.5rem;font-size:15px;padding:13px;border-radius:12px;box-shadow:0 6px 20px rgba(91,75,212,0.5)">Sign in &rarr;</button>
+      <div class="toggle" style="margin-top:1.5rem">New student or tutor? <a onclick="showReg()" style="color:#9B8FF8;font-weight:700">Create a free account</a></div>
+      <div style="text-align:center;margin-top:1.25rem;font-size:12px;color:rgba(255,255,255,0.2)">NSW HSC aligned &bull; Free to use &bull; Years 7–12</div>
     </div>
   </div>
+
+  <!-- REGISTER -->
   <div id="reg-view" class="screen" style="display:none">
     <div class="auth-card">
-      <div class="brand"><div class="brand-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="brand-name">Fluere</span></div>
-      <h2 class="auth-title">Create account</h2><p class="auth-sub">Register as a user</p>
+      <div style="text-align:center;margin-bottom:2rem">
+        <div class="brand-ic" style="width:52px;height:52px;border-radius:14px;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(91,75,212,0.5)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><path d="M12 3C12 3 8 7 8 12s4 9 4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 9h17M3.5 15h17" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px;margin-bottom:6px">Create your account</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4)">Join Fluere — it's completely free</div>
+      </div>
       <div id="reg-err" class="err"></div>
-      <div class="field"><label>Full name</label><input id="r-name" placeholder="Jane Smith"/></div>
-      <div class="field"><label>Email</label><input id="r-email" type="email" placeholder="you@example.com"/></div>
-      <div class="field"><label>Password</label><input id="r-pass" type="password" placeholder="Min. 4 characters"/></div>
-      <button class="btn btn-p" onclick="doReg()">Create account</button>
-      <div class="toggle">Already have an account? <a onclick="showLogin()">Sign in</a></div>
+      <div class="field"><label>Full name</label><input id="r-name" placeholder="e.g. Alex Smith"/></div>
+      <div class="field"><label>Email address</label><input id="r-email" type="email" placeholder="you@example.com"/></div>
+      <div class="field"><label>Password</label><input id="r-pass" type="password" placeholder="Minimum 4 characters"/></div>
+      <button class="btn btn-p" onclick="doReg()" style="margin-top:.5rem;font-size:15px;padding:13px;border-radius:12px;box-shadow:0 6px 20px rgba(91,75,212,0.5)">Create account &rarr;</button>
+      <div class="toggle" style="margin-top:1.5rem">Already have an account? <a onclick="showLogin()" style="color:#9B8FF8;font-weight:700">Sign in</a></div>
+      <div style="text-align:center;margin-top:1.25rem;font-size:12px;color:rgba(255,255,255,0.2)">NSW HSC aligned &bull; Free to use &bull; Years 7–12</div>
     </div>
   </div>
+
 </div>
 
 <!-- APP -->
@@ -2897,47 +2929,61 @@ function spawnFloaters(){
   const bg=document.getElementById('land-bg');
   if(!bg||bg._spawned)return;
   bg._spawned=true;
-  const symbols=[
-    // Maths
-    'x²+y²=r²','∫f(x)dx','dy/dx','sin(θ)','π','∑','√','lim','∞','Δx',
-    'E=mc²','f\u2019(x)','log₂n','nCr','∂/∂x','∫₀∞','eˣ','ln(x)',
-    // English
-    '"..."','metaphor','thesis','syntax','motif','pathos','ethos','logos',
-    'allusion','irony','→ argue','analyze',
-    // Physics
-    'F=ma','v=u+at','λ=h/mv','E=hf','ΔE','P=IV','W=Fd','c=fλ',
-    'KE=½mv²','qV=½mv²','I=V/R',
-    // Chemistry
-    'pH=-log[H⁺]','ΔH','Ka','Ksp','n=CV','PV=nRT','Kc','E°cell',
-    // Biology
-    'DNA','ATP','mRNA','allele','mitosis','genotype','phenotype',
+
+  const items=[
+    {t:'x² + y² = r²',      c:'#7B68E8',s:15},{t:'\u222bf(x) dx',      c:'#9B8FF8',s:16},
+    {t:'dy/dx',              c:'#7B68E8',s:18},{t:'sin\u00b2\u03b8 + cos\u00b2\u03b8 = 1',c:'#B8AAFF',s:13},
+    {t:'\u03a3 n(n+1)/2',   c:'#7B68E8',s:14},{t:'lim x\u2192\u221e', c:'#9B8FF8',s:16},
+    {t:'\u221a(a\u00b2 + b\u00b2)',c:'#B8AAFF',s:15},{t:'e\u02e3',   c:'#7B68E8',s:22},
+    {t:'ln(x)',              c:'#9B8FF8',s:18},{t:'\u0394x \u2192 0',   c:'#7B68E8',s:16},
+    {t:'log\u2081\u2080(x)',c:'#9B8FF8',s:15},{t:'\u03c0 \u2248 3.14159',c:'#B8AAFF',s:14},
+    {t:'\u221e',            c:'#7B68E8',s:30},{t:'f(x) = ax\u00b2 + bx + c',c:'#9B8FF8',s:13},
+    {t:'F = ma',             c:'#4A90D9',s:18},{t:'E = mc\u00b2',       c:'#6AB0F5',s:17},
+    {t:'v = u + at',         c:'#4A90D9',s:15},{t:'\u03bb = h/mv',      c:'#6AB0F5',s:15},
+    {t:'KE = \u00bdmv\u00b2',c:'#4A90D9',s:15},{t:'P = IV',           c:'#6AB0F5',s:18},
+    {t:'c = f\u03bb',       c:'#4A90D9',s:17},{t:'E = hf',             c:'#6AB0F5',s:18},
+    {t:'I = V/R',            c:'#4A90D9',s:16},{t:'F = GMm/r\u00b2',   c:'#4A90D9',s:14},
+    {t:'metaphor',           c:'#2A9A6A',s:17},{t:'thesis',             c:'#4ECA8A',s:16},
+    {t:'pathos',             c:'#2A9A6A',s:18},{t:'ethos  logos',       c:'#4ECA8A',s:14},
+    {t:'allusion',           c:'#2A9A6A',s:17},{t:'juxtaposition',      c:'#4ECA8A',s:14},
+    {t:'syntax & tone',      c:'#2A9A6A',s:14},{t:'motif',              c:'#4ECA8A',s:19},
+    {t:'irony',              c:'#2A9A6A',s:20},{t:'foreshadowing',      c:'#4ECA8A',s:14},
+    {t:'anaphora',           c:'#2A9A6A',s:16},{t:'analyse',            c:'#4ECA8A',s:17},
   ];
-  const colors=['rgba(123,104,232,','rgba(74,144,217,','rgba(42,154,106,','rgba(155,89,182,','rgba(180,160,255,'];
+
+  const orbs=[
+    {x:12,y:25,col:'rgba(91,75,212,0.09)',size:550},
+    {x:78,y:55,col:'rgba(74,144,217,0.08)',size:420},
+    {x:40,y:85,col:'rgba(42,154,106,0.07)',size:380},
+    {x:88,y:12,col:'rgba(155,89,182,0.08)',size:460},
+  ];
+  orbs.forEach(function(o){
+    var orb=document.createElement('div');
+    orb.style.cssText='position:absolute;left:'+o.x+'%;top:'+o.y+'%;width:'+o.size+'px;height:'+o.size+'px;border-radius:50%;background:radial-gradient(circle,'+o.col+' 0%,transparent 70%);transform:translate(-50%,-50%);pointer-events:none';
+    bg.appendChild(orb);
+  });
 
   function spawn(){
-    if(!document.getElementById('land-bg')) return;
-    const el=document.createElement('div');
+    if(!document.getElementById('land-bg'))return;
+    var item=items[Math.floor(Math.random()*items.length)];
+    var el=document.createElement('div');
     el.className='land-float';
-    const sym=symbols[Math.floor(Math.random()*symbols.length)];
-    const col=colors[Math.floor(Math.random()*colors.length)];
-    const opacity=(Math.random()*0.18+0.06).toFixed(2);
-    const size=Math.random()*10+11;
-    const dur=Math.random()*20+18;
-    const left=Math.random()*100;
-    const rot=(Math.random()*30-15).toFixed(0)+'deg';
-    el.textContent=sym;
-    el.style.cssText=`left:${left}%;bottom:-60px;font-size:${size}px;color:${col}${opacity});--o:${opacity};--r:${rot};animation-duration:${dur}s;animation-delay:${(Math.random()*8).toFixed(1)}s`;
+    var opacity=(Math.random()*0.14+0.05).toFixed(2);
+    var size=item.s+(Math.random()*4-2);
+    var dur=Math.random()*25+20;
+    var left=Math.random()*96;
+    var rot=(Math.random()*22-11).toFixed(0)+'deg';
+    el.textContent=item.t;
+    el.style.cssText='left:'+left+'%;bottom:-80px;font-size:'+size.toFixed(0)+'px;color:'+item.c+';--o:'+opacity+';--r:'+rot+';animation-duration:'+dur.toFixed(0)+'s;animation-delay:'+(Math.random()*10).toFixed(1)+'s';
     bg.appendChild(el);
-    setTimeout(()=>el.remove(), dur*1000+8000);
+    setTimeout(function(){el.remove();},(dur+12)*1000);
   }
 
-  // Spawn initial batch
-  for(let i=0;i<28;i++) setTimeout(spawn, i*300);
-  // Keep spawning
-  const iv=setInterval(()=>{
+  for(var i=0;i<35;i++) setTimeout(spawn,i*220);
+  var iv=setInterval(function(){
     if(!document.getElementById('land-bg')){clearInterval(iv);return;}
     spawn();
-  }, 1200);
+  },900);
 }
 async function goToLogin(){
   document.getElementById('landing-screen').style.display='none';
